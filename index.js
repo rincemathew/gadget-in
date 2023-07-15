@@ -2,11 +2,17 @@
 const express = require('express')
 const app = express()
 
-//loading environment variables
+//loading environment variables(npm-dotenv)
 require('dotenv').config()
 
-//importing vhost for subdomin configuration
+//importing vhost for subdomin configuration(npm-vhost)
 const vhost = require('vhost')
+
+//public files set here
+app.use(express.static('public'))
+
+//template engine as ejs (npm - ejs)
+app.set('view engine', 'ejs')
 
 //importing two router options user, admin
 const userRouter = require('./routers/userRoute')
