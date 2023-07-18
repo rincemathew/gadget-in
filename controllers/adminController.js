@@ -1,8 +1,7 @@
-
-
 const  adminSchema  = require("../models/adminSchema")
 
 
+////LOGIN
 const admin_login = async(req,res) => {
     res.render('admin/index',{message: "",})
 }
@@ -31,4 +30,35 @@ const login_admin = async(req,res) => {
 }
 
 
-module.exports = {admin_login,login_admin}
+////DASHBOARD
+const dashboard = async(req,res) => {
+    res.render('admin/dashboard',{message: "",})
+}
+
+
+//PRODUCTS
+const products = async(req,res) => {
+    res.render('admin/products',{message: "",})
+}
+
+const add_product = async(req,res) => {
+    res.render('admin/add_products',{message: "",})
+}
+
+//CATEGORIES
+const categories = async(req,res) => {
+    res.render('admin/categories',{message: "",})
+}
+
+
+//USER PROFILE
+const user_profile = async(req,res) => {
+    res.render('admin/user_profile',{message: "",})
+}
+
+
+module.exports = {admin_login,login_admin,
+dashboard,
+products,add_product,
+categories,
+user_profile}

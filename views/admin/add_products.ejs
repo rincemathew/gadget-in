@@ -1,0 +1,71 @@
+<body>
+    <%-include('header')-%>
+    <div class="container">
+        <form method="post" action="/">
+      
+
+            <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">add new product</h5>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="form">Product Name</label>
+              <input name="product_name" type="product_name" id="form" class="form-control form-control-lg" />
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="form">Description</label>
+              <input name="description" type="description" id="form" class="form-control form-control-lg" />
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="form">category</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Open this select menu</option>
+                    <option value="smartphones">Smartphones</option>
+                    <option value="wearables">Wearables</option>
+                    <option value="earwear">Earwear</option>
+                  </select>
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="form">Stock</label>
+              <input name="stock" type="stock" id="form" class="form-control form-control-lg" />
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="form">Price</label>
+              <input name="price" type="price" id="form" class="form-control form-control-lg" />
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="form">Product Image</label>
+              <input name="" type="" id="form" class="form-control form-control-lg" />
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="form">Is Blocked</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                    <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                  </div>
+            </div>
+
+            <div class="pt-1 mb-4">
+              <button class="btn btn-dark btn-lg btn-block" type="submit">add</button>
+            </div>
+          </form>
+        
+    </div>
+    <%-include('footer')-%>
+    
+</body>
+<script>
+   var element = document.getElementById("flexSwitchCheckChecked");
+element.addEventListener("change", function (event) {
+    console.log(event.target.checked)
+    // if (event.target.checked) {
+    //     console.log("Checked");
+    // } else {
+    //     console.log("Not checked");
+    // }
+});
+</script>
