@@ -1,4 +1,6 @@
+const multer = require("multer")
 const  adminSchema  = require("../models/adminSchema")
+const  productSchema  = require("../models/productModel")
 
 
 ////LOGIN
@@ -45,6 +47,27 @@ const add_product = async(req,res) => {
     res.render('admin/add_products',{message: "",})
 }
 
+const add_product_post = async(req,res) => {
+    productImages = []
+    // console.log(req.files)
+    req.files.forEach((file) => {
+        productImages.push(file.filename);
+      });
+
+    const data={
+        product_name:req.body.product_name,
+        description:req.body.description,
+        category:req.body.category,
+        stock:req.body.stock,
+        price:req.body.price,
+        product_image:productImages,
+        is_blocked:req.body.isBlocked == 'on'?true:false
+    }
+    // console.log(data)
+    await productSchema.insertMany([data])
+    res.render('admin/products',{message: "",})
+}
+
 //CATEGORIES
 const categories = async(req,res) => {
     res.render('admin/categories',{message: "",})
@@ -59,6 +82,6 @@ const user_profile = async(req,res) => {
 
 module.exports = {admin_login,login_admin,
 dashboard,
-products,add_product,
+products,add_product,add_product_post,
 categories,
 user_profile}

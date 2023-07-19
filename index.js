@@ -2,16 +2,21 @@
 const express = require('express')
 const app = express()
 
+const path = require("path")
+
 //loading environment variables(npm-dotenv)
 require('dotenv').config()
 
 //importing vhost for subdomin configuration(npm-vhost)
 const vhost = require('vhost')
 
+//public files set here
+app.use(express.static('public'))
+
 //read input
-// const path = require("path")
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 
 //mongoosh setup
 const mongoose = require("mongoose");
@@ -22,9 +27,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/gadget-in")
     console.log("failed to connect");
 })
 
-
-//public files set here
-app.use(express.static('public'))
 
 //template engine as ejs (npm - ejs)
 app.set('view engine', 'ejs')
