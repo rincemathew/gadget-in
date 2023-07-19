@@ -2,5 +2,9 @@ html body{
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    background-color: aqua;
 }
+
+:root {
+    --main-color: #FED700;
+    --white: #ffffff;
+  }
