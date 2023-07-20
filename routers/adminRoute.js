@@ -21,6 +21,8 @@ router.get('/products/add-new',adminController.add_product)
 
 router.post('/products/add-new',multer,adminController.add_product_post)
 
+router.post('/products/visbility',adminController.products_visibility)
+
 
 
 //CATEGORIES

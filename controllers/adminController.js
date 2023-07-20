@@ -40,7 +40,18 @@ const dashboard = async(req,res) => {
 
 //PRODUCTS
 const products = async(req,res) => {
-    res.render('admin/products',{message: "",})
+    try {
+      const productData = await productSchema.find({})
+
+      if(productData){
+        res.render('admin/products',{ message: "",data :productData})
+        console.log(productData)
+      }
+
+    } catch(error) {
+        res.send(error.message)
+    }
+    // res.render('admin/products',{message: "",})
 }
 
 const add_product = async(req,res) => {
@@ -65,7 +76,12 @@ const add_product_post = async(req,res) => {
     }
     // console.log(data)
     await productSchema.insertMany([data])
-    res.render('admin/products',{message: "",})
+    res.redirect('/products');
+    // res.render('admin/products',{message: "product created",})
+}
+
+const products_visibility = async(req,res) => {
+    res.render('admin/products',{message: "hai",})
 }
 
 //CATEGORIES
@@ -82,6 +98,6 @@ const user_profile = async(req,res) => {
 
 module.exports = {admin_login,login_admin,
 dashboard,
-products,add_product,add_product_post,
+products,add_product,add_product_post,products_visibility,
 categories,
 user_profile}
