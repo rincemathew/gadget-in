@@ -13,27 +13,23 @@ const vhost = require('vhost')
 //public files set here
 app.use(express.static('public'))
 
+//importing two router options user, admin
+const userRouter = require('./routers/userRoute')
+const adminRouter = require('./routers/adminRoute')
+
+//mongosh export
+const mongoose = require('./helpers/mongoConnect')
+
+
 //read input
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-//mongoosh setup
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/gadget-in")
-.then(()=>{
-    console.log("mongodb is connected");
-}).catch(()=>{
-    console.log("failed to connect");
-})
-
-
 //template engine as ejs (npm - ejs)
 app.set('view engine', 'ejs')
 
-//importing two router options user, admin
-const userRouter = require('./routers/userRoute')
-const adminRouter = require('./routers/adminRoute')
+
 
 //used vhost to create subdomains
 app.use(vhost(process.env.DOMAIN_NAME, userRouter));
