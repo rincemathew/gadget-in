@@ -1,12 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var adminController = require('../controllers/adminController')
-var multer = require('../controllers/helpers/multer')
+const express = require('express');
+const router = express.Router();
+
+const adminController = require('../controllers/adminController')
+const multer = require('../helpers/multer')
 
 //LOGIN
 router.get('/',adminController.admin_login)
 
-router.post('/',adminController.login_admin)
+router.post('/dashboard',adminController.login_admin)
 
 
 //DASHBOARD

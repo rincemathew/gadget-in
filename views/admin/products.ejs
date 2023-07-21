@@ -1,32 +1,37 @@
-<body>
+<body class="container-fluid">
     <%-include('header')-%>
-    <div class="container">
-        <a href="/products/add-new"><button type="button" class="btn btn-primary m-3">add new product</button></a>
-        <h1>products</h1>
-        <% for(i=0;i<data.length;i++) { %>
-            <div class="card mt-3">
-                <h5 class="card-header"><%= data[i].product_name%></h5>
-                <div class="card-body row">
-                    <div class="col-2">
-                        <img style="max-height: 100px;" class="img-fluid" src="/uploads/<%= data[i].product_image[0] %>" alt="">
-                    </div>
-                    <div class="col-8">
-                        <h5 class="card-title">Category - <%= data[i].category%></h5>
-                        <p class="card-text">Stock - <%= data[i].stock%></p>
-                    </div>
-                    <div class="col-2">
-                        <form>
-                            <div class="form-check form-switch">
-                                <input onchange="/products/visbility" name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
-                              </div>
-                            </form>
-                    </div>
-                  
-                </div>
-              </div>
-        <% } %>
-        
+    <div class="row">
+        <div class="col-2">
+            <%-include('navbar')-%>
+        </div>
+        <div class="col-10">
+                <a href="/products/add-new"><button type="button" class="btn btn-primary m-3">add new product</button></a>
+                <h1>products</h1>
+                <% for(i=0;i<data.length;i++) { %>
+                    <div class="card mt-3">
+                        <h5 class="card-header"><%= data[i].product_name%></h5>
+                        <div class="card-body row">
+                            <div class="col-2">
+                                <img style="max-height: 100px;" class="img-fluid" src="/uploads/<%= data[i].product_image[0] %>" alt="">
+                            </div>
+                            <div class="col-8">
+                                <h5 class="card-title">Category - <%= data[i].category%></h5>
+                                <p class="card-text">Stock - <%= data[i].stock%></p>
+                            </div>
+                            <div class="col-2">
+                                <form>
+                                    <div class="form-check form-switch">
+                                        <input onchange="/products/visbility" name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                                      </div>
+                                    </form>
+                            </div>
+                          
+                        </div>
+                <% } %>
+                
+            </div>
+        </div>
     </div>
     <%-include('footer')-%>
     
