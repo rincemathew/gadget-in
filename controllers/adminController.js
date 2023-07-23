@@ -1,6 +1,7 @@
 const multer = require("multer")
 const  adminSchema  = require("../models/adminSchema")
 const  productSchema  = require("../models/productModel")
+const  categorySchema  = require("../models/categoryModel")
 
 
 ////LOGIN
@@ -86,8 +87,18 @@ const products_visibility = async(req,res) => {
 
 //CATEGORIES
 const categories = async(req,res) => {
-    res.render('admin/categories',{message: "",})
+    try {
+        const categoryData = await categorySchema.find({})
+        console.log(categoryData)
+        if(categoryData){
+          res.render('admin/categories',{ message: "",data :categoryData})
+        }
+  
+      } catch(error) {
+          res.send(error.message)
+      }
 }
+
 
 
 //USER PROFILE
