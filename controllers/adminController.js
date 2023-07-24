@@ -44,7 +44,7 @@ const products = async (req, res) => {
 
     if (productData) {
       res.render("admin/products", { message: "", data: productData });
-      console.log(productData);
+    //   console.log(productData);
     }
   } catch (error) {
     res.send(error.message);
@@ -53,7 +53,7 @@ const products = async (req, res) => {
 };
 
 const add_product = async (req, res) => {
-  res.render("admin/add_products", { message: "" });
+  res.render("admin/add_products", { message: "",data:"" });
 };
 
 const add_product_post = async (req, res) => {
@@ -85,14 +85,11 @@ const add_product_post = async (req, res) => {
 const edit_product = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("B----------------------");
-    console.log(id);
-    console.log("E----------------------");
-
-    // const updateResponse = await productModel.updateOne(
-    //   { _id: id },
-    // );
-    res.render("admin/add_products", { message: "hai" });
+    const data = await productModel.findOne(
+      { _id: id },
+    );
+    // console.log(data)
+    res.render("admin/add_products", { data:data, message: "hai" });
     // res.send('Hai');
   } catch (err) {
     console.trace(err);
@@ -101,7 +98,15 @@ const edit_product = async (req, res) => {
 };
 
 const edit_product_post = async (req, res) => {
-  res.render("admin/products", { message: "hai" });
+    try{
+        // console.log(req.body.product_name + "haooo",req.params.id)
+        await productModel.updateOne({_id:req.params.id},{$set:{product_name:req.body.product_name,
+            description:req.body.description,category:req.body.category,stock:req.body.stock,price:req.body.price}});
+          res.redirect("/products");
+    }catch(err) {
+        console.log(err)
+    }
+    
 };
 
 const setProductIsBlocked = async (req, res, isBlocked) => {

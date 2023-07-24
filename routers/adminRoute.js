@@ -24,7 +24,7 @@ router.post('/products/add-new',multer,adminController.add_product_post)
 
 router.get('/products/edit/:id', adminController.edit_product)
 
-// router.post('/products/edit/:id', adminController.edit_product_post)
+router.post('/products/edit/:id', adminController.edit_product_post)
 
 // router.post('/products/visbility',adminController.products_visibility)
 

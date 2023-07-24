@@ -23,7 +23,7 @@ const mongoose = require('./helpers/mongoConnect')
 
 //read input
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 
 //template engine as ejs (npm - ejs)
