@@ -32,11 +32,11 @@ app.set('view engine', 'ejs')
 
 
 //used vhost to create subdomains
-// app.use(vhost(process.env.DOMAIN_NAME, userRouter));
-// app.use(vhost(`admin.${process.env.DOMAIN_NAME}`, adminRouter));
+app.use(vhost(process.env.DOMAIN_NAME, userRouter));
+app.use(vhost(`admin.${process.env.DOMAIN_NAME}`, adminRouter));
 
-app.use('/user', userRouter)
-app.use('/admin', adminRouter)
+// app.use('/user', userRouter)
+// app.use('/admin', adminRouter)
 
 
 // Start the server

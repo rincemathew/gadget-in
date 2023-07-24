@@ -78,26 +78,30 @@ const add_product_post = async (req, res) => {
   // res.render('admin/products',{message: "product created",})
 };
 
-const products_visibility = async (req, res) => {
-  res.render("admin/products", { message: "hai" });
-};
+// const products_visibility = async (req, res) => {
+//   res.render("admin/products", { message: "hai" });
+// };
 
-//CATEGORIES
-const categories = async (req, res) => {
+const edit_product = async (req, res) => {
   try {
-    const categoryData = await categoryModel.find({});
-    console.log(categoryData);
-    if (categoryData) {
-      res.render("admin/categories", { message: "", data: categoryData });
-    }
-  } catch (error) {
-    res.send(error.message);
+    const { id } = req.params;
+    console.log("B----------------------");
+    console.log(id);
+    console.log("E----------------------");
+
+    // const updateResponse = await productModel.updateOne(
+    //   { _id: id },
+    // );
+    res.render("admin/add_products", { message: "hai" });
+    // res.send('Hai');
+  } catch (err) {
+    console.trace(err);
+    res.send({ isOk: false, message: "Some error occured" });
   }
 };
 
-//USER PROFILE
-const user_profile = async (req, res) => {
-  res.render("admin/user_profile", { message: "" });
+const edit_product_post = async (req, res) => {
+  res.render("admin/products", { message: "hai" });
 };
 
 const setProductIsBlocked = async (req, res, isBlocked) => {
@@ -127,16 +131,35 @@ const block_product = async (req, res) => {
   setProductIsBlocked(req, res, true);
 };
 
+//CATEGORIES
+const categories = async (req, res) => {
+  try {
+    const categoryData = await categoryModel.find({});
+    console.log(categoryData);
+    if (categoryData) {
+      res.render("admin/categories", { message: "", data: categoryData });
+    }
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
+//USER PROFILE
+const user_profile = async (req, res) => {
+  res.render("admin/user_profile", { message: "" });
+};
+
 module.exports = {
-  unblock_product,
-  block_product,
   admin_login,
   login_admin,
   dashboard,
   products,
   add_product,
   add_product_post,
-  products_visibility,
+  edit_product,
+  edit_product_post,
+  unblock_product,
+  block_product,
   categories,
   user_profile,
 };

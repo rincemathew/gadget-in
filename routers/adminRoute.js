@@ -22,11 +22,16 @@ router.get('/products/add-new',adminController.add_product)
 
 router.post('/products/add-new',multer,adminController.add_product_post)
 
-router.post('/products/visbility',adminController.products_visibility)
+router.get('/products/edit/:id', adminController.edit_product)
+
+// router.post('/products/edit/:id', adminController.edit_product_post)
+
+// router.post('/products/visbility',adminController.products_visibility)
 
 router.post('/products/:id/unblock', adminController.unblock_product)
 
 router.post('/products/:id/block', adminController.block_product)
+
 
 // router.post('/products/block',adminController.block_products)
 
