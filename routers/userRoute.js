@@ -9,4 +9,10 @@ var userController = require('../controllers/userController')
 ////VIEWS
 router.get('/',userController.home_page)
 
+router.get('/smartphones',userController.smartphones)
+
+router.get('/wearables',userController.wearables)
+
+router.get('/earwear',userController.earwears)
+
 module.exports = router;

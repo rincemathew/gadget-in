@@ -2,17 +2,17 @@ const mongoose = require('mongoose')
 
 
 const UserSchema =new mongoose.Schema({
-    Firstname: {
+    first_name: {
         type: String,
         required: true,
         
     },
-    Lastname: {
+    last_name: {
         type: String,
         required: true,
         
     },
-    email: {
+    email_id: {
         type:String,
         required:true
     },
@@ -23,61 +23,18 @@ const UserSchema =new mongoose.Schema({
     mobile:{
         type:Number
     },
-    Bdate:{
-        type:String
+    birth_date:{
+        type:Date
     },
-    address:[
-     {
-        type:{
-            type:String,
-        },
-        houseName:{
-            type:String,
-        },
-        village:{
-            type:String,
-        },
-        landmark:{
-            type:String
-        },
-        pincode:{
-            type:Number,
-        },
-        city:{
-            type:String,
-        },
-        district:{
-            type:String,
-        },
-        state:{
-            type:String,
-        },
-        country:{
-            type:String
-        }
-      }
-    ],
     image:{
         type:String,
         required: false,
         
     },
-    isAdmin: {
-        type: Number,
-        required: true
+    is_blocked: {
+        type:Boolean,
+        default:true
     },
-    isVerified: {
-        type:Number,
-        default:0
-    },
-    otp:{
-        type:Number
-        
-    },
-    block:{
-        type:Number,
-        default:0
-    }
 
 })
 

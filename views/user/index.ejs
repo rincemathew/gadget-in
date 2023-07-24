@@ -7,13 +7,41 @@
         <div class="row">
             <% for(i=0;i<smartphones.length;i++) { %>
                 <div class="card" style="width: 18rem;">
+                    <a href="">
                     <div class="card-body">
                       <h5 class="card-title"><%= smartphones[i].product_name%></h5>
-                      <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="card-link">Card link</a>
-                      <a href="#" class="card-link">Another link</a>
+                      <img style="max-height: 100px;" class="img-fluid" src="/uploads/<%= smartphones[i].product_image[0] %>" alt="">
+                      <p class="card-text"><%= smartphones[i].price%></p>
                     </div>
+                </a>
+                  </div>
+            <% } %>
+        </div>
+        <h2>Earwear</h2>
+        <div class="row">
+            <% for(i=0;i<earwears.length;i++) { %>
+                <div class="card" style="width: 18rem;">
+                    <a href="">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= earwears[i].product_name%></h5>
+                      <img style="max-height: 100px;" class="img-fluid" src="/uploads/<%= earwears[i].product_image[0] %>" alt="">
+                      <p class="card-text"><%= earwears[i].price%></p>
+                    </div>
+                </a>
+                  </div>
+            <% } %>
+        </div>
+        <h2>Wearables</h2>
+        <div class="row">
+            <% for(i=0;i<wearables.length;i++) { %>
+                <div class="card" style="width: 18rem;">
+                    <a href="">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= wearables[i].product_name%></h5>
+                      <img style="max-height: 100px;" class="img-fluid" src="/uploads/<%= wearables[i].product_image[0] %>" alt="">
+                      <p class="card-text"><%=wearables[i].price%></p>
+                    </div>
+                </a>
                   </div>
             <% } %>
         </div>

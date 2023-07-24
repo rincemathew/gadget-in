@@ -2,7 +2,22 @@
     <%-include('header')-%>
     <div class="container">
         
-        <h1>login</h1>
+        <div class="pt-3">
+            <h2><%=name%></h2>
+            <div class="row">
+                <% for(i=0;i<data.length;i++) { %>
+                    <div class="card" style="width: 18rem;">
+                        <a href="">
+                        <div class="card-body">
+                          <h5 class="card-title"><%= data[i].product_name%></h5>
+                          <img style="max-height: 100px;" class="img-fluid" src="/uploads/<%= data[i].product_image[0] %>" alt="">
+                          <p class="card-text"><%=data[i].price%></p>
+                        </div>
+                    </a>
+                      </div>
+                <% } %>
+            </div>
+        </div>
         
     </div>
     <%-include('footer')-%>
