@@ -40,6 +40,12 @@ router.post('/products/:id/block', adminController.block_product)
 //CATEGORIES
 router.get('/categories',adminController.categories)
 
+router.get('/categories/add-new',adminController.add_categories)
+
+router.post('/categories/add-new',adminController.add_categories_post)
+
+router.post('/categories/toggle/:id/',adminController.categories_block_unblock)
+
 
 //USER PROFILE
 router.get('/user-profile',adminController.user_profile)

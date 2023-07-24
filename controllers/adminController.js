@@ -140,12 +140,37 @@ const block_product = async (req, res) => {
 const categories = async (req, res) => {
   try {
     const categoryData = await categoryModel.find({});
-    console.log(categoryData);
+    // console.log(categoryData);
     if (categoryData) {
       res.render("admin/categories", { message: "", data: categoryData });
     }
   } catch (error) {
     res.send(error.message);
+  }
+};
+
+const add_categories = async (req, res) => {
+  res.render("admin/add_categories", { message: "",data:"" });
+};
+
+const add_categories_post = async (req, res) => {
+  console.log(req.body.categories_name)
+  await categoryModel.insertMany({category_name:req.body.categories_name});
+  res.redirect("/categories");
+};
+
+const categories_block_unblock = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const categoryData = await categoryModel.findOne({_id:id});
+    value = categoryData.is_blocked==true?false:true
+    console.log(value)
+    await categoryModel.updateOne({ _id: id },{ is_blocked: value });
+    await productModel.updateMany({ category: categoryData.category_name },{ is_blocked: !value });
+    res.send({ isOk: true, message: "" });
+  } catch (err) {
+    console.trace(err);
+    res.send({ isOk: false, message: "Some error occured" });
   }
 };
 
@@ -166,5 +191,8 @@ module.exports = {
   unblock_product,
   block_product,
   categories,
+  add_categories,
+  add_categories_post,
+  categories_block_unblock,
   user_profile,
 };

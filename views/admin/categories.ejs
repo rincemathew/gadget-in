@@ -5,7 +5,7 @@
         <%-include('navbar')-%>
       </div>
       <div class="col-10">
-        <a href="/category/add-new"><button type="button" class="btn btn-primary m-3">add new category</button></a>
+        <a href="/categories/add-new"><button type="button" class="btn btn-primary m-3">add new category</button></a>
         <h1>category</h1>
         <% for(i=0;i<data.length;i++) { %>
           <div class="card mt-3">
@@ -17,12 +17,12 @@
               <div class="col-2">
                 <form>
                   <div class="form-check form-switch">
-                    <% if(data.is_blocked) { %>
-                      <input name="isBlocked" class="form-check-input" type="checkbox"
-                        id="flexSwitchCheckChecked">
+                    <% if(data[i].is_blocked) { %>
+                      <input onchange="changeCategory(this,'<%= data[i]._id%>')" id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox"
+                        id="flexSwitchCheckChecked" checked>
                       <%}else {%>
-                        <input name="isBlocked" class="form-check-input" type="checkbox"
-                          id="flexSwitchCheckChecked" checked>
+                        <input onchange="changeCategory(this,'<%= data[i]._id%>')" id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox"
+                          id="flexSwitchCheckChecked">
                         <%}%>
                           <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                   </div>
@@ -37,3 +37,25 @@
     <%-include('footer')-%>
 
 </body>
+
+<script>
+  const toggleIsBlocked = async (isBlocked,id) => {
+            // const response = await fetch(`/categories/toggle/${id}/`, { method: 'POST' });
+            console.log(`/categories/toggle/${id}/`)
+            const response = await fetch(`/categories/toggle/${id}/`, { method: 'POST' });
+            const resBody = await response.json();
+
+            if (!resBody.isOk) {
+                console.log('Some problem occurred. Please reload the page');
+                alert('Some problem occurred. Please reload the page');
+                return;
+            }
+            // Return if everything is ok
+            return;
+        }
+  function changeCategory(cb,id){
+    console.log(cb.checked,id)
+    toggleIsBlocked(cb.checked,id)
+  }
+    
+</script>
