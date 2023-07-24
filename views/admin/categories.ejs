@@ -1,35 +1,39 @@
 <body class="container-fluid">
-    <%-include('header')-%>
+  <%-include('header')-%>
     <div class="row">
-        <div class="col-2">
-          <%-include('navbar')-%>
-        </div>
-        <div class="col-10">
-          <a href="/category/add-new"><button type="button" class="btn btn-primary m-3">add new category</button></a>
-                <h1>category</h1>
-                <% for(i=0;i<data.length;i++) { %>
-                    <div class="card mt-3">
-                        <h5 class="card-header">name</h5>
-                        <div class="card-body row">
-                            <div class="col-10">
-                                <h5 class="card-title">Category</h5>
-                            </div>
-                            <div class="col-2">
-                                <form>
-                                    <div class="form-check form-switch">
-                                        <input onchange="/products/visbility" name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
-                                      </div>
-                                    </form>
-                            </div>
-                        </div>
-                
-                
+      <div class="col-2">
+        <%-include('navbar')-%>
+      </div>
+      <div class="col-10">
+        <a href="/category/add-new"><button type="button" class="btn btn-primary m-3">add new category</button></a>
+        <h1>category</h1>
+        <% for(i=0;i<data.length;i++) { %>
+          <div class="card mt-3">
+            <h5 class="card-header">name</h5>
+            <div class="card-body row">
+              <div class="col-10">
+                <h5 class="card-title">Category</h5>
+              </div>
+              <div class="col-2">
+                <form>
+                  <div class="form-check form-switch">
+                    <% if(data.is_blocked) { %>
+                      <input onchange="/products/visbility" name="isBlocked" class="form-check-input" type="checkbox"
+                        id="flexSwitchCheckChecked">
+                      <%else {%>
+                        <input onchange="/products/visbility" name="isBlocked" class="form-check-input" type="checkbox"
+                          id="flexSwitchCheckChecked" checked>
+                        <%}%>
+                          <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                  </div>
+                </form>
+              </div>
             </div>
-            <% } %>
-        </div>
-         
+          </div>
+          <% } %>
+      </div>
+
     </div>
     <%-include('footer')-%>
-    
+
 </body>
