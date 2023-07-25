@@ -25,17 +25,20 @@ const register = async (req, res) => {
 
   const login = async (req, res) => {
     try {
-        const admindata = await adminSchema.findOne({
-          admin_name: req.body.username,
+        const userData = await userSchema.findOne({
+          email_id: req.body.email,
         });    
-        if (admindata) {
-          if (admindata.admin_password === req.body.password) {
-            res.render("/");
+        if (userData) {
+          // console.log(userData,req.body.password)
+          if (userData.password === req.body.password && userData.is_blocked === true) {
+            res.render("user/index", { message: "" });
+          } else if (userData.password === req.body.password && userData.is_blocked === false){
+            res.render("user/login_register", { message: "user is blocked" });
           } else {
-            res.render("admin/index", { message: "invalid password " });
+            res.render("user/login_register", { message: "invalid password " });
           }
         } else {
-          res.render("admin/index", { message: "Admin does not exist" });
+          res.render("user/login_register", { message: "Admin does not exist" });
         }
       } catch (error) {
         res.send(error.message);
