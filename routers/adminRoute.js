@@ -50,6 +50,8 @@ router.post('/categories/toggle/:id/',adminController.categories_block_unblock)
 //USER PROFILE
 router.get('/user-profile',adminController.user_profile)
 
+router.post('/user-profile/toggle/:id',adminController.user_block_unblock)
+
 
 
 module.exports = router;

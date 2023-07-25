@@ -2,6 +2,7 @@ const multer = require("multer");
 const adminSchema = require("../models/adminSchema");
 const productModel = require("../models/productModel");
 const categoryModel = require("../models/categoryModel");
+const userModel = require("../models/userModel");
 
 ////LOGIN
 const admin_login = async (req, res) => {
@@ -176,7 +177,28 @@ const categories_block_unblock = async (req, res) => {
 
 //USER PROFILE
 const user_profile = async (req, res) => {
-  res.render("admin/user_profile", { message: "" });
+  try {
+    const userDate = await userModel.find({});
+    if (userDate) {
+      res.render("admin/user_profile", { message: "", data: userDate });
+    }
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
+
+const user_block_unblock = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userData = await userModel.findOne({_id:id});
+    value = userData.is_blocked==true?false:true
+    await userModel.updateOne({ _id: id },{ is_blocked: value });
+    res.send({ isOk: true, message: "" });
+  } catch (err) {
+    console.trace(err);
+    res.send({ isOk: false, message: "Some error occured" });
+  }
 };
 
 module.exports = {
@@ -195,4 +217,5 @@ module.exports = {
   add_categories_post,
   categories_block_unblock,
   user_profile,
+  user_block_unblock
 };

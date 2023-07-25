@@ -6,9 +6,57 @@
         </div>
         <div class="col-10">
           <h1>user profile</h1>
+          <% for(i=0;i<data.length;i++) { %>
+            <div class="card mt-3">
+           
+              <div class="card-body row">
+                <div class="col-4">
+                  <h5 class="card-title"><%= data[i].first_name%></h5>
+                </div>
+                <div class="col-6">
+                  <h5 class="card-title"><%= data[i].email_id%></h5>
+                </div>
+                <div class="col-2">
+                  <form>
+                    <div class="form-check form-switch">
+                      <% if(data[i].is_blocked) { %>
+                        <input onchange="changeUser(this,'<%= data[i]._id%>')" id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox"
+                          id="flexSwitchCheckChecked" checked>
+                        <%}else {%>
+                          <input onchange="changeUser(this,'<%= data[i]._id%>')" id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox"
+                            id="flexSwitchCheckChecked">
+                          <%}%>
+                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <% } %>
         </div>
          
     </div>
     <%-include('footer')-%>
     
 </body>
+
+<script>
+  const toggleIsBlocked = async (isBlocked,id) => {
+            // console.log(`/user-profile/toggle/:id`)
+            const response = await fetch(`/user-profile/toggle/${id}/`, { method: 'POST' });
+            const resBody = await response.json();
+
+            if (!resBody.isOk) {
+                console.log('Some problem occurred. Please reload the page');
+                alert('Some problem occurred. Please reload the page');
+                return;
+            }
+            // Return if everything is ok
+            return;
+        }
+  function changeUser(cb,id){
+    // console.log(cb.checked,id)
+    toggleIsBlocked(cb.checked,id)
+  }
+    
+</script>
