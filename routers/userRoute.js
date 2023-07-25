@@ -5,6 +5,12 @@ var userController = require('../controllers/userController')
 
 //// LOGIN AND REGISTER
 
+router.get('/login-register',userController.login_register)
+
+router.post('/register',userController.register)
+
+router.post('/login',userController.login)
+
 
 ////VIEWS
 router.get('/',userController.home_page)
