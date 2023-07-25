@@ -17,6 +17,9 @@ app.use(express.static('public'))
 const userRouter = require('./routers/userRoute')
 const adminRouter = require('./routers/adminRoute')
 
+//session (npm-express-session)
+var session = require('express-session')
+
 //mongosh export
 const mongoose = require('./helpers/mongoConnect')
 
@@ -29,7 +32,11 @@ app.use(express.urlencoded({ extended: true }));
 //template engine as ejs (npm - ejs)
 app.set('view engine', 'ejs')
 
-
+app.use(session({
+    secret:'secret',
+    resave:true,
+    saveUninitialized:true
+}))
 
 //used vhost to create subdomains
 app.use(vhost(process.env.DOMAIN_NAME, userRouter));
