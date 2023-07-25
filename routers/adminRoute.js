@@ -11,26 +11,26 @@ router.post('/dashboard',adminController.login_admin)
 
 
 //DASHBOARD
-router.get('/dashboard',adminController.dashboard)
+router.get('/dashboard',adminController.session_check,adminController.dashboard)
 
 
 
 //PRODUCTS
-router.get('/products',adminController.products)
+router.get('/products',adminController.session_check,adminController.products)
 
-router.get('/products/add-new',adminController.add_product)
+router.get('/products/add-new',adminController.session_check,adminController.add_product)
 
-router.post('/products/add-new',multer,adminController.add_product_post)
+router.post('/products/add-new',adminController.session_check,multer,adminController.add_product_post)
 
-router.get('/products/edit/:id', adminController.edit_product)
+router.get('/products/edit/:id',adminController.session_check, adminController.edit_product)
 
-router.post('/products/edit/:id', adminController.edit_product_post)
+router.post('/products/edit/:id',adminController.session_check, adminController.edit_product_post)
 
 // router.post('/products/visbility',adminController.products_visibility)
 
-router.post('/products/:id/unblock', adminController.unblock_product)
+router.post('/products/:id/unblock',adminController.session_check, adminController.unblock_product)
 
-router.post('/products/:id/block', adminController.block_product)
+router.post('/products/:id/block',adminController.session_check, adminController.block_product)
 
 
 // router.post('/products/block',adminController.block_products)
@@ -38,19 +38,19 @@ router.post('/products/:id/block', adminController.block_product)
 
 
 //CATEGORIES
-router.get('/categories',adminController.categories)
+router.get('/categories',adminController.session_check,adminController.categories)
 
-router.get('/categories/add-new',adminController.add_categories)
+router.get('/categories/add-new',adminController.session_check,adminController.add_categories)
 
-router.post('/categories/add-new',adminController.add_categories_post)
+router.post('/categories/add-new',adminController.session_check,adminController.add_categories_post)
 
-router.post('/categories/toggle/:id/',adminController.categories_block_unblock)
+router.post('/categories/toggle/:id/',adminController.session_check,adminController.categories_block_unblock)
 
 
 //USER PROFILE
-router.get('/user-profile',adminController.user_profile)
+router.get('/user-profile',adminController.session_check,adminController.user_profile)
 
-router.post('/user-profile/toggle/:id',adminController.user_block_unblock)
+router.post('/user-profile/toggle/:id',adminController.session_check,adminController.user_block_unblock)
 
 
 

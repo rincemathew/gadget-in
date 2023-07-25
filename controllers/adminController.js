@@ -5,8 +5,22 @@ const categoryModel = require("../models/categoryModel");
 const userModel = require("../models/userModel");
 
 ////LOGIN
+
+//admin session check
+const session_check = async(req,res, next) => {
+  if(req.session.username) {
+    next()
+  } else {
+    res.redirect("/");
+  }
+}
+
 const admin_login = async (req, res) => {
-  res.render("admin/index", { message: "" });
+  if(req.session.username) {
+    res.redirect("/dashboard");
+  } else {
+    res.render("admin/index", { message: "" });
+  }
 };
 
 const login_admin = async (req, res) => {
@@ -19,7 +33,7 @@ const login_admin = async (req, res) => {
     if (admindata) {
       // console.log(userdata.username);
       if (admindata.admin_password === req.body.password) {
-        // req.session.admin_id=admindata.username
+        req.session.username=admindata.admin_name
         res.render("admin/dashboard");
       } else {
         res.render("admin/index", { message: "invalid password" });
@@ -202,6 +216,7 @@ const user_block_unblock = async (req, res) => {
 };
 
 module.exports = {
+  session_check,
   admin_login,
   login_admin,
   dashboard,
