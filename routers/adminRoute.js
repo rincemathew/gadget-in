@@ -7,12 +7,13 @@ const multer = require('../helpers/multer')
 //LOGIN
 router.get('/',adminController.admin_login)
 
-router.post('/dashboard',adminController.login_admin)
+router.get('/logout',adminController.admin_logout)
 
 
 //DASHBOARD
 router.get('/dashboard',adminController.session_check,adminController.dashboard)
 
+router.post('/dashboard',adminController.login_admin)
 
 
 //PRODUCTS

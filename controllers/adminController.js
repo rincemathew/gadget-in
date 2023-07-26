@@ -23,6 +23,11 @@ const admin_login = async (req, res) => {
   }
 };
 
+const admin_logout = async (req, res) => {
+  req.session.destroy()
+  res.redirect("/")
+};
+
 const login_admin = async (req, res) => {
   try {
     const admindata = await adminSchema.findOne({
@@ -218,6 +223,7 @@ const user_block_unblock = async (req, res) => {
 module.exports = {
   session_check,
   admin_login,
+  admin_logout,
   login_admin,
   dashboard,
   products,
