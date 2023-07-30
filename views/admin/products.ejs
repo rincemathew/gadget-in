@@ -1,26 +1,75 @@
-<body class="container-fluid">
-    <%-include('header')-%>
-    <div class="row">
-        <div class="col-2">
-            <%-include('navbar')-%>
-        </div>
-        <div class="col-10">
-                <a href="/products/add-new"><button type="button" class="btn btn-primary m-3">add new product</button></a>
-                <h1>products</h1>
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-grid-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/icons/favicon-admin.ico?v="+ Math.trunc(Math.random()*999)>
+    <!-- Template CSS -->
+    <link href="admin/css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <%-include('navbar')-%>
+          <main class="main-wrap">
+        <%-include('header')-%>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Products grid</h2>
+                    <p>Lorem ipsum dolor sit amet.</p>
+                </div>
+                <div>
+                    <a href="#" class="btn btn-light rounded font-md">Export</a>
+                    <a href="#" class="btn btn-light rounded  font-md">Import</a>
+                    <a href="#" class="btn btn-primary btn-sm rounded">Create new</a>
+                </div>
+            </div>
+            <header class="card card-body mb-4">
+                <div class="row gx-3">
+                    <div class="col-lg-4 col-md-6 me-auto">
+                        <input type="text" placeholder="Search..." class="form-control">
+                    </div>
+                    <div class="col-lg-2 col-6 col-md-3">
+                        <select class="form-select">
+                            <option>All category</option>
+                            <option>Electronics</option>
+                            <option>Clothings</option>
+                            <option>Something else</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-6 col-md-3">
+                        <select class="form-select">
+                            <option>Latest added</option>
+                            <option>Cheap first</option>
+                            <option>Most viewed</option>
+                        </select>
+                    </div>
+                </div>
+            </header> <!-- card-header end// -->
+            <div class="row">
                 <% for(i=0;i<data.length;i++) { %>
-                    <div class="card mt-3">
-                        <h5 class="card-header"><%= data[i].product_name%></h5>
-                        <div class="card-body row">
-                            <div class="col-2">
-                                <img style="max-height: 100px;" class="img-fluid" src="/uploads/<%= data[i].product_image[0] %>" alt="">
-                            </div>
-                            <div class="col-8">
-                                <h5 class="card-title">Category - <%= data[i].category%></h5>
-                                <p class="card-text">Stock - <%= data[i].stock%></p>
-                            </div>
-                            <div class="col-2">
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card card-product-grid">
+                        <a style="max-height: 200px;" href="#" class="img-wrap"> <img src="/uploads/<%= data[i].product_image[0] %>" alt="Product"> </a>
+                        <div class="info-wrap">
+                            <div class="dropdown float-end">
+                                <a href="/products/edit/<%= data[i]._id%>" class="btn btn-sm btn-brand rounded">
+                                    <i class="material-icons md-edit mr-5"></i>Edit
+                                </a>
                                 <form>
-                                    <div class="form-check form-switch">
+                                    <div class="d-flex align-items-center justify-content-center form-check form-switch">
                                         <% if (data[i].is_blocked) { %>
                                             <input data-product-id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox" id="flexSwitchCheckChecked">
                                         <% } else { %>
@@ -31,63 +80,85 @@
                                         <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                                       </div>
                                 </form>
-                                <a href="/products/edit/<%= data[i]._id%>"><button type="button" class="btn btn-primary m-3">edit</button></a>
-                                
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Edit info</a>
+                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                </div>
                             </div>
+                            <a href="#" class="title"><%= data[i].product_name%></a>
+                            <div class="price mt-1">₹ <%= data[i].price%></div> <!-- price-wrap.// -->
                         </div>
+                    </div> <!-- card-product  end// -->
+                </div> <!-- col.// -->
+                <% } %>
+
+            </div> <!-- row.// -->
+            <div class="pagination-area mt-15 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
             </div>
-            <% } %>
-        </div>
-    </div>
-    <%-include('footer')-%>
-
-    <script>
-        const toggleIsBlocked = async (id, isBlocked) => {
-            const urlBlockOrUnblockPart = isBlocked ? 'block' : 'unblock';
-
-            const response = await fetch(`/products/${id}/${urlBlockOrUnblockPart}`, { method: 'POST' });
-            const resBody = await response.json();
-
-            if (!resBody.isOk) {
-                alertMsg('Some problem occurred. Please reload the page')
-                // console.log('Some problem occurred. Please reload the page');
-                // alert('Some problem occurred. Please reload the page');
-                return;
-            }
-            // Return if everything is ok
-            // alert(resBody.message);
-            alertMsg(resBody.message)
-            return;
-        }
-        document.addEventListener('DOMContentLoaded', () => {
-            const toggleIsBlockedEls = Array.from(document.querySelectorAll('.toggle-is-blocked'));
-            toggleIsBlockedEls.forEach((el) => {
-                el.addEventListener('change', (event) => {
-                    const id = event.currentTarget.dataset.productId;
-                    const isBlocked = !event.currentTarget.checked;
-                    toggleIsBlocked(id, isBlocked);
-                });
-            });
-        });
-    </script>
-    
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="admin/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="admin/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="admin/js/vendors/select2.min.js"></script>
+    <script src="admin/js/vendors/perfect-scrollbar.js"></script>
+    <script src="admin/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="admin/js/main.js" type="text/javascript"></script>
 </body>
 
-
-<!-- <% if(locals.message) { %>
 <script>
-    Swal.fire({
-//   position: 'top-end',
-  icon: 'success',
-  title: 'product created',
-  showConfirmButton: false,
-  timer: 1500
-})
+    const toggleIsBlocked = async (id, isBlocked) => {
+        const urlBlockOrUnblockPart = isBlocked ? 'block' : 'unblock';
 
+        const response = await fetch(`/products/${id}/${urlBlockOrUnblockPart}`, { method: 'POST' });
+        const resBody = await response.json();
 
-</script>
-<% } %> -->
-<script>
+        if (!resBody.isOk) {
+            alertMsg('Some problem occurred. Please reload the page')
+            // console.log('Some problem occurred. Please reload the page');
+            // alert('Some problem occurred. Please reload the page');
+            return;
+        }
+        // Return if everything is ok
+        // alert(resBody.message);
+        alertMsg(resBody.message)
+        return;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleIsBlockedEls = Array.from(document.querySelectorAll('.toggle-is-blocked'));
+        toggleIsBlockedEls.forEach((el) => {
+            el.addEventListener('change', (event) => {
+                const id = event.currentTarget.dataset.productId;
+                const isBlocked = !event.currentTarget.checked;
+                toggleIsBlocked(id, isBlocked);
+            });
+        });
+    });
+
     function alertMsg(msg) {
         Swal.fire({
             icon: 'success',
@@ -96,4 +167,7 @@
             timer: 1500
         })
     }
+
 </script>
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-grid-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+</html>
