@@ -54,5 +54,7 @@ router.get('/user-profile',adminController.session_check,adminController.user_pr
 router.post('/user-profile/toggle/:id',adminController.session_check,adminController.user_block_unblock)
 
 
+router.get('*',adminController.session_check,adminController.page404)
+
 
 module.exports = router;

@@ -220,6 +220,13 @@ const user_block_unblock = async (req, res) => {
   }
 };
 
+
+//404
+const page404 = async (req, res) => {
+  res.render("admin/404", { message: ""});
+};
+
+
 module.exports = {
   session_check,
   admin_login,
@@ -238,5 +245,6 @@ module.exports = {
   add_categories_post,
   categories_block_unblock,
   user_profile,
-  user_block_unblock
+  user_block_unblock,
+  page404
 };
