@@ -141,7 +141,7 @@ const setProductIsBlocked = async (req, res, isBlocked) => {
       res.send({ isOk: false, message: "Some error occured" });
       return;
     }
-    res.send({ isOk: true, message: "" });
+    res.send({ isOk: true, message: `Product ${isBlocked?"Blocked":"UnBlocked"} successfully` });
   } catch (err) {
     console.trace(err);
     res.send({ isOk: false, message: "Some error occured" });
@@ -187,7 +187,7 @@ const categories_block_unblock = async (req, res) => {
     console.log(value)
     await categoryModel.updateOne({ _id: id },{ is_blocked: value });
     await productModel.updateMany({ category: categoryData.category_name },{ is_blocked: !value });
-    res.send({ isOk: true, message: "" });
+    res.send({ isOk: true, message: "Updated sucessfully" });
   } catch (err) {
     console.trace(err);
     res.send({ isOk: false, message: "Some error occured" });

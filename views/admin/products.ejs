@@ -49,11 +49,14 @@
             const resBody = await response.json();
 
             if (!resBody.isOk) {
-                console.log('Some problem occurred. Please reload the page');
-                alert('Some problem occurred. Please reload the page');
+                alertMsg('Some problem occurred. Please reload the page')
+                // console.log('Some problem occurred. Please reload the page');
+                // alert('Some problem occurred. Please reload the page');
                 return;
             }
             // Return if everything is ok
+            // alert(resBody.message);
+            alertMsg(resBody.message)
             return;
         }
         document.addEventListener('DOMContentLoaded', () => {
@@ -71,7 +74,7 @@
 </body>
 
 
-<% if(locals.message) { %>
+<!-- <% if(locals.message) { %>
 <script>
     Swal.fire({
 //   position: 'top-end',
@@ -83,4 +86,14 @@
 
 
 </script>
-<% } %>
+<% } %> -->
+<script>
+    function alertMsg(msg) {
+        Swal.fire({
+            icon: 'success',
+            title: msg,
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
+</script>
