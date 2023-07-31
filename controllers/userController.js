@@ -110,5 +110,16 @@ const earwears = async(req,res) => {
 }
 
 
-module.exports = {login_register,register,login,home_page,sessionValidation,smartphones,wearables,earwears
+const products = async(req,res) => {
+  try {
+    product = productModel.find({_id:req.query.id});
+  } catch(error) {
+      res.send(error.message)
+  }
+  console.log(product)
+  res.render('product_details',{data: product})
+}
+
+module.exports = {login_register,register,login,home_page,sessionValidation,smartphones,wearables,earwears,
+  products
     }

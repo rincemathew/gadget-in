@@ -30,10 +30,10 @@
                     <h4 class="card-title mb-4">Sign in</h4>
                     <form method="post" action="/dashboard">
                         <div class="mb-3">
-                            <input name="username" class="form-control" placeholder="Username or email" type="text">
+                            <input name="username" class="form-control" placeholder="Username or email" type="text" minlength="5" required>
                         </div> <!-- form-group// -->
                         <div class="mb-3">
-                            <input name="password" class="form-control" placeholder="Password" type="password">
+                            <input name="password" class="form-control" placeholder="Password" type="password" minlength="5" required>
                         </div> <!-- form-group// -->
                         <div class="mb-4">
                             <button type="submit" class="btn btn-primary w-100"> Login </button>
