@@ -11,6 +11,7 @@ require('dotenv').config()
 const vhost = require('vhost')
 
 //public files set here
+// app.use('/static',express.static(path.join(__dirname,'public')))
 app.use(express.static('public'))
 
 //importing two router options user, admin
