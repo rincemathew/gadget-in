@@ -111,13 +111,15 @@ const earwears = async(req,res) => {
 
 
 const products = async(req,res) => {
+  // console.log(req.query.id)
   try {
-    product = productModel.find({_id:req.query.id});
+    product = await productSchema.findOne({_id:req.query.id});
+    related = await productSchema.find({}).limit(4)
   } catch(error) {
       res.send(error.message)
   }
-  console.log(product)
-  res.render('product_details',{data: product})
+  console.log(related)
+  res.render('user/product_details',{data: product,related:related})
 }
 
 module.exports = {login_register,register,login,home_page,sessionValidation,smartphones,wearables,earwears,

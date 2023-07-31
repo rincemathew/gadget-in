@@ -21,6 +21,6 @@ router.get('/wearables',userController.wearables)
 
 router.get('/earwear',userController.earwears)
 
-router.get('/products',userController.earwears)
+router.get('/products',userController.products)
 
 module.exports = router;
