@@ -7,11 +7,20 @@ const userModel = require("../models/userModel");
 //login and register
 
 const login_register = async (req, res) => {
+  if(req.session.user_id) {
+    res.redirect("/");
+  } else {
     res.render("user/login_register", { session:false,message: "",popUp:false });
+  }
   };
 
 const register = async (req, res) => {
     try {
+
+      checker = await userModel.findOne({email_id:req.body.email})
+      if(checker) {
+        res.render("user/login_register",{session:false, message: 'User With this email exist',popUp:false });
+      }
         this.dataR = {first_name:req.body.name,
             email_id:req.body.email,
             password:req.body.password

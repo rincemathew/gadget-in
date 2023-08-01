@@ -49,7 +49,7 @@
                             <form>
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Product Name</label>
-                                    <input <%if(data){%> value="<%= data.product_name %>" <%}%> name="product_name" type="text" placeholder="Type here" class="form-control" id="product_name">
+                                    <input required minlength="3" <%if(data){%> value="<%= data.product_name %>" <%}%> name="product_name" type="text" placeholder="Type here" class="form-control" id="product_name">
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Full description</label>
@@ -60,14 +60,14 @@
                                         <div class="mb-4">
                                             <label class="form-label">Price</label>
                                             <div class="row gx-2">
-                                                <input <%if(data){%> value="<%= data.price %>" <%}%> name="price" placeholder="₹" type="text" class="form-control">
+                                                <input type="number" min="1" max="900000" <%if(data){%> value="<%= data.price %>" <%}%> name="price" placeholder="₹" type="text" class="form-control" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Stock</label>
-                                            <input <%if(data){%> value="<%= data.stock %>" <%}%> name="stock" placeholder="" type="text" class="form-control">
+                                            <input type="number" min="1" max="900000" <%if(data){%> value="<%= data.stock %>" <%}%> name="stock" placeholder="" type="text" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
