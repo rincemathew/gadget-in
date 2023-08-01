@@ -10,6 +10,10 @@ require('dotenv').config()
 //importing vhost for subdomin configuration(npm-vhost)
 const vhost = require('vhost')
 
+
+//nodemailer
+const nodemailer = require("nodemailer");
+
 //public files set here
 // app.use('/static',express.static(path.join(__dirname,'public')))
 app.use(express.static('public'))

@@ -1,5 +1,6 @@
 const  productSchema  = require("../models/productModel")
 const  userSchema  = require("../models/userModel")
+const transporter = require("../helpers/nodeMailer")
 
 
 //login and register
@@ -13,9 +14,25 @@ const register = async (req, res) => {
         data = {first_name:req.body.name,
             email_id:req.body.email,
             password:req.body.password
-
         }
-        await userSchema.insertMany([data]);  
+        this.otpCode = Math.floor(100000 + Math.random() * 900000);
+        const mailOptions = {
+          from: "rincemathew.m@gmail.com",
+          to: req.body.email,
+          subject: "LogIn OTP",
+          text: `Your OTP code is ${this.otpCode}.`,
+        };
+      
+        transporter.sendMail(mailOptions, (error, _info) => {
+          if (error) {
+            console.error('Error sending email: ', error);
+            res.status(500).send({ message: 'Failed to send OTP' });
+          } else {
+            console.log('OTP sent: ', this.otpCode);
+            res.status(200).send({ message: 'OTP sent successfully' });
+          }
+        });
+        // await userSchema.insertMany([data]);  
         res.redirect("/login-register");
       } catch (error) {
         res.send(error.message);
@@ -118,7 +135,6 @@ const products = async(req,res) => {
   } catch(error) {
       res.send(error.message)
   }
-  console.log(related)
   res.render('user/product_details',{data: product,related:related})
 }
 
