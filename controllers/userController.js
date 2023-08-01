@@ -1,12 +1,13 @@
 const  productSchema  = require("../models/productModel")
 const  userSchema  = require("../models/userModel")
-const transporter = require("../helpers/nodeMailer")
+const transporter = require("../helpers/nodeMailer");
+const userModel = require("../models/userModel");
 
 
 //login and register
 
 const login_register = async (req, res) => {
-    res.render("user/login_register", { message: "",popUp:false });
+    res.render("user/login_register", { session:false,message: "",popUp:false });
   };
 
 const register = async (req, res) => {
@@ -27,11 +28,11 @@ const register = async (req, res) => {
           if (error) {
             console.error('Error sending email: ', error);
             // res.status(500).send({ message: 'Failed to send OTP' });
-            res.render("user/login_register",{ message: 'Failed to send OTP',popUp:false });
+            res.render("user/login_register",{session:false, message: 'Failed to send OTP',popUp:false });
           } else {
             console.log('OTP sent: ', this.otpCode);
             // res.status(200).send({ message: 'OTP sent successfully' });
-            res.render("user/login_register",{ message: 'OTP sent successfully',popUp:true });
+            res.render("user/login_register",{ session:false,message: 'OTP sent successfully',popUp:true });
           }
         });
         // await userSchema.insertMany([dataR]);  
@@ -56,11 +57,11 @@ const register = async (req, res) => {
         console.log(otp);
         console.log(this.otpCode);
         await userSchema.insertMany([this.dataR]); 
-        res.render("user/login_register",{ message: 'User Created successfully',popUp:false });
+        res.render("user/login_register",{session:false, message: 'User Created successfully',popUp:false });
         // res.status(200).send({ message: 'Login successful' });
         
       } else {
-        res.render("user/login_register",{ message: 'Invalid OTP',popUp:true });
+        res.render("user/login_register",{ session:false,message: 'Invalid OTP',popUp:true });
         // res.status(401).send({ message: 'Invalid OTP' });
       }
       } catch (error) {
@@ -69,16 +70,28 @@ const register = async (req, res) => {
   };
 
   const sessionValidation = async (req, res, next) => {
-    // console.log(req.params)
     if(req.session.user_id) {
-      res.locals.sessionValue = req.session.first_name
+      res.locals.sessionValue = true
+      valid = await userModel.findOne({_id:req.session.user_id})
+      if(!valid.is_blocked) {
+      res.locals.sessionValue = false
+      next()
+      }
       next()
     } else{
-      res.locals.sessionValue = ''
+      res.locals.sessionValue = false
       next()
-    }
-    // res.render("user/login_register", { message: "" });
-    
+    }    
+  };
+
+  const sessionValidUser = async (req, res, next) => {
+    if(req.session.user_id) {
+      
+      next()
+      }
+    else{
+      next()
+    }    
   };
 
 
@@ -93,12 +106,12 @@ const register = async (req, res) => {
             req.session.user_id=userData._id
             res.redirect("/");
           } else if (userData.password === req.body.password && userData.is_blocked === false){
-            res.render("user/login_register", { message: "user is blocked" });
+            res.render("user/login_register", { session:false,message: "user is blocked",popUp:false });
           } else {
-            res.render("user/login_register", { message: "invalid password " });
+            res.render("user/login_register", { session:false,message: "invalid password ",popUp:false });
           }
         } else {
-          res.render("user/login_register", { message: "User does not exist" });
+          res.render("user/login_register", { session:false,message: "User does not exist",popUp:false });
         }
       } catch (error) {
         res.send(error.message);
@@ -129,7 +142,7 @@ const smartphones = async(req,res) => {
     } catch(error) {
         res.send(error.message)
     }
-    res.render('user/category_view',{message: "", data:smartphone,name:'Smartphones'})
+    res.render('user/category_view',{session:res.locals.sessionValue,message: "", data:smartphone,name:'Smartphones'})
 }
 
 const wearables = async(req,res) => {
@@ -139,7 +152,7 @@ const wearables = async(req,res) => {
     } catch(error) {
         res.send(error.message)
     }
-    res.render('user/category_view',{name: 'Wearables', data:wearable})
+    res.render('user/category_view',{session:res.locals.sessionValue,name: 'Wearables', data:wearable})
 }
 
 const earwears = async(req,res) => {
@@ -149,7 +162,7 @@ const earwears = async(req,res) => {
     } catch(error) {
         res.send(error.message)
     }
-    res.render('user/category_view',{data:earwear,name:'EarWear'})
+    res.render('user/category_view',{session:res.locals.sessionValue,data:earwear,name:'EarWear'})
 }
 
 
@@ -161,9 +174,14 @@ const products = async(req,res) => {
   } catch(error) {
       res.send(error.message)
   }
-  res.render('user/product_details',{data: product,related:related})
+  res.render('user/product_details',{session:res.locals.sessionValue,data: product,related:related})
 }
 
-module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,smartphones,wearables,earwears,
-  products
+const user_logout = async (req, res) => {
+  req.session.destroy()
+  res.redirect("/login-register")
+};
+
+module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,smartphones,wearables,earwears,
+  products,user_logout
     }
