@@ -60,10 +60,15 @@ const dashboard = async (req, res) => {
 //PRODUCTS
 const products = async (req, res) => {
   try {
-    const productData = await productModel.find({}).lean().exec();
+    const itemsPerPage = 5;
+    const pages = parseInt(req.query.page) || 1;
+    const totalCount = await productModel.countDocuments();
+    const skipItems = (pages - 1) * itemsPerPage;
+    const totalPages = Math.ceil(totalCount / itemsPerPage);
+    const productData = await productModel.find({}).skip(skipItems).limit(itemsPerPage)
 
     if (productData) {
-      res.render("admin/products", { message: "", data: productData });
+      res.render("admin/products", { message: "", data: productData,totalPage:totalPages,currentPage:pages });
     //   console.log(productData);
     }
   } catch (error) {
