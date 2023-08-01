@@ -6,12 +6,12 @@ const transporter = require("../helpers/nodeMailer")
 //login and register
 
 const login_register = async (req, res) => {
-    res.render("user/login_register", { message: "" });
+    res.render("user/login_register", { message: "",popUp:false });
   };
 
 const register = async (req, res) => {
     try {
-        data = {first_name:req.body.name,
+        this.dataR = {first_name:req.body.name,
             email_id:req.body.email,
             password:req.body.password
         }
@@ -26,14 +26,43 @@ const register = async (req, res) => {
         transporter.sendMail(mailOptions, (error, _info) => {
           if (error) {
             console.error('Error sending email: ', error);
-            res.status(500).send({ message: 'Failed to send OTP' });
+            // res.status(500).send({ message: 'Failed to send OTP' });
+            res.render("user/login_register",{ message: 'Failed to send OTP',popUp:false });
           } else {
             console.log('OTP sent: ', this.otpCode);
-            res.status(200).send({ message: 'OTP sent successfully' });
+            // res.status(200).send({ message: 'OTP sent successfully' });
+            res.render("user/login_register",{ message: 'OTP sent successfully',popUp:true });
           }
         });
-        // await userSchema.insertMany([data]);  
-        res.redirect("/login-register");
+        // await userSchema.insertMany([dataR]);  
+      } catch (error) {
+        res.send(error.message);
+      }
+  };
+
+  const verify_otp = async (req, res) => {
+    try {
+      const { otp } = req.body;
+      console.log(otp);
+        console.log(this.otpCode);
+      // Verify the OTP code
+      // In this example, we are using a hardcoded value for demonstration purposes only.
+      // In a real application, you should compare the OTP to the one generated in the previous step.
+      
+      if (otp == this.otpCode && otp!=0) {
+        // print("otp");
+        // print("otp"+otp);
+        // print(this.otpCode+"this otp");
+        console.log(otp);
+        console.log(this.otpCode);
+        await userSchema.insertMany([this.dataR]); 
+        res.render("user/login_register",{ message: 'User Created successfully',popUp:false });
+        // res.status(200).send({ message: 'Login successful' });
+        
+      } else {
+        res.render("user/login_register",{ message: 'Invalid OTP',popUp:true });
+        // res.status(401).send({ message: 'Invalid OTP' });
+      }
       } catch (error) {
         res.send(error.message);
       }
@@ -75,9 +104,6 @@ const register = async (req, res) => {
         res.send(error.message);
       }
   };
-
-
-
 
 
 //views
@@ -138,6 +164,6 @@ const products = async(req,res) => {
   res.render('user/product_details',{data: product,related:related})
 }
 
-module.exports = {login_register,register,login,home_page,sessionValidation,smartphones,wearables,earwears,
+module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,smartphones,wearables,earwears,
   products
     }

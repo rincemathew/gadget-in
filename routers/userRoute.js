@@ -11,6 +11,8 @@ router.post('/register',userController.register)
 
 router.post('/login',userController.login)
 
+router.post('/login-register',userController.verify_otp)
+
 
 ////VIEWS
 router.get('/',userController.home_page)
