@@ -84,7 +84,7 @@ const register = async (req, res) => {
       valid = await userModel.findOne({_id:req.session.user_id})
       if(!valid.is_blocked) {
       res.locals.sessionValue = false
-      next()
+      req.session.destroy()
       }
       next()
     } else{
@@ -175,11 +175,14 @@ const earwears = async(req,res) => {
 }
 
 
-const products = async(req,res) => {
+const products = async(req,res,next) => {
   // console.log(req.query.id)
   try {
-    product = await productSchema.findOne({_id:req.query.id});
-    related = await productSchema.find({}).limit(4)
+    product = await productSchema.findOne({_id:req.query.id,is_blocked:false});
+    if(!product) {
+      res.render('user/404',{session:res.locals.sessionValue})
+    }
+    related = await productSchema.find({is_blocked:false}).limit(4)
   } catch(error) {
       res.send(error.message)
   }
@@ -191,6 +194,11 @@ const user_logout = async (req, res) => {
   res.redirect("/login-register")
 };
 
+//404
+const page404 = async (req, res) => {
+  res.render("user/404", {session:res.locals.sessionValue,});
+};
+
 module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,smartphones,wearables,earwears,
-  products,user_logout
+  products,user_logout,page404
     }

@@ -28,6 +28,10 @@ var session = require('express-session')
 //mongosh export
 const mongoose = require('./helpers/mongoConnect')
 
+//nocache
+const nocache = require("nocache")
+app.use(nocache())
+
 
 //read input
 app.use(express.json());

@@ -28,4 +28,7 @@ router.get('/earwear',userController.sessionValidation,userController.earwears)
 router.get('/products',userController.sessionValidation,userController.products)
 
 
+router.get('*',userController.sessionValidation,userController.page404)
+
+
 module.exports = router;
