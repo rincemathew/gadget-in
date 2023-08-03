@@ -82,6 +82,10 @@ const add_product = async (req, res) => {
 };
 
 const add_product_post = async (req, res) => {
+  productCheck = await productModel.findOne({product_name:req.body.product_name}) 
+  if(productCheck) {
+    return res.render("admin/add_products", { message: "Product with this name exist",data:"" });
+  } 
   productImages = [];
   // console.log(req.files)
   req.files.forEach((file) => {
@@ -110,11 +114,9 @@ const add_product_post = async (req, res) => {
 const edit_product = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await productModel.findOne(
-      { _id: id },
-    );
+    const data = await productModel.findOne({ _id: id },);
     // console.log(data)
-    res.render("admin/add_products", { data:data, message: "hai" });
+    res.render("admin/add_products", { data:data, message: "" });
     // res.send('Hai');
   } catch (err) {
     console.trace(err);
