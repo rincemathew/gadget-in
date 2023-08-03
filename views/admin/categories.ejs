@@ -61,7 +61,7 @@
                       <div class="col">
                             <div class="card card-user">
                                 <!-- <div class="card-header"> -->
-                                    <img src="admin/imgs/people/avatar1.jpg" alt="User pic">
+                                    <img src="admin/imgs/people/categories.png" alt="User pic">
                                 <!-- </div> -->
                                 <div class="card-body">
                                     <h5 class="card-title mt-50"><%= data[i].category_name%></h5>
@@ -142,12 +142,23 @@
                 return;
             }
             // Return if everything is ok
+            alertMsg(resBody.message)
             return;
         }
   function changeCategory(cb,id){
     console.log(cb.checked,id)
     toggleIsBlocked(cb.checked,id)
   }
+
+
+  function alertMsg(msg) {
+        Swal.fire({
+            icon: 'success',
+            title: msg,
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
     
 </script>
 

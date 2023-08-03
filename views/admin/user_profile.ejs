@@ -140,12 +140,23 @@
                 return;
             }
             // Return if everything is ok
+            alertMsg(resBody.message)
             return;
         }
   function changeUser(cb,id){
     // console.log(cb.checked,id)
     toggleIsBlocked(cb.checked,id)
   }
+
+
+  function alertMsg(msg) {
+        Swal.fire({
+            icon: 'success',
+            title: msg,
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
     
 </script>
 

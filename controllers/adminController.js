@@ -179,7 +179,11 @@ const add_categories = async (req, res) => {
 };
 
 const add_categories_post = async (req, res) => {
-  console.log(req.body.categories_name)
+  categryCheck = await categoryModel.findOne({category_name:req.body.categories_name}) 
+  console.log(categryCheck)
+  if(categryCheck) {
+    return res.render("admin/add_categories", { message: "Category with this name exist",data:"" });
+  } 
   await categoryModel.insertMany({category_name:req.body.categories_name});
   res.redirect("/categories");
 };
@@ -192,7 +196,7 @@ const categories_block_unblock = async (req, res) => {
     console.log(value)
     await categoryModel.updateOne({ _id: id },{ is_blocked: value });
     await productModel.updateMany({ category: categoryData.category_name },{ is_blocked: !value });
-    res.send({ isOk: true, message: "Updated sucessfully" });
+    res.send({ isOk: true, message: `Category "${categoryData.category_name}" ${value?'unblocked':'blocked'} Successfully` });
   } catch (err) {
     console.trace(err);
     res.send({ isOk: false, message: "Some error occured" });
@@ -218,7 +222,7 @@ const user_block_unblock = async (req, res) => {
     const userData = await userModel.findOne({_id:id});
     value = userData.is_blocked==true?false:true
     await userModel.updateOne({ _id: id },{ is_blocked: value });
-    res.send({ isOk: true, message: "" });
+    res.send({ isOk: true, message: `User "${userData.first_name}" ${value?'unblocked':'blocked'} Successfully` });
   } catch (err) {
     console.trace(err);
     res.send({ isOk: false, message: "Some error occured" });
