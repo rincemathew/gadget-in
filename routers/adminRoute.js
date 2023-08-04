@@ -25,7 +25,7 @@ router.post('/products/add-new',adminController.session_check,multer,adminContro
 
 router.get('/products/edit/:id',adminController.session_check, adminController.edit_product)
 
-router.post('/products/edit/:id',adminController.session_check, adminController.edit_product_post)
+router.post('/products/edit/:id',adminController.session_check,multer, adminController.edit_product_post)
 
 // router.post('/products/visbility',adminController.products_visibility)
 

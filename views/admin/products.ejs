@@ -65,9 +65,9 @@
                                 <form>
                                     <div class="d-flex align-items-center justify-content-center form-check form-switch">
                                         <% if (data[i].is_blocked) { %>
-                                            <input data-product-id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox" id="flexSwitchCheckChecked">
-                                        <% } else { %>
                                             <input data-product-id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                        <% } else { %>
+                                            <input data-product-id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox" id="flexSwitchCheckChecked">
                                         <% } %>
                                         <!-- <input onchange="(event) => toggleIsBlocked('<%= data[i]._id%>', event)" name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked> -->
                                         <!-- <input onchange="() => console.log('hai')" name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked> -->
@@ -133,7 +133,7 @@
 
 <script>
     const toggleIsBlocked = async (id, isBlocked) => {
-        const urlBlockOrUnblockPart = isBlocked ? 'block' : 'unblock';
+        const urlBlockOrUnblockPart = isBlocked ? 'unblock' : 'block';
 
         const response = await fetch(`/products/${id}/${urlBlockOrUnblockPart}`, { method: 'POST' });
         const resBody = await response.json();

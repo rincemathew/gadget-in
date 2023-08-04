@@ -26,7 +26,7 @@
         <%-include('header')-%>
         <section class="content-main">
             <% if(data) { %>
-                <form method="post" action="/products/edit/<%= data._id %>">
+                <form method="post" action="/products/edit/<%= data._id %>" enctype="multipart/form-data">
               <% } else { %>
                 <form method="post" action="/products/add-new" enctype="multipart/form-data">
               <% } %>
@@ -61,7 +61,9 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Full description</label>
-                                    <textarea <input <%if(data){%> value="<%= data.description %>" <%}%>  name="description" placeholder="Type here" class="form-control" rows="4"></textarea>
+                                    <!-- <textarea name="description" <%if(data){%> placeholder="<%= data.description %>" <%}%> </textarea> -->
+                                    <!-- <textarea name="description" <%if(data){%> placeholder="<%= data.description %>" <%}%> <input <%if(data){%> value="<%= data.description %>" <%}%>  name="description" placeholder="Type here" class="form-control" rows="4"></textarea> -->
+                                    <input <%if(data){%> value="<%= data.description %>" <%}%>  name="description" placeholder="Type here" class="form-control" rows="4">
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -94,7 +96,12 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Block or Unblock</label>
-                                    <input name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                    <% if(data) { %>
+                                        <input name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" <% if(data.is_blocked) { %>checked<% }%>>
+                                        <% } else { %>
+                                            <input name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                            <% } %>
+                                    <!-- <input name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked> -->
                                 </div>
                                 <!-- <label class="form-check mb-4">
                                     <input class="form-check-input" type="checkbox" value="">

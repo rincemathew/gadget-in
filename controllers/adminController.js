@@ -99,8 +99,9 @@ const add_product_post = async (req, res) => {
     stock: req.body.stock,
     price: req.body.price,
     product_image: productImages,
-    is_blocked: req.body.isBlocked == "on" ? true : false,
+    is_blocked: req.body.isBlocked ? true : false,
   };
+
   // console.log(data)
   await productModel.insertMany([data]);
   res.redirect("/products");
@@ -125,10 +126,14 @@ const edit_product = async (req, res) => {
 };
 
 const edit_product_post = async (req, res) => {
+  req.files.forEach((file) => {
+    productImages.push(file.filename);
+  });
     try{
         // console.log(req.body.product_name + "haooo",req.params.id)
         await productModel.updateOne({_id:req.params.id},{$set:{product_name:req.body.product_name,
-            description:req.body.description,category:req.body.category,stock:req.body.stock,price:req.body.price}});
+            description:req.body.description,category:req.body.category,stock:req.body.stock,price:req.body.price,
+            product_image: productImages,is_blocked: req.body.isBlocked ? true : false}});
           res.redirect("/products");
     }catch(err) {
         console.log(err)
@@ -148,7 +153,7 @@ const setProductIsBlocked = async (req, res, isBlocked) => {
       res.send({ isOk: false, message: "Some error occured" });
       return;
     }
-    res.send({ isOk: true, message: `Product ${isBlocked?"Blocked":"UnBlocked"} successfully` });
+    res.send({ isOk: true, message: `Product ${isBlocked?"UnBlocked":"Blocked"} successfully` });
   } catch (err) {
     console.trace(err);
     res.send({ isOk: false, message: "Some error occured" });
