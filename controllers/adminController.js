@@ -1,19 +1,10 @@
 const multer = require("multer");
-const adminSchema = require("../models/adminSchema");
+const adminModel = require("../models/adminModel");
 const productModel = require("../models/productModel");
 const categoryModel = require("../models/categoryModel");
 const userModel = require("../models/userModel");
 
 ////LOGIN
-
-//admin session check
-const session_check = async(req,res, next) => {
-  if(req.session.username) {
-    next()
-  } else {
-    res.redirect("/");
-  }
-}
 
 const admin_login = async (req, res) => {
   if(req.session.username) {
@@ -30,27 +21,33 @@ const admin_logout = async (req, res) => {
 
 const login_admin = async (req, res) => {
   try {
-    const admindata = await adminSchema.findOne({
-      admin_name: req.body.username,
-    });
-    console.log(admindata.name);
-
-    if (admindata) {
-      // console.log(userdata.username);
-      if (admindata.admin_password === req.body.password) {
-        req.session.username=admindata.admin_name
-        res.render("admin/dashboard");
+    let dataUser = await adminModel.findOne({name: req.body.username});
+    if(!dataUser) {
+      dataUser = await adminModel.findOne({email_id: req.body.username})
+    }
+    if (dataUser) {
+      if (dataUser.password === req.body.password) {
+        req.session.slug = dataUser.slug
+        res.redirect("/dashboard");
       } else {
-        res.render("admin/index", { message: "invalid password" });
+        res.render("admin/index", { message: "invalid Username Password" });
       }
     } else {
-      // console.log("error");
       res.render("admin/index", { message: "Admin does not exist" });
     }
   } catch (error) {
-    res.send(error.message);
+    res.render("admin/index", { message: "Check Your INTERNET Connection" })// res.send(error.message);
   }
 };
+
+//ADMIN SESSION CHECK
+const session_check = async(req,res, next) => {
+  if(req.session.slug) {
+    next()
+  } else {
+    res.redirect("/");
+  }
+}
 
 ////DASHBOARD
 const dashboard = async (req, res) => {

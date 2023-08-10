@@ -5,15 +5,18 @@ const adminController = require('../controllers/adminController')
 const multer = require('../helpers/multer')
 
 //LOGIN
-router.get('/',adminController.admin_login)
 
+//login page view
+router.get('/',adminController.admin_login)
+// logout
 router.get('/logout',adminController.admin_logout)
+// login validation
+router.post('/',adminController.login_admin)
 
 
 //DASHBOARD
 router.get('/dashboard',adminController.session_check,adminController.dashboard)
 
-router.post('/dashboard',adminController.login_admin)
 
 
 //PRODUCTS
