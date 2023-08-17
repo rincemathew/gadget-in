@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const productSchema = mongoose.Schema({
+    product_brand_name:{
+        type:String,
+        required:true,
+    },
     product_name:{
         type:String,
         required:true,
@@ -11,7 +15,7 @@ const productSchema = mongoose.Schema({
     },
     category:{
         type:String,
-        required:true
+        default:'uncategorised'
     },
     stock:{
         type:Number,
@@ -28,6 +32,14 @@ const productSchema = mongoose.Schema({
     is_blocked:{
         type:Boolean,
         default:false,
+    },
+    is_deleted:{
+        type:Boolean,
+        default:false,
+    },
+    features:{
+        type:Boolean,
+        required:false,
     }
 })
 

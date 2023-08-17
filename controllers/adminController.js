@@ -21,7 +21,7 @@ const admin_logout = async (req, res) => {
 
 const login_admin = async (req, res) => {
   try {
-    let dataUser = await adminModel.findOne({name: req.body.username});
+    let dataUser = await adminModel.findOne({slug: req.body.username});
     if(!dataUser) {
       dataUser = await adminModel.findOne({email_id: req.body.username})
     }
