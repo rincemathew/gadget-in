@@ -56,15 +56,15 @@
                                     <label for="category_name" class="form-label">Category Name</label>
                                     <input name="categories_name" type="text" placeholder="Type here" class="form-control" id="product_name" required>
                                 </div>
-                                <!-- <div class="mb-4">
-                                    <label class="form-label">Full description</label>
-                                    <textarea <input <%if(data){%> value="<%= data.description %>" <%}%>  name="description" placeholder="Type here" class="form-control" rows="4"></textarea>
-                                </div> -->
+                                <div class="mb-4">
+                                    <label for="category_slug" class="form-label">Category Name</label>
+                                    <input name="categories_slug" type="text" placeholder="Type here" class="form-control" id="product_name" required>
+                                </div>
                                 
-                                <!-- <div class="mb-4">
+                                <div class="mb-4">
                                     <label class="form-label">Is Blocked</label>
                                     <input name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                                </div> -->
+                                </div>
                                 <!-- <label class="form-check mb-4">
                                     <input class="form-check-input" type="checkbox" value="">
                                     <span class="form-check-label"> Make a template </span>
@@ -74,17 +74,17 @@
                     </div> <!-- card end// -->
                 </div>
                 <div class="col-lg-3">
-                    <!-- <div class="card mb-4">
+                    <div class="card mb-4">
                         <div class="card-header">
                             <h4>Images</h4>
                         </div>
                         <div class="card-body">
                             <div class="input-upload">
                                 <img src="/admin/imgs/theme/upload.svg" alt="">
-                                <input name="image" class="form-control" type="file" multiple>
+                                <input name="image" class="form-control" type="file">
                             </div>
                         </div>
-                    </div>  -->
+                    </div> 
                 </div>
             </div>
         </form>
