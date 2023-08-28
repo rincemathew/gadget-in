@@ -134,10 +134,9 @@ const register = async (req, res) => {
 const home_page = async(req,res) => {
     let smartphone,wearable,earwear
     try {
-        smartphone = await productSchema.find({category:'smartphones',is_blocked:true}).limit(4)
-        wearable = await productSchema.find({category:'wearables',is_blocked:true}).limit(4)
-        earwear = await productSchema.find({category:'earwear',is_blocked:true}).limit(4)
-        // console.log(wearable+" hakds")
+        smartphone = await productSchema.find({category_slug:'smartphones',is_blocked:false}).limit(4)
+        wearable = await productSchema.find({category_slug:'wearables',is_blocked:false}).limit(4)
+        earwear = await productSchema.find({category_slug:'earwear',is_blocked:false}).limit(4)
     } catch(error) {
         res.send(error.message)
     }
@@ -147,7 +146,7 @@ const home_page = async(req,res) => {
 const smartphones = async(req,res) => {
     let smartphone
     try {
-        smartphone = await productSchema.find({category:'smartphones',is_blocked:true})
+        smartphone = await productSchema.find({category:'smartphones',is_blocked:false})
     } catch(error) {
         res.send(error.message)
     }
@@ -157,7 +156,7 @@ const smartphones = async(req,res) => {
 const wearables = async(req,res) => {
     let wearable
     try {
-        wearable = await productSchema.find({category:'wearables',is_blocked:true})
+        wearable = await productSchema.find({category:'wearables',is_blocked:false})
     } catch(error) {
         res.send(error.message)
     }
@@ -167,7 +166,7 @@ const wearables = async(req,res) => {
 const earwears = async(req,res) => {
     let earwear
     try {
-        earwear = await productSchema.find({category:'earwear',is_blocked:true})
+        earwear = await productSchema.find({category:'earwear',is_blocked:false})
     } catch(error) {
         res.send(error.message)
     }
@@ -178,11 +177,11 @@ const earwears = async(req,res) => {
 const products = async(req,res,next) => {
   // console.log(req.query.id)
   try {
-    product = await productSchema.findOne({_id:req.query.id,is_blocked:true});
+    product = await productSchema.findOne({_id:req.query.id,is_blocked:false});
     if(!product) {
       res.render('user/404',{session:res.locals.sessionValue})
     }
-    related = await productSchema.find({is_blocked:true}).limit(4)
+    related = await productSchema.find({is_blocked:false}).limit(4)
   } catch(error) {
       res.send(error.message)
   }
