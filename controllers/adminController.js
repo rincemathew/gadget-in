@@ -76,7 +76,14 @@ const products = async (req, res) => {
 };
 
 const add_product = async (req, res) => {
-  res.render("admin/add_products", { message: "",data:"" });
+  try{
+    let cateList = await categoryModel.find({});
+    console.log(cateList)
+    res.render("admin/add_products", { message: "",data:"",categoriesList :cateList });
+  } catch(err) {
+    res.send({ message: "Some error occured" });
+  }
+  
 };
 
 const add_product_post = async (req, res) => {
@@ -91,7 +98,9 @@ const add_product_post = async (req, res) => {
   });
 
   const data = {
+    product_brand_name:req.body.brand_name,
     product_name: req.body.product_name,
+    product_slug:slugify(req.body.brand_name+ " " +req.body.product_name),
     description: req.body.description,
     category: req.body.category,
     stock: req.body.stock,
@@ -115,7 +124,7 @@ const edit_product = async (req, res) => {
     const { id } = req.params;
     const data = await productModel.findOne({ _id: id },);
     // console.log(data)
-    res.render("admin/add_products", { data:data, message: "" });
+    res.render("admin/add_products", { data:data, message: "",categoriesList :"" });
     // res.send('Hai');
   } catch (err) {
     console.trace(err);
@@ -151,7 +160,7 @@ const setProductIsBlocked = async (req, res, isBlocked) => {
       res.send({ isOk: false, message: "Some error occured" });
       return;
     }
-    res.send({ isOk: true, message: `Product ${isBlocked?"UnBlocked":"Blocked"} successfully` });
+    res.send({ isOk: true, message: `Product ${isBlocked?"Blocked":"unBlocked"} successfully` });
   } catch (err) {
     console.trace(err);
     res.send({ isOk: false, message: "Some error occured" });
