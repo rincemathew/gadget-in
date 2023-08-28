@@ -25,7 +25,7 @@
     <main class="main-wrap">
         <%-include('header')-%>
         <section class="content-main">
-                <form method="post" action="/categories/add-new">
+                <form method="post" action="/categories/add-new" enctype="multipart/form-data">
                 <!-- <form method="post" action="/products/add-new" enctype="multipart/form-data"> -->
             <div class="row">
                 <div class="col-9">
@@ -54,16 +54,16 @@
                             <form>
                                 <div class="mb-4">
                                     <label for="category_name" class="form-label">Category Name</label>
-                                    <input name="categories_name" type="text" placeholder="Type here" class="form-control" id="product_name" required>
+                                    <input value="" oninput="slugOnchange(this.value)" name="categories_name" type="text" placeholder="Type here" class="form-control" id="product_name" required>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="category_slug" class="form-label">Category Name</label>
-                                    <input name="categories_slug" type="text" placeholder="Type here" class="form-control" id="product_name" required>
+                                    <label for="category_slug" class="form-label">Category URL</label>
+                                    <input name="categories_slug" value="" type="text" placeholder="Type here" class="form-control" id="categories_slug" disabled>
                                 </div>
                                 
                                 <div class="mb-4">
                                     <label class="form-label">Is Blocked</label>
-                                    <input name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                    <input name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
                                 </div>
                                 <!-- <label class="form-check mb-4">
                                     <input class="form-check-input" type="checkbox" value="">
@@ -113,6 +113,10 @@
     <script src="admin/js/main.js" type="text/javascript"></script>
 </body>
 
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+<script>
+    let categorySlug = document.getElementById('categories_slug')
+    function slugOnchange(value) {
+        categorySlug.setAttribute('value',value.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, ''))
+    }
+</script>
 </html>

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const adminController = require('../controllers/adminController')
-const multer = require('../helpers/multer')
+const {upload,category_img} = require('../helpers/multer')
 
 //LOGIN
 
@@ -24,11 +24,11 @@ router.get('/products',adminController.session_check,adminController.products)
 
 router.get('/products/add-new',adminController.session_check,adminController.add_product)
 
-router.post('/products/add-new',adminController.session_check,multer,adminController.add_product_post)
+router.post('/products/add-new',adminController.session_check,upload,adminController.add_product_post)
 
 router.get('/products/edit/:id',adminController.session_check, adminController.edit_product)
 
-router.post('/products/edit/:id',adminController.session_check,multer, adminController.edit_product_post)
+router.post('/products/edit/:id',adminController.session_check,upload, adminController.edit_product_post)
 
 // router.post('/products/visbility',adminController.products_visibility)
 
@@ -46,7 +46,9 @@ router.get('/categories',adminController.session_check,adminController.categorie
 
 router.get('/categories/add-new',adminController.session_check,adminController.add_categories)
 
-router.post('/categories/add-new',adminController.session_check,adminController.add_categories_post)
+router.post('/categories/add-new',adminController.session_check,category_img,adminController.add_categories_post)
+
+// router.post('/categories/update',adminController.session_check,adminController.update_categories_post)
 
 router.post('/categories/toggle/:id/',adminController.session_check,adminController.categories_block_unblock)
 

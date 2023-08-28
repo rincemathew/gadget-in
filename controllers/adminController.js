@@ -3,6 +3,7 @@ const adminModel = require("../models/adminModel");
 const productModel = require("../models/productModel");
 const categoryModel = require("../models/categoryModel");
 const userModel = require("../models/userModel");
+const {slugify} = require('..//helpers/validator')
 
 ////LOGIN
 
@@ -169,7 +170,7 @@ const block_product = async (req, res) => {
 const categories = async (req, res) => {
   try {
     const categoryData = await categoryModel.find({});
-    // console.log(categoryData);
+    console.log(categoryData)
     if (categoryData) {
       res.render("admin/categories", { message: "", data: categoryData });
     }
@@ -184,11 +185,11 @@ const add_categories = async (req, res) => {
 
 const add_categories_post = async (req, res) => {
   categryCheck = await categoryModel.findOne({category_name:req.body.categories_name}) 
-  console.log(categryCheck)
   if(categryCheck) {
     return res.render("admin/add_categories", { message: "Category with this name exist",data:"" });
   } 
-  await categoryModel.insertMany({category_name:req.body.categories_name});
+  let category = {category_name:req.body.categories_name,category_slug:slugify(req.body.categories_name),is_blocked:req.body.isBlocked ? true : false,category_image:req.file?req.file.filename:''}
+  await categoryModel.insertMany(category);
   res.redirect("/categories");
 };
 
@@ -197,10 +198,11 @@ const categories_block_unblock = async (req, res) => {
     const { id } = req.params;
     const categoryData = await categoryModel.findOne({_id:id});
     value = categoryData.is_blocked==true?false:true
+
     console.log(value)
     await categoryModel.updateOne({ _id: id },{ is_blocked: value });
-    await productModel.updateMany({ category: categoryData.category_name },{ is_blocked: !value });
-    res.send({ isOk: true, message: `Category "${categoryData.category_name}" ${value?'unblocked':'blocked'} Successfully` });
+    await productModel.updateMany({ category: categoryData.category_name },{ is_blocked: value });
+    res.send({ isOk: true, message: `Category "${categoryData.category_name}" ${value?'blocked':'unblocked'} Successfully` });
   } catch (err) {
     console.trace(err);
     res.send({ isOk: false, message: "Some error occured" });

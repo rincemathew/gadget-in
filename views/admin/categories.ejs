@@ -64,7 +64,11 @@
                       <div class="col">
                             <div class="card card-user">
                                 <!-- <div class="card-header"> -->
-                                    <img src="admin/imgs/people/categories.png" alt="User pic">
+                                    <% if(data[i].category_image !== ''){ %>
+                                        <img src="/uploads/<%= data[i].category_image%>" alt="User pic">
+                                    <% } else { %>
+                                        <img src="admin/imgs/people/categories.png" alt="User pic">
+                                    <% } %>
                                 <!-- </div> -->
                                 <div class="card-body">
                                     <h5 class="card-title mt-50"><%= data[i].category_name%></h5>
@@ -76,10 +80,10 @@
                                           <div class="d-flex align-items-center justify-content-center form-check form-switch">
                                             <% if(data[i].is_blocked) { %>
                                               <input onchange="changeCategory(this,'<%= data[i]._id%>')" id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox"
-                                                id="flexSwitchCheckChecked" checked>
+                                                id="flexSwitchCheckChecked">
                                               <%}else {%>
                                                 <input onchange="changeCategory(this,'<%= data[i]._id%>')" id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox"
-                                                  id="flexSwitchCheckChecked">
+                                                  id="flexSwitchCheckChecked" checked>
                                                 <%}%>
                                                   <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                                           </div>
@@ -149,7 +153,7 @@
             return;
         }
   function changeCategory(cb,id){
-    console.log(cb.checked,id)
+    // console.log(cb.checked,id)
     toggleIsBlocked(cb.checked,id)
   }
 

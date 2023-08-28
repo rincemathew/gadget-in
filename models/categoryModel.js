@@ -6,8 +6,8 @@ const categorySchema = mongoose.Schema({
         required:true
     },
     category_slug:{
-        type:Boolean,
-        default:false
+        type:String,
+        required:true
     },
     is_blocked:{
         type:Boolean,
@@ -15,7 +15,7 @@ const categorySchema = mongoose.Schema({
     },
     category_image:{
         type:String,
-        required:true
+        default:''
     },
     is_deleted:{
         type:Boolean,

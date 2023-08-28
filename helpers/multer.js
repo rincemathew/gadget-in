@@ -7,12 +7,13 @@ const storage = multer.diskStorage({
         cb(null,'public/uploads')
     },
     filename:(req, file, cb) =>{
-        cb(null, Date.now() + '-' + path.extname(file.originalname))
+        cb(null, Date.now() + path.extname(file.originalname))
     }
 })
 
 
-// const upload = multer({storage:storage}).array('image',6)
-const categoryImage = multer
+const upload = multer({storage:storage}).array('image',6)
+const category_img = multer({storage:storage}).single('image')
+// const categoryImage = multer
 
-module.exports = upload
+module.exports = {upload,category_img}
