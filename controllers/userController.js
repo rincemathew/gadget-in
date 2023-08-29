@@ -139,6 +139,7 @@ const home_page = async(req,res) => {
         smartphone = await productModel.find({category:'64ec75d49a45f8abcc481e87',is_blocked:false}).limit(4)
         wearable = await productModel.find({category:'64ec98a6ab3a9b83ef2d66d2',is_blocked:false}).limit(4)
         earwear = await productModel.find({category:'64ec764fab3a9b83ef2d66c5',is_blocked:false}).limit(4)
+        // console.log(earwear+'earwear')
     } catch(error) {
         res.send(error.message)
     }
@@ -153,11 +154,13 @@ const products = async(req,res,next) => {
     if(!product) {
       res.render('user/404',{session:res.locals.sessionValue})
     }
-    related = await productModel.find({is_blocked:false}).limit(4)
+    relatedV = await productModel.find({is_blocked:false}).limit(4)
+    // console.log(related +"fg")
+    res.render('user/product_details',{session:res.locals.sessionValue,data:product,related:relatedV})
   } catch(error) {
       res.send(error.message)
   }
-  res.render('user/product_details',{session:res.locals.sessionValue,data: product,related:related})
+  
 }
 
 const categories_view = async(req,res) => {
