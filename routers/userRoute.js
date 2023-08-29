@@ -19,13 +19,9 @@ router.get('/logout',userController.user_logout)
 ////VIEWS
 router.get('/',userController.sessionValidation,userController.home_page)
 
-router.get('/smartphones',userController.sessionValidation,userController.smartphones)
-
-router.get('/wearables',userController.sessionValidation,userController.wearables)
-
-router.get('/earwear',userController.sessionValidation,userController.earwears)
-
 router.get('/products',userController.sessionValidation,userController.products)
+
+router.get('/:slug',userController.sessionValidation,userController.categories_view)
 
 
 router.get('*',userController.sessionValidation,userController.page404)

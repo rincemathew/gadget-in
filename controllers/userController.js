@@ -1,7 +1,8 @@
-const  productSchema  = require("../models/productModel")
-const  userSchema  = require("../models/userModel")
+const  productModel  = require("../models/productModel")
+const  userModel  = require("../models/userModel")
 const transporter = require("../helpers/nodeMailer");
-const userModel = require("../models/userModel");
+// const userModel = require("../models/userModel");
+const categoryModel = require("../models/categoryModel");
 
 
 //login and register
@@ -44,7 +45,7 @@ const register = async (req, res) => {
             res.render("user/login_register",{ session:false,message: 'OTP sent successfully',popUp:true });
           }
         });
-        // await userSchema.insertMany([dataR]);  
+        // await userModel.insertMany([dataR]);  
       } catch (error) {
         res.send(error.message);
       }
@@ -65,7 +66,7 @@ const register = async (req, res) => {
         // print(this.otpCode+"this otp");
         console.log(otp);
         console.log(this.otpCode);
-        await userSchema.insertMany([this.dataR]); 
+        await userModel.insertMany([this.dataR]); 
         res.render("user/login_register",{session:false, message: 'User Created successfully',popUp:false });
         // res.status(200).send({ message: 'Login successful' });
         
@@ -106,7 +107,7 @@ const register = async (req, res) => {
 
   const login = async (req, res) => {
     try {
-        const userData = await userSchema.findOne({
+        const userData = await userModel.findOne({
           email_id: req.body.email,
         });    
         if (userData) {
@@ -134,58 +135,41 @@ const register = async (req, res) => {
 const home_page = async(req,res) => {
     let smartphone,wearable,earwear
     try {
-        smartphone = await productSchema.find({category_slug:'smartphones',is_blocked:false}).limit(4)
-        wearable = await productSchema.find({category_slug:'wearables',is_blocked:false}).limit(4)
-        earwear = await productSchema.find({category_slug:'earwear',is_blocked:false}).limit(4)
+      productCategories = await categoryModel.find({is_blocked:false})
+        smartphone = await productModel.find({category:'64ec75d49a45f8abcc481e87',is_blocked:false}).limit(4)
+        wearable = await productModel.find({category:'64ec98a6ab3a9b83ef2d66d2',is_blocked:false}).limit(4)
+        earwear = await productModel.find({category:'64ec764fab3a9b83ef2d66c5',is_blocked:false}).limit(4)
     } catch(error) {
         res.send(error.message)
     }
-    res.render('user/index',{session:res.locals.sessionValue, message: "", smartphones:smartphone, wearables:wearable,earwears:earwear})
-}
-
-const smartphones = async(req,res) => {
-    let smartphone
-    try {
-        smartphone = await productSchema.find({category:'smartphones',is_blocked:false})
-    } catch(error) {
-        res.send(error.message)
-    }
-    res.render('user/category_view',{session:res.locals.sessionValue,message: "", data:smartphone,name:'Smartphones'})
-}
-
-const wearables = async(req,res) => {
-    let wearable
-    try {
-        wearable = await productSchema.find({category:'wearables',is_blocked:false})
-    } catch(error) {
-        res.send(error.message)
-    }
-    res.render('user/category_view',{session:res.locals.sessionValue,name: 'Wearables', data:wearable})
-}
-
-const earwears = async(req,res) => {
-    let earwear
-    try {
-        earwear = await productSchema.find({category:'earwear',is_blocked:false})
-    } catch(error) {
-        res.send(error.message)
-    }
-    res.render('user/category_view',{session:res.locals.sessionValue,data:earwear,name:'EarWear'})
+    res.render('user/index',{session:res.locals.sessionValue, message: "", smartphones:smartphone, wearables:wearable,earwears:earwear,categories:productCategories})
 }
 
 
 const products = async(req,res,next) => {
   // console.log(req.query.id)
   try {
-    product = await productSchema.findOne({_id:req.query.id,is_blocked:false});
+    product = await productModel.findOne({_id:req.query.id,is_blocked:false});
     if(!product) {
       res.render('user/404',{session:res.locals.sessionValue})
     }
-    related = await productSchema.find({is_blocked:false}).limit(4)
+    related = await productModel.find({is_blocked:false}).limit(4)
   } catch(error) {
       res.send(error.message)
   }
   res.render('user/product_details',{session:res.locals.sessionValue,data: product,related:related})
+}
+
+const categories_view = async(req,res) => {
+  let dataV
+  try {
+    cateID = await categoryModel.findOne({category_slug:req.params.slug})
+      dataV = await productModel.find({category:cateID._id,is_blocked:false})
+      console.log(cateID + "gfg")
+  } catch(error) {
+      res.send(error.message)
+  }
+  res.render('user/category_view',{session:res.locals.sessionValue,data:dataV,name:'EarWear'})
 }
 
 const user_logout = async (req, res) => {
@@ -198,6 +182,6 @@ const page404 = async (req, res) => {
   res.render("user/404", {session:res.locals.sessionValue,});
 };
 
-module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,smartphones,wearables,earwears,
-  products,user_logout,page404
+module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,
+  products,categories_view,user_logout,page404
     }
