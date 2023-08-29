@@ -96,11 +96,36 @@ const register = async (req, res) => {
 
   const sessionValidUser = async (req, res, next) => {
     if(req.session.user_id) {
-      
+      console.log('session')
+      res.locals.sessionValue = true
+      valid = await userModel.findOne({_id:req.session.user_id})
+      // if(!valid.is_blocked) {
+      // res.locals.sessionValue = false
+      // req.session.destroy()
+      // }
       next()
-      }
-    else{
+    } else{
+      console.log('nosession')
+      res.locals.sessionValue = false
+      res.render("user/login_register", { session:false,message: "user is blocked",popUp:false });
+    }    
+  };
+
+  const ajaxSessionValidUser = async (req, res, next) => {
+    if(req.session.user_id) {
+      console.log('session')
+      res.locals.sessionValue = true
+      valid = await userModel.findOne({_id:req.session.user_id})
+      // if(!valid.is_blocked) {
+      // res.locals.sessionValue = false
+      // req.session.destroy()
+      // }
       next()
+    } else{
+      console.log('nosession')
+      res.locals.sessionValue = false
+      res.send({ message: "Login" });
+      // res.json({status: "Success", redirect: 'login-register'});
     }    
   };
 
@@ -154,8 +179,8 @@ const products = async(req,res,next) => {
     if(!product) {
       res.render('user/404',{session:res.locals.sessionValue})
     }
-    relatedV = await productModel.find({is_blocked:false}).limit(4)
-    // console.log(related +"fg")
+    relatedV = await productModel.find({is_blocked:false}).limit(3)
+    console.log(relatedV +"fg")
     res.render('user/product_details',{session:res.locals.sessionValue,data:product,related:relatedV})
   } catch(error) {
       res.send(error.message)
@@ -185,6 +210,6 @@ const page404 = async (req, res) => {
   res.render("user/404", {session:res.locals.sessionValue,});
 };
 
-module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,
+module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,ajaxSessionValidUser,
   products,categories_view,user_logout,page404
     }

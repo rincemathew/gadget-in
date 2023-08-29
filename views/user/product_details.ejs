@@ -38,7 +38,11 @@
 					</div>
 					<small class="pt-1">(99 Reviews)</small>
 				</div> -->
-				<h3 class="font-weight-semi-bold mb-4">₹<%=data.price%></h3>
+				<% if(data.stock < 1) { %>
+					<h3 class="font-weight-semi-bold mb-4">Out of Stock</h3>
+				<% } else { %>
+					<h3 class="font-weight-semi-bold mb-4">₹<%=data.price%></h3>
+				<% } %>
 				<p class="mb-4"><%= data.description %></p>
 				<!-- <div class="d-flex mb-3">
 					<strong class="text-dark mr-3">Sizes:</strong>
@@ -93,18 +97,18 @@
 				<div class="d-flex align-items-center mb-4 pt-2">
 					<div class="input-group quantity mr-3" style="width: 130px;">
 						<div class="input-group-btn">
-							<button class="btn btn-primary btn-minus">
+							<button onclick="minusCart()" class="btn btn-primary btn-minus">
 								<i class="fa fa-minus"></i>
 							</button>
 						</div>
-						<input type="text" class="form-control bg-secondary border-0 text-center" value="1">
+						<input id="cartMP" type="number" min="1" max="20" class="form-control bg-secondary border-0 text-center" value="1">
 						<div class="input-group-btn">
-							<button class="btn btn-primary btn-plus">
+							<button onclick="plusCart()" class="btn btn-primary btn-plus">
 								<i class="fa fa-plus"></i>
 							</button>
 						</div>
 					</div>
-					<button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
+					<button <% if(data.stock < 1) {%>disabled<% }%> class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
 						Cart</button>
 				</div>
 				<div class="d-flex pt-2">
@@ -243,7 +247,8 @@
 	<h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">You May Also Like</span></h2>
 	<div class="row px-xl-5">
 		<div class="col">
-			<div class="owl-carousel related-carousel">
+			<!-- <div class="owl-carousel related-carousel"> -->
+				<div class="row">
 
 				<% for(i=0;i<related.length;i++) { %>
 					<div class="col-lg-4 col-md-6 col-sm-6 pb-1">
@@ -258,7 +263,7 @@
 								</div>
 							</div>
 							<div class="text-center py-4">
-								<a class="h6 text-decoration-none text-truncate" href=""><%=related[i].product_brand_name%> <%=related[i].product_name%></a>
+								<a class="h6 text-decoration-none text-truncate" href="/products/?id=<%= related[i]._id%>"><%=related[i].product_brand_name%> <%=related[i].product_name%></a>
 								<div class="d-flex align-items-center justify-content-center mt-2">
 									<h5><%=related[i].price%></h5><h6 class="text-muted ml-2"><del></del></h6>
 								</div>
@@ -280,5 +285,23 @@
 	</div>
 </div>
 <!-- Products End -->
+
+<script>
+	 
+	function minusCart() {
+		cartMP = document.getElementById('cartMP')
+		value = document.getElementById('cartMP').value;
+		if(Number(value) > 1) {
+			cartMP.setAttribute('value', Number(value) -1)
+		}
+	}
+	function plusCart() {
+		cartMP = document.getElementById('cartMP')
+		value = document.getElementById('cartMP').value;
+		if(Number(value) < 20) {
+			cartMP.setAttribute('value', Number(value) +1)
+		}
+	}
+</script>
 
 <%-include('footer')-%>
