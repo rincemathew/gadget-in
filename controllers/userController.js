@@ -99,15 +99,15 @@ const register = async (req, res) => {
       console.log('session')
       res.locals.sessionValue = true
       valid = await userModel.findOne({_id:req.session.user_id})
-      // if(!valid.is_blocked) {
-      // res.locals.sessionValue = false
-      // req.session.destroy()
-      // }
+      if(!valid.is_blocked) {
+      res.locals.sessionValue = false
+      req.session.destroy()
+      }
       next()
     } else{
       console.log('nosession')
       res.locals.sessionValue = false
-      res.render("user/login_register", { session:false,message: "user is blocked",popUp:false });
+      res.render("user/login_register", { session:false,message: "Login to see your accoumt",popUp:false });
     }    
   };
 
@@ -197,7 +197,7 @@ const categories_view = async(req,res) => {
   } catch(error) {
       res.send(error.message)
   }
-  res.render('user/category_view',{session:res.locals.sessionValue,data:dataV,name:'EarWear'})
+  res.render('user/category_view',{session:res.locals.sessionValue,data:dataV,name:''})
 }
 
 const user_logout = async (req, res) => {

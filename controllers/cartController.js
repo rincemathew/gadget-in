@@ -8,12 +8,12 @@ const cartModel = require("../models/cartModel");
 const add_to_cart = async(req, res) => {
     const { id } = req.params;
     const userID = req.session.user_id
-    console.log(id,userID)
     try {
-        console.log('one')
         const cart = await cartModel.findOne({ userid:userID });
         if(cart) {
-            console.log('two')
+            // const productExist = cartModel.products.findIndex((product) => {
+            //     return product.productid.equals(productid);
+            //   });
             await cartModel.findOneAndUpdate(
                 { userid: userID },
                 {
@@ -23,21 +23,27 @@ const add_to_cart = async(req, res) => {
               );
     
         } else {
-            console.log('three')
             await cartModel.insertMany({userid: userID,products: [{ productid: id, quantity: 1 }]})
         }
-        res.send({ message: "added sucessfully" });
-        // const categoryData = await categoryModel.findOne({_id:id});
-        // value = categoryData.is_blocked==true?false:true
-    
-        // await categoryModel.updateOne({ _id: id },{ is_blocked: value });
-        // await productModel.updateMany({ category: categoryData.category_name },{ is_blocked: value });
-        // res.send({ isOk: true, message: `Category "${categoryData.category_name}" ${value?'blocked':'unblocked'} Successfully` });
+        res.send({ message: "",popUp:"item added to cart" });
       } catch (err) {
-        res.send({ message: err.message });
+        res.send({ message: "",popUp:err.message });
       }
 }
 
+
+const cart_view = async(req,res) => {
+    console.log('hhhhhhhhhhhhhhhhhhhhhh')
+    try {
+        const userID = req.session.user_id
+        const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
+        console.log(cartdata)
+        res.render("user/cart",{session:res.locals.sessionValue,cart: cartdata,});
+
+    } catch(error) {
+        res.send(error.message)
+    }
+}
 
 
 
@@ -46,5 +52,5 @@ const add_to_cart = async(req, res) => {
 //admin Side
 
 module.exports = {
-    add_to_cart
+    add_to_cart,cart_view
 }
