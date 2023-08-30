@@ -2,6 +2,7 @@ const  productModel  = require("../models/productModel")
 const  userModel  = require("../models/userModel")
 const categoryModel = require("../models/categoryModel");
 const cartModel = require("../models/cartModel");
+const addressModel = require("../models/addressModel");
 
 
 //User Side 
@@ -61,11 +62,51 @@ const cart_view = async(req,res) => {
 }
 
 
+const checkout = async(req,res) => {
+  try {
+    let total = 0;
+      const userID = req.session.user_id
+      const addresses = await addressModel.findOne({userid:userID})
+      // console.log(addresses)
+      const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
+      console.log(cartdata)
+      for(i=0;i<cartdata.products.length;i++) {
+        total = total + (cartdata.products[i].productid.price * cartdata.products[i].quantity)
+      }
+      console.log(cartdata.products[0].productid.price+"product iidddddd")
+      res.render("user/check_out",{session:res.locals.sessionValue,addresss:addresses,cart:cartdata,total:total});
+
+  } catch(error) {
+      res.send(error.message)
+  }
+}
+
+
+const checkout_post = async(req,res) => {
+  try {
+    let total = 0;
+      const userID = req.session.user_id
+      const addresses = await addressModel.findOne({userid:userID})
+      // console.log(addresses)
+      const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
+      console.log(cartdata)
+      for(i=0;i<cartdata.products.length;i++) {
+        total = total + (cartdata.products[i].productid.price * cartdata.products[i].quantity)
+      }
+      console.log(cartdata.products[0].productid.price+"product iidddddd")
+      res.redirect("/account/orders");
+
+  } catch(error) {
+      res.send(error.message)
+  }
+}
+
+
 
 
 
 //admin Side
 
 module.exports = {
-    add_to_cart,cart_view
+    add_to_cart,cart_view,checkout,checkout_post,order
 }

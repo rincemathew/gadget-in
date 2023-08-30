@@ -45,6 +45,11 @@ router.post('/account/address_delete',userController.sessionValidUser,userAccoun
 router.get('/account/orders/',userController.sessionValidUser,userAccountController.orders)
 
 
+router.get('/account/checkout',userController.sessionValidUser,cartController.checkout)
+
+router.post('/account/checkout',userController.sessionValidUser,cartController.checkout_post)
+
+
 
 ////VIEWS
 router.get('/',userController.sessionValidation,userController.home_page)
