@@ -34,118 +34,38 @@
         <div class="col-lg-8">
             <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
             <div class="bg-light p-30 mb-5">
+                <form method="post" action="/account/profile">
                 <div class="row">
+                    
                     <div class="col-md-6 form-group">
                         <label>First Name</label>
-                        <input class="form-control" type="text" placeholder="John">
+                        <input name="first_name" class="form-control" type="text" value="<%=data.first_name%>">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Last Name</label>
-                        <input class="form-control" type="text" placeholder="Doe">
+                        <input name="last_name" class="form-control" type="text" value="<%=data.last_name%>">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>E-mail</label>
-                        <input class="form-control" type="text" placeholder="example@email.com">
+                        <input name="email_id" class="form-control" type="text" value="<%=data.email_id%>" disabled>
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Mobile No</label>
-                        <input class="form-control" type="text" placeholder="+123 456 789">
+                        <input name="mobile" class="form-control" type="number" value="<%=data.mobile%>">
                     </div>
                     <div class="col-md-6 form-group">
-                        <label>Address Line 1</label>
-                        <input class="form-control" type="text" placeholder="123 Street">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Address Line 2</label>
-                        <input class="form-control" type="text" placeholder="123 Street">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Country</label>
-                        <select class="custom-select">
-                            <option selected>United States</option>
-                            <option>Afghanistan</option>
-                            <option>Albania</option>
-                            <option>Algeria</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>City</label>
-                        <input class="form-control" type="text" placeholder="New York">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>State</label>
-                        <input class="form-control" type="text" placeholder="New York">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>ZIP Code</label>
-                        <input class="form-control" type="text" placeholder="123">
+                        <label>Date of Birth</label>
+                        <input name="birth_date" class="form-control" type="date" value="<%=data.birth_date%>">
                     </div>
                     <div class="col-md-12 form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="newaccount">
-                            <label class="custom-control-label" for="newaccount">Create an account</label>
-                        </div>
+                        <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i>Update</button>
                     </div>
-                    <div class="col-md-12">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="shipto">
-                            <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">Ship to different address</label>
-                        </div>
-                    </div>
+                
                 </div>
+            </form>
             </div>
-            <div class="collapse mb-5" id="shipping-address">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Shipping Address</span></h5>
-                <div class="bg-light p-30">
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label>First Name</label>
-                            <input class="form-control" type="text" placeholder="John">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Last Name</label>
-                            <input class="form-control" type="text" placeholder="Doe">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>E-mail</label>
-                            <input class="form-control" type="text" placeholder="example@email.com">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Mobile No</label>
-                            <input class="form-control" type="text" placeholder="+123 456 789">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Address Line 1</label>
-                            <input class="form-control" type="text" placeholder="123 Street">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Address Line 2</label>
-                            <input class="form-control" type="text" placeholder="123 Street">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Country</label>
-                            <select class="custom-select">
-                                <option selected>United States</option>
-                                <option>Afghanistan</option>
-                                <option>Albania</option>
-                                <option>Algeria</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>City</label>
-                            <input class="form-control" type="text" placeholder="New York">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>State</label>
-                            <input class="form-control" type="text" placeholder="New York">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>ZIP Code</label>
-                            <input class="form-control" type="text" placeholder="123">
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            
         </div>
 
 

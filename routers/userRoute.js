@@ -26,7 +26,9 @@ router.post('/account/add-to-cart/:id/:value',userController.ajaxSessionValidUse
 router.get('/account/cart/',userController.sessionValidUser,cartController.cart_view)
 
 
-router.get('/account/profile/',userController.sessionValidUser,userAccountController.profile)
+router.get('/account/profile',userController.sessionValidUser,userAccountController.profile)
+
+router.post('/account/profile',userController.sessionValidUser,userAccountController.profilePost)
 
 router.get('/account/wishlist/',userController.sessionValidUser,userAccountController.wishlist)
 
