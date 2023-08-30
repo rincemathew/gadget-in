@@ -34,6 +34,14 @@ router.get('/account/wishlist/',userController.sessionValidUser,userAccountContr
 
 router.get('/account/address/',userController.sessionValidUser,userAccountController.address)
 
+router.get('/account/addressget/',userController.sessionValidUser,userAccountController.address_get)
+
+router.post('/account/address',userController.sessionValidUser,userAccountController.address_add)
+
+// router.post('/account/address/',userController.sessionValidUser,userAccountController.address_edit)
+
+router.post('/account/address_delete',userController.sessionValidUser,userAccountController.address_delete)
+
 router.get('/account/orders/',userController.sessionValidUser,userAccountController.orders)
 
 

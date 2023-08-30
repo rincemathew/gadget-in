@@ -33,126 +33,150 @@
 
         
         <div class="col-lg-8">
-            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">add new Address</span></h5>
             <div class="bg-light p-30 mb-5">
                 <div class="row">
-                    <div class="col-md-6 form-group">
-                        <label>First Name</label>
-                        <input class="form-control" type="text" placeholder="John">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Last Name</label>
-                        <input class="form-control" type="text" placeholder="Doe">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>E-mail</label>
-                        <input class="form-control" type="text" placeholder="example@email.com">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Mobile No</label>
-                        <input class="form-control" type="text" placeholder="+123 456 789">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Address Line 1</label>
-                        <input class="form-control" type="text" placeholder="123 Street">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Address Line 2</label>
-                        <input class="form-control" type="text" placeholder="123 Street">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Country</label>
-                        <select class="custom-select">
-                            <option selected>United States</option>
-                            <option>Afghanistan</option>
-                            <option>Albania</option>
-                            <option>Algeria</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>City</label>
-                        <input class="form-control" type="text" placeholder="New York">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>State</label>
-                        <input class="form-control" type="text" placeholder="New York">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>ZIP Code</label>
-                        <input class="form-control" type="text" placeholder="123">
-                    </div>
-                    <div class="col-md-12 form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="newaccount">
-                            <label class="custom-control-label" for="newaccount">Create an account</label>
-                        </div>
-                    </div>
                     <div class="col-md-12">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="shipto">
-                            <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">Ship to different address</label>
+                            <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">Add a new address</label>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
             <div class="collapse mb-5" id="shipping-address">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Shipping Address</span></h5>
                 <div class="bg-light p-30">
+                    <!-- <form> -->
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label>First Name</label>
-                            <input class="form-control" type="text" placeholder="John">
+                            <label>Full Name</label>
+                            <input id="full_name" class="form-control" min="3" type="text" required>
                         </div>
                         <div class="col-md-6 form-group">
-                            <label>Last Name</label>
-                            <input class="form-control" type="text" placeholder="Doe">
+                            <label>Mobile Number</label>
+                            <input id="mobile_number" class="form-control" min="10" type="number" required>
                         </div>
                         <div class="col-md-6 form-group">
-                            <label>E-mail</label>
-                            <input class="form-control" type="text" placeholder="example@email.com">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Mobile No</label>
-                            <input class="form-control" type="text" placeholder="+123 456 789">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Address Line 1</label>
-                            <input class="form-control" type="text" placeholder="123 Street">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Address Line 2</label>
-                            <input class="form-control" type="text" placeholder="123 Street">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Country</label>
-                            <select class="custom-select">
-                                <option selected>United States</option>
-                                <option>Afghanistan</option>
-                                <option>Albania</option>
-                                <option>Algeria</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>City</label>
-                            <input class="form-control" type="text" placeholder="New York">
+                            <label>PinCode</label>
+                            <input id="pin_code" class="form-control" type="number" min="6" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>State</label>
-                            <input class="form-control" type="text" placeholder="New York">
+                            <input id="state" class="form-control" min="3" type="text" required>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Address</label>
+                            <input id="address" class="form-control" type="text" min="9" required>
                         </div>
                         <div class="col-md-6 form-group">
-                            <label>ZIP Code</label>
-                            <input class="form-control" type="text" placeholder="123">
+                            <button onclick="addNewAddress()" class="btn btn-primary px-3"><i class="fa fa-address-card mr-1"></i> Add new Address</button>
                         </div>
                     </div>
+                <!-- </form> -->
                 </div>
+            </div>
+
+
+            
+
+        <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Addresses</span></h5>
+        <div class="bg-light p-30 mb-5">
+            <div id="inner" class="row">
+                <div class="card col-md-12 form-group">
+                    <b>RInce mathew</b>
+                    <P>Ph:5454545</P>
+                    <p>adderdddddddddddddddddddddddddddddddddddddddddddddddddddddddd</p>
+                    <p>pin:788955</p>
+                    <p>State:kerala</p>
+                </div>   
             </div>
         </div>
 
-
-        
-
+        </div>
     </div>
 </div>
+
+
+<script>
+
+    const addressDelete = async(unID) => {
+        console.log(unID)
+        const response = await fetch('/account/address_delete',{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({unIDD:unID}) });
+        const resBody = await response.json();
+        getAddress();
+        alertMsg(resBody.popUp);
+    }
+    const getAddress = async()=>{
+        const response = await fetch('/account/addressget',{ method: 'get'});
+        const resBody = await response.json();
+        console.log(resBody.addressList)
+        if(!resBody.addressList) {
+            document.getElementById("inner").innerHTML = `<div id="inner" class="row">
+                <div class="card col-md-12 form-group">
+                    <b>Address list is empty</b>
+                </div>   
+            </div>`;
+        } else {
+            var x =""
+            for(i=0;i<resBody.addressList.address.length;i++) {
+                x = x + `<div class="card col-md-12 form-group">
+                    <b>${resBody.addressList.address[i].name}</b>
+                    <P>Ph:${resBody.addressList.address[i].mobile_no}</P>
+                    <p>${resBody.addressList.address[i].full_address}</p>
+                    <p>${resBody.addressList.address[i].state}</p>
+                    <p>${resBody.addressList.address[i].pin_code}</p>
+                    <button onclick="addressDelete('${resBody.addressList.address[i]._id}')" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i>delete</button>
+                </div>`
+                
+            }
+            document.getElementById("inner").innerHTML = x;
+            
+        }
+    }
+
+    function cleanValue() {
+        document.getElementById('full_name').value = ""
+        document.getElementById('mobile_number').value = ""
+        document.getElementById('pin_code').value = ""
+        document.getElementById('state').value = ""
+        document.getElementById('address').value = ""
+    }
+
+    const addNewAddress = async () => {
+           fullnName = document.getElementById('full_name').value
+           mobileNumber = document.getElementById('mobile_number').value
+           pinCode = document.getElementById('pin_code').value
+           state = document.getElementById('state').value
+           address = document.getElementById('address').value
+           addreData = {uniqueid:uniqueID(),name:fullnName,mobile_no:mobileNumber,pin_code:pinCode,state:state,full_address:address}
+            const response = await fetch('/account/address',{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify(addreData) });
+            const resBody = await response.json();
+
+            // Return if everything is ok
+            alertMsg(resBody.popUp);
+            console.log(resBody.popUp);
+            getAddress();
+            cleanValue()
+            // return;
+        }
+
+        function alertMsg(msg) {
+        Swal.fire({
+            icon: 'success',
+            title: msg,
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
+
+    function uniqueID() {
+  var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+  return randLetter + Date.now();
+}
+getAddress()
+</script>
 
 <%-include('footer')-%>
