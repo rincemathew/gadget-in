@@ -9,26 +9,41 @@ const add_to_cart = async(req, res) => {
     const { id,value } = req.params;
     const userID = req.session.user_id
     try {
-        const cart = await cartModel.findOne({ userid:userID });
-        if(cart) {
-            // const productExist = cartModel.products.findIndex((product) => {
-            //     return product.productid.equals(productid);
-            //   });
-            await cartModel.findOneAndUpdate(
-                { userid: userID },
-                {
-                  $push: { products: { productid: id, quantity: value } },
-                },
-                { new: true }
-              );
-    
+      const productCount = await productModel.findOne({ _id: id });
+      if (productCount.stock < value) {
+        res.send({ message: "", popUp: "Sorry... Product out of Stock" });
+      } else {
+        const cart = await cartModel.findOne({ userid: userID });
+        if (cart) {
+          const productExist = cart.products.findIndex((product) => {
+              return product.productid.equals(id);
+            });
+
+            if (productExist !== -1) {
+                res.send({ message: "", popUp: "Product already in the cart" });
+            } else {
+                await cartModel.findOneAndUpdate(
+                    { userid: userID },
+                    {
+                      $push: { products: { productid: id, quantity: value } },
+                    },
+                    { new: true }
+                  );
+                  res.send({ message: "", popUp: "Product added to Cart" });
+            }
+          
         } else {
-            await cartModel.insertMany({userid: userID,products: [{ productid: id, quantity: value }]})
+          await cartModel.insertMany({
+            userid: userID,
+            products: [{ productid: id, quantity: value }],
+          });
+          res.send({ message: "", popUp: "Product added to Cart" });
         }
-        res.send({ message: "",popUp:"item added to cart" });
-      } catch (err) {
-        res.send({ message: "",popUp:err.message });
+        
       }
+    } catch (err) {
+      res.send({ message: "", popUp: err.message });
+    }
 }
 
 
