@@ -124,7 +124,7 @@ const register = async (req, res) => {
     } else{
       console.log('nosession')
       res.locals.sessionValue = false
-      res.send({ message: "Login" });
+      res.send({ message: "nosession",popUp:"" });
       // res.json({status: "Success", redirect: 'login-register'});
     }    
   };

@@ -19,7 +19,7 @@ router.get('/logout',userController.user_logout)
 
 
 ///FOR USER ONLY
-router.post('/account/add-to-cart/:id',userController.ajaxSessionValidUser,cartController.add_to_cart)
+router.post('/account/add-to-cart/:id/:value',userController.ajaxSessionValidUser,cartController.add_to_cart)
 
 // router.post('/account/add-to-wishlist',userController.sessionValidUser,userController.products)
 

@@ -6,7 +6,7 @@ const cartModel = require("../models/cartModel");
 
 //User Side 
 const add_to_cart = async(req, res) => {
-    const { id } = req.params;
+    const { id,value } = req.params;
     const userID = req.session.user_id
     try {
         const cart = await cartModel.findOne({ userid:userID });
@@ -17,13 +17,13 @@ const add_to_cart = async(req, res) => {
             await cartModel.findOneAndUpdate(
                 { userid: userID },
                 {
-                  $push: { products: { productid: id, quantity: 1 } },
+                  $push: { products: { productid: id, quantity: value } },
                 },
                 { new: true }
               );
     
         } else {
-            await cartModel.insertMany({userid: userID,products: [{ productid: id, quantity: 1 }]})
+            await cartModel.insertMany({userid: userID,products: [{ productid: id, quantity: value }]})
         }
         res.send({ message: "",popUp:"item added to cart" });
       } catch (err) {
