@@ -55,7 +55,8 @@
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Date of Birth</label>
-                        <input name="birth_date" class="form-control" type="date" value="<%=data.birth_date%>">
+                        <% var dateNFormated = data.birth_date; %>
+                        <input min="1900-01-01" id="dateFormated" name="birth_date" class="form-control" type="date" value="">
                     </div>
                     <div class="col-md-12 form-group">
                         <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i>Update</button>
@@ -73,5 +74,26 @@
 
     </div>
 </div>
+
+
+        <script>
+            let datenow
+            var getDate = "<%= dateNFormated  %>";
+            const dateFormated = document.getElementById('dateFormated')
+            getDate = convert(getDate)
+            datenow = new Date(new Date().setFullYear(new Date().getFullYear() - 10))
+            datenow = convert(datenow)
+               dateFormated.setAttribute('value',getDate)
+               dateFormated.setAttribute('max',datenow)
+            console.log(datenow);
+
+
+            function convert(str) {
+                var date = new Date(str),
+                    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                    day = ("0" + date.getDate()).slice(-2);
+                return [date.getFullYear(), mnth, day].join("-");
+            }
+        </script>
 
 <%-include('footer')-%>
