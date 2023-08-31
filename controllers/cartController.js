@@ -3,6 +3,7 @@ const  userModel  = require("../models/userModel")
 const categoryModel = require("../models/categoryModel");
 const cartModel = require("../models/cartModel");
 const addressModel = require("../models/addressModel");
+const orderModel = require("../models/orderModel");
 
 
 //User Side 
@@ -84,17 +85,32 @@ const checkout = async(req,res) => {
 
 const checkout_post = async(req,res) => {
   try {
-    let total = 0;
       const userID = req.session.user_id
-      const addresses = await addressModel.findOne({userid:userID})
-      // console.log(addresses)
+      const address = req.body.address
+      console.log(address)
       const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
-      console.log(cartdata)
       for(i=0;i<cartdata.products.length;i++) {
-        total = total + (cartdata.products[i].productid.price * cartdata.products[i].quantity)
+        const orderHas = await orderModel.findOne({ userid: userID});
+        if(orderHas) {
+            await orderModel.findOneAndUpdate(
+                { userid: userID },
+                {
+                  $push: { products: { productid: cartdata.products[i].productid._id, quantity: cartdata.products[i].quantity,status:'out for delivery',address:address } },
+                },
+                { new: true }
+              );
+        } else {
+            await orderModel.insertMany({
+                userid: userID,
+                products: [{ productid: cartdata.products[i].productid._id, quantity: cartdata.products[i].quantity,status:'out for delivery',address:address }],
+              });
+        }
+        const stockMinus = await productModel.findOne({ _id: cartdata.products[i].productid._id },);
+        await productModel.updateOne({_id:cartdata.products[i].productid._id},{$set:{stock:stockMinus.stock - cartdata.products[i].quantity}});
+        await cartModel.updateOne({ userid: userID }, { $pull: { products: { productid: cartdata.products[i].productid._id } } });
       }
-      console.log(cartdata.products[0].productid.price+"product iidddddd")
       res.redirect("/account/orders");
+      // res.redirect("/account/orders");
 
   } catch(error) {
       res.send(error.message)
@@ -108,5 +124,5 @@ const checkout_post = async(req,res) => {
 //admin Side
 
 module.exports = {
-    add_to_cart,cart_view,checkout,checkout_post,order
+    add_to_cart,cart_view,checkout,checkout_post
 }

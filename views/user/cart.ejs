@@ -17,6 +17,7 @@
                 </thead>
                 
                 <tbody class="align-middle">
+                    <%if(cart) {%>
                     <% for(i=0;i<cart.products.length;i++) { %>
                     <tr>
                         <td class="align-middle"><img src="/uploads/<%=cart.products[i].productid.product_image[0]%>" alt="" style="width: 50px;"><%=cart.products[i].productid.product_brand_name%><%=cart.products[i].productid.product_name%></td>
@@ -40,6 +41,7 @@
                         <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
                     </tr>
                     <%} %>
+                    <%}%>
 
                     
                 </tbody>

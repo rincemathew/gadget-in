@@ -6,15 +6,6 @@ const orderSchema = mongoose.Schema({
         ref:"users",
         required:true,
     },
-    date:{
-        type:Date,
-        default:Date.now
-    },
-    address:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"addresses",
-        required:true,
-    },
     products:[
     {
       productid:{
@@ -28,6 +19,15 @@ const orderSchema = mongoose.Schema({
       },
       status:{
         type:String,
+        required:true,
+    },
+    date:{
+        type:Date,
+        default:Date.now
+    },
+    address:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"addresses",
         required:true,
     },
     }
