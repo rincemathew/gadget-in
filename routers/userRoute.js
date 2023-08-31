@@ -44,6 +44,8 @@ router.post('/account/address_delete',userController.sessionValidUser,userAccoun
 
 router.get('/account/orders/',userController.sessionValidUser,userAccountController.orders)
 
+router.post('/account/cancelorder/:id',userController.sessionValidUser,userAccountController.cancel_order)
+
 
 router.get('/account/checkout',userController.sessionValidUser,cartController.checkout)
 
