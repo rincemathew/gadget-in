@@ -63,6 +63,8 @@ router.post('/user-profile/toggle/:id',adminController.session_check,adminContro
 ///order profile
 router.get('/orders',adminController.session_check,cartController.order_admin_controller)
 
+router.post('/orders/confirm',adminController.session_check,cartController.order_delivery_confirm)
+
 
 
 router.get('*',adminController.session_check,adminController.page404)

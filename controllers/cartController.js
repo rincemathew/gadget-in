@@ -211,8 +211,20 @@ const order_admin_controller = async(req,res) => {
   }
 }
 
+const order_delivery_confirm = async(req,res) => {
+  ids = req.body
+  console.log(ids)
+  try {
+    
+    res.send({message:"",popUp:""})
+  } catch (error) {
+    res.status(200).send({ popUp: error.message,message:"" });
+  }
+}
+
 
 
 module.exports = {
-    add_to_cart,cart_view,cart_view_ajax,cart_count_increse,cart_count_decrese,delete_cart_item,checkout,checkout_post,order_admin_controller
+    add_to_cart,cart_view,cart_view_ajax,cart_count_increse,cart_count_decrese,delete_cart_item,checkout,checkout_post,order_admin_controller,
+    order_delivery_confirm
 }
