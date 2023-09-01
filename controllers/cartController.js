@@ -4,6 +4,7 @@ const categoryModel = require("../models/categoryModel");
 const cartModel = require("../models/cartModel");
 const addressModel = require("../models/addressModel");
 const orderModel = require("../models/orderModel");
+const mongoose = require("mongoose");
 
 
 //User Side 
@@ -215,8 +216,20 @@ const order_delivery_confirm = async(req,res) => {
   ids = req.body
   console.log(ids)
   try {
-    
-    res.send({message:"",popUp:""})
+    await orderModel.updateOne(
+      { userid: new mongoose.Types.ObjectId(ids.user) },
+      {
+        $set: {
+          "products.$[product].status": "delivered",
+        },
+      },
+      {
+        arrayFilters: [
+          { "product.productid": new mongoose.Types.ObjectId(ids.product) },
+        ],
+      }
+    );
+    res.send({message:"",popUp:"order delivery confirmed"})
   } catch (error) {
     res.status(200).send({ popUp: error.message,message:"" });
   }

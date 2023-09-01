@@ -142,7 +142,7 @@ const edit_product_post = async (req, res) => {
         // console.log(req.body.product_name + "haooo",req.params.id)
         await productModel.updateOne({_id:req.params.id},{$set:{product_brand_name:req.body.brand_name,product_name:req.body.product_name,
           product_slug:req.body.product_slug,description:req.body.description,category:req.body.category,stock:req.body.stock,price:req.body.price,
-            product_image: productImages,is_blocked: req.body.isBlocked ? true : false}});
+            is_blocked: req.body.isBlocked ? true : false}});
           res.redirect("/products");
     }catch(err) {
         console.log(err)
