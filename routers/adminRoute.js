@@ -3,6 +3,7 @@ const router = express.Router();
 
 const adminController = require('../controllers/adminController')
 const {upload,category_img} = require('../helpers/multer')
+const cartController = require('../controllers/cartController')
 
 //LOGIN
 
@@ -57,6 +58,11 @@ router.post('/categories/toggle/:id/',adminController.session_check,adminControl
 router.get('/user-profile',adminController.session_check,adminController.user_profile)
 
 router.post('/user-profile/toggle/:id',adminController.session_check,adminController.user_block_unblock)
+
+
+///order profile
+router.get('/orders',adminController.session_check,cartController.order_admin_controller)
+
 
 
 router.get('*',adminController.session_check,adminController.page404)

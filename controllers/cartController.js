@@ -198,7 +198,21 @@ const checkout_post = async(req,res) => {
 
 
 //admin Side
+const order_admin_controller = async(req,res) => {
+  
+  try {
+    const order = await orderModel.find({}).populate("products.productid").populate("userid").lean().exec();
+    console.log("================================");
+    console.log(order)
+    console.log("================================");
+    res.render("admin/order", { message: "",order:order });
+  } catch (error) {
+    res.status(200).send({ popUp: error.message,message:"" });
+  }
+}
+
+
 
 module.exports = {
-    add_to_cart,cart_view,cart_view_ajax,cart_count_increse,cart_count_decrese,delete_cart_item,checkout,checkout_post
+    add_to_cart,cart_view,cart_view_ajax,cart_count_increse,cart_count_decrese,delete_cart_item,checkout,checkout_post,order_admin_controller
 }
