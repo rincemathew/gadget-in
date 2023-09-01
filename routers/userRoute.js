@@ -31,6 +31,7 @@ router.post('/account/cartincrese/:id',userController.sessionValidUser,cartContr
 
 router.post('/account/cartdecrese/:id',userController.sessionValidUser,cartController.cart_count_decrese)
 
+router.post('/account/deletecart/:id',userController.sessionValidUser,cartController.delete_cart_item)
 
 router.get('/account/profile',userController.sessionValidUser,userAccountController.profile)
 

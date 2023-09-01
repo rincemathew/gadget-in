@@ -70,7 +70,7 @@
             total = 0
             for(i=0;i<resBody.cart.products.length;i++) {
                 total = total + (resBody.cart.products[i].productid.price * resBody.cart.products[i].quantity)
-                x = x + `<tr>
+                x = x + `<tr id="${resBody.cart.products[i].productid._id}+'hide'">
                         <td class="align-middle"><img src="" alt="" style="width: 50px;">${resBody.cart.products[i].productid.product_brand_name}${resBody.cart.products[i].productid.product_name}</td>
                         <td class="align-middle">₹${resBody.cart.products[i].productid.price}</td>
                         <td class="align-middle">
@@ -138,8 +138,16 @@
              cartMP.setAttribute('value', Number(value) +1)
              increseCount(id,value,getCart)
          }
-         
-         
+     }
+
+
+    const deleteItem = async(id) => {
+        const response = await fetch(`/account/deletecart/${id}`,{ method: 'POST'});
+        const resBody = await response.json();
+        if(resBody.popUp) {
+            alertMsg(resBody.popUp);
+        }
+        getCart()
      }
 
      function alertMsg(msg) {

@@ -111,19 +111,47 @@ const cart_count_decrese = async(req,res) => {
 }
 
 
+const delete_cart_item = async(req,res) => {
+  const {id} = req.params
+  const userID = req.session.user_id
+  try {
+    await cartModel.updateOne(
+      { userid: userID },
+      { $pull: { products: { productid: id } } }
+    );
+    res.status(200).send({ popUp: "item deleted sucessfully" });
+  } catch (error) {
+    res.status(200).send({ popUp: error.message });
+  }
+}
+
+
 const checkout = async(req,res) => {
   try {
     let total = 0;
       const userID = req.session.user_id
-      const addresses = await addressModel.findOne({userid:userID})
-      // console.log(addresses)
+      console.log('1111111111111111111141111111')
+      const cartdataq = await cartModel.findOne({ userid: userID })
+      console.log('1111111111111111111111111111')
+      if(!cartdataq || cartdataq.products.length == 0) {
+        console.log('333333333333333333')
+        return res.render("user/cart",{session:res.locals.sessionValue,message:"add some products to the cart"});
+      }
+      console.log('22222222222222222')
       const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
+      const addresses = await addressModel.findOne({userid:userID})
+      // if(!cartdata || !cartdata.products.length == 0) {
+      //   return res.render("user/cart",{message:"add some products to the cart"});
+      // }
+      if(!addresses || addresses.address.length == 0) {
+        return res.render("user/address",{session:res.locals.sessionValue,message:"add some products to the cart"});
+      }
       console.log(cartdata)
       for(i=0;i<cartdata.products.length;i++) {
         total = total + (cartdata.products[i].productid.price * cartdata.products[i].quantity)
       }
       console.log(cartdata.products[0].productid.price+"product iidddddd")
-      res.render("user/check_out",{session:res.locals.sessionValue,addresss:addresses,cart:cartdata,total:total});
+      res.render("user/check_out",{session:res.locals.sessionValue,addresss:addresses,cart:cartdata,total:total,message:""});
 
   } catch(error) {
       res.send(error.message)
@@ -172,5 +200,5 @@ const checkout_post = async(req,res) => {
 //admin Side
 
 module.exports = {
-    add_to_cart,cart_view,cart_view_ajax,cart_count_increse,cart_count_decrese,checkout,checkout_post
+    add_to_cart,cart_view,cart_view_ajax,cart_count_increse,cart_count_decrese,delete_cart_item,checkout,checkout_post
 }

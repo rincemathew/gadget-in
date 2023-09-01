@@ -61,7 +61,7 @@ const address = async (req, res) => {
     // res.status(200).send({addressList:addresses})
     res.render("user/address", {
       session: res.locals.sessionValue,
-      data: addresses,
+      data: addresses,message:""
     });
   } catch (error) {
     res.status(200).send(error.message);
