@@ -25,6 +25,12 @@ router.post('/account/add-to-cart/:id/:value',userController.ajaxSessionValidUse
 
 router.get('/account/cart/',userController.sessionValidUser,cartController.cart_view)
 
+router.get('/account/cartview',userController.sessionValidUser,cartController.cart_view_ajax)
+
+router.post('/account/cartincrese/:id',userController.sessionValidUser,cartController.cart_count_increse)
+
+router.post('/account/cartdecrese/:id',userController.sessionValidUser,cartController.cart_count_decrese)
+
 
 router.get('/account/profile',userController.sessionValidUser,userAccountController.profile)
 

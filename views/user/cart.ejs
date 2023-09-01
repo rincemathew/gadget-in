@@ -16,33 +16,7 @@
                     </tr>
                 </thead>
                 
-                <tbody class="align-middle">
-                    <%if(cart) {%>
-                    <% for(i=0;i<cart.products.length;i++) { %>
-                    <tr>
-                        <td class="align-middle"><img src="/uploads/<%=cart.products[i].productid.product_image[0]%>" alt="" style="width: 50px;"><%=cart.products[i].productid.product_brand_name%><%=cart.products[i].productid.product_name%></td>
-                        <td class="align-middle">₹<%=cart.products[i].productid.price%></td>
-                        <td class="align-middle">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus" >
-                                    <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="<%=cart.products[i].quantity%>">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="align-middle">₹150</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                    </tr>
-                    <%} %>
-                    <%}%>
-
+                <tbody id="inner" class="align-middle">
                     
                 </tbody>
             </table>
@@ -61,7 +35,7 @@
                 <div class="border-bottom pb-2">
                     <div class="d-flex justify-content-between mb-3">
                         <h6>Subtotal</h6>
-                        <h6>₹150</h6>
+                        <h6 id="subtotal">₹150</h6>
                     </div>
                     <div class="d-flex justify-content-between">
                         <h6 class="font-weight-medium">Shipping</h6>
@@ -71,7 +45,7 @@
                 <div class="pt-2">
                     <div class="d-flex justify-content-between mt-2">
                         <h5>Total</h5>
-                        <h5>₹160</h5>
+                        <h5 id="total">₹160</h5>
                     </div>
                     <a href="/account/checkout"><button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button></a>
                 </div>
@@ -80,7 +54,105 @@
     </div>
 </div>
 <!-- Cart End -->
+<script>
+    const getCart = async()=>{
+        const response = await fetch('/account/cartview',{ method: 'get'});
+        const resBody = await response.json();
+        console.log(resBody.cart)
+        if(!resBody.cart) {
+            document.getElementById("inner").innerHTML = `<div id="inner" class="row">
+                <div class="card col-md-12 form-group">
+                    <b>Cart is empty</b>
+                </div>   
+            </div>`;
+        } else {
+            var x =""
+            total = 0
+            for(i=0;i<resBody.cart.products.length;i++) {
+                total = total + (resBody.cart.products[i].productid.price * resBody.cart.products[i].quantity)
+                x = x + `<tr>
+                        <td class="align-middle"><img src="" alt="" style="width: 50px;">${resBody.cart.products[i].productid.product_brand_name}${resBody.cart.products[i].productid.product_name}</td>
+                        <td class="align-middle">₹${resBody.cart.products[i].productid.price}</td>
+                        <td class="align-middle">
+                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button onclick="minusCart('${resBody.cart.products[i].productid._id}')" class="btn btn-sm btn-primary btn-minus" >
+                                    <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input id="${resBody.cart.products[i].productid._id}" type="number" min="1" max="20" class="form-control form-control-sm bg-secondary border-0 text-center" value="${resBody.cart.products[i].quantity}">
+                                <div class="input-group-btn">
+                                    <button onclick="plusCart('${resBody.cart.products[i].productid._id}')" class="btn btn-sm btn-primary btn-plus">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="align-middle">${resBody.cart.products[i].productid.price * resBody.cart.products[i].quantity}</td>
+                        <td class="align-middle"><button onclick="deleteItem('${resBody.cart.products[i].productid._id}')" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
+                    </tr>
+                    `
 
+                
+            }
+            document.getElementById("inner").innerHTML = x;
+            document.getElementById("subtotal").innerHTML = '₹'+total;
+            document.getElementById('total').innerHTML = '₹'+total;
+            
+        }
+    }
+
+    const increseCount = async(id,value,getCart) => {
+        const response = await fetch(`/account/cartincrese/${id}`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({val:value,some:'ka'}) });
+        const resBody = await response.json();
+        if(resBody.popUp) {
+            alertMsg(resBody.popUp);
+        }
+        getCart()
+    }
+
+    const decreseCount = async(id,value,getCart) => {
+        const response = await fetch(`/account/cartdecrese/${id}`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({val:value,some:'ka'}) });
+        const resBody = await response.json();
+        if(resBody.popUp) {
+            alertMsg(resBody.popUp);
+        }
+        getCart()
+
+    }
+
+	 
+     function minusCart(id) {
+         cartMP = document.getElementById(id)
+         value = document.getElementById(id).value;
+         if(Number(value) > 1) {
+             cartMP.setAttribute('value', Number(value) -1)
+             decreseCount(id,value,getCart)
+         }
+         
+     }
+     function plusCart(id,value) {
+         cartMP = document.getElementById(id)
+         value = document.getElementById(id).value;
+         if(Number(value) < 20) {
+             cartMP.setAttribute('value', Number(value) +1)
+             increseCount(id,value,getCart)
+         }
+         
+         
+     }
+
+     function alertMsg(msg) {
+        Swal.fire({
+            icon: 'success',
+            title: msg,
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
+
+    getCart()
+</script>
 
 
 <%-include('footer')-%>

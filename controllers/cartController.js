@@ -52,14 +52,62 @@ const add_to_cart = async(req, res) => {
 const cart_view = async(req,res) => {
     console.log('hhhhhhhhhhhhhhhhhhhhhh')
     try {
-        const userID = req.session.user_id
-        const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
-        console.log(cartdata)
-        res.render("user/cart",{session:res.locals.sessionValue,cart: cartdata,});
+        // const userID = req.session.user_id
+        // const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
+        // console.log(cartdata)
+        res.render("user/cart",{session:res.locals.sessionValue});
 
     } catch(error) {
         res.send(error.message)
     }
+}
+
+const cart_view_ajax = async(req,res) => {
+  try {
+      const userID = req.session.user_id
+      const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
+      console.log(cartdata)
+      res.send({cart: cartdata,popUp:''});
+
+  } catch(error) {
+      res.send(error.message)
+  }
+}
+
+const cart_count_increse = async(req,res) => {
+  const {id} = req.params
+  const value = req.body
+  try {
+      const userID = req.session.user_id
+      const productdata = await productModel.findOne({ _id: id })
+      if(productdata.stock <= value.val) {
+        res.send({popUp:'item not avilable'})
+        return;
+      }
+      await cartModel.updateOne({userid: userID,"products.productid": id,},{$inc: {"products.$.quantity": 1,},});
+      res.send({popUp:''});
+
+  } catch(error) {
+      res.send(error.message)
+  }
+}
+
+const cart_count_decrese = async(req,res) => {
+  const {id} = req.params
+  const value = req.body
+  try {
+    const userID = req.session.user_id
+    const productdata = await productModel.findOne({ _id: id })
+    // if(1 >= value.val) {
+    //   res.send({popUp:''})
+    //   return;
+    // }
+    await cartModel.updateOne({userid: userID,"products.productid": id,},{$inc: {"products.$.quantity": -1,},});
+    res.send({popUp:''});
+
+  } catch(error) {
+      res.send(error.message)
+  }
 }
 
 
@@ -124,5 +172,5 @@ const checkout_post = async(req,res) => {
 //admin Side
 
 module.exports = {
-    add_to_cart,cart_view,checkout,checkout_post
+    add_to_cart,cart_view,cart_view_ajax,cart_count_increse,cart_count_decrese,checkout,checkout_post
 }
