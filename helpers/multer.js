@@ -14,6 +14,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage:storage}).array('image',6)
 const category_img = multer({storage:storage}).single('image')
+const banner_img = multer({storage:storage}).single('image')
 // const categoryImage = multer
 
-module.exports = {upload,category_img}
+module.exports = {upload,category_img,banner_img}

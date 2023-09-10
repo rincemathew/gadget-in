@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const adminController = require('../controllers/adminController')
-const {upload,category_img} = require('../helpers/multer')
+const bannerController = require('../controllers/bannerController')
+const {upload,category_img,banner_img} = require('../helpers/multer')
 const cartController = require('../controllers/cartController')
 
 //LOGIN
@@ -58,6 +59,14 @@ router.post('/categories/toggle/:id/',adminController.session_check,adminControl
 router.get('/user-profile',adminController.session_check,adminController.user_profile)
 
 router.post('/user-profile/toggle/:id',adminController.session_check,adminController.user_block_unblock)
+
+
+//banner 
+router.get('/banner',adminController.session_check,bannerController.banner)
+
+router.get('/banner/add-new',adminController.session_check,bannerController.add_banner)
+
+router.post('/banner/add-new',adminController.session_check,banner_img,bannerController.add_banner_post)
 
 
 ///order profile

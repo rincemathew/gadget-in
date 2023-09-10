@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>gadgetin banner</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/icons/favicon-admin.ico?v="+ Math.trunc(Math.random()*999)>
+    <!-- Template CSS -->
+    <link href="/admin/css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <%-include('navbar')-%>
+    <main class="main-wrap">
+        <%-include('header')-%>
+        <section class="content-main">
+                <form method="post" action="/banner/add-new" enctype="multipart/form-data">
+                <!-- <form method="post" action="/products/add-new" enctype="multipart/form-data"> -->
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add Banner</h2>
+                        <div>
+                            <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
+                            <button type="submit" class="btn btn-md rounded font-sm hover-up">Publish</button>
+                        </div>
+                    </div>
+                    <%if(message) {%>
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong><%=message%></strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                    <%}%>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-4">
+                                    <label for="banner-heading" class="form-label">Banner Heading</label>
+                                    <input value="" oninput="slugOnchange(this.value)" name="banner_heading" type="text" placeholder="Type here" class="form-control" id="" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="banner_slug" class="form-label">Banner URL</label>
+                                    <input name="banner_slug" value="" type="text" placeholder="Type here" class="form-control" id="banner-slug" disabled>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="banner-description" class="form-label">Banner Description</label>
+                                    <input value="" name="banner_description" type="text" placeholder="Type here" class="form-control" id="" required>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label">Products</label>
+                                    <select name="product" class="form-select">
+                                        <option selected><%= productList[0].product_brand_name%> <%= productList[0].product_name%></option>
+                                          <% for(i=0;i< productList.length;i++) { %>
+                                            <option value="<%=productList[i]._id%>"><%= productList[i].product_brand_name%> <%= productList[i].product_name%></option required>
+                                          <% } %>
+                                    </select>
+                                </div>
+                                <!-- <div class="mb-4">
+                                    <label class="form-label">Is Blocked</label>
+                                    <input name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                </div> -->
+                                <!-- <label class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <span class="form-check-label"> Make a template </span>
+                                </label> -->
+                            </form>
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Images</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <img src="/admin/imgs/theme/upload.svg" alt="">
+                                <input name="image" class="form-control" type="file" required>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </form>
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="admin/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="admin/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="admin/js/vendors/select2.min.js"></script>
+    <script src="admin/js/vendors/perfect-scrollbar.js"></script>
+    <script src="admin/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="admin/js/main.js" type="text/javascript"></script>
+</body>
+
+<script>
+    let bannerSlug = document.getElementById('banner-slug')
+    function slugOnchange(value) {
+        bannerSlug.setAttribute('value',value.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, ''))
+    }
+</script>
+</html>

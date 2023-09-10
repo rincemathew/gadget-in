@@ -37,3 +37,31 @@ const addToCart = async(id) => {
     }
 
 }
+
+
+const addToWishList = async(id) => {
+
+    const response = await fetch(`/account/add-to-cart/${id}`, { method: 'POST' });
+    const resBody = await response.json();
+
+
+    console.log(resBody.popUp)
+    if(resBody.message == 'nosession') {
+        window.location.replace("/login-register");
+        alertMsg('login to see your account')
+            return;
+    }
+    alertMsg(resBody.popUp)
+            return;
+
+
+    function alertMsg(msg) {
+        Swal.fire({
+            icon: 'success',
+            title: msg,
+            showConfirmButton: false,
+            timer: 2500
+        })
+    }
+
+}

@@ -1,6 +1,19 @@
 <%-include('header')-%>
     <div style="display: flex;justify-content: center;">
-      <p><%= message %></p>
+      <% if(message) { %>
+        <div style="display: flex;justify-content: center;">
+        <div style="outline: 0 none;position: fixed;top: 10%;" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <strong class="mr-auto">gadget in</strong>
+              </button>
+            </div>
+            <div class="toast-body">
+                <%= message%>
+            </div>
+          </div>
+        </div>
+         <% } %>
+      <!-- <p><%= message %></p> -->
     </div>
     <%if(popUp) {%>
     <div style="padding-top: 30px;padding-bottom: 30px;" class="container">
@@ -83,3 +96,9 @@
 
 
 		<%-include('footer')-%>
+
+    <script>
+       document.addEventListener("DOMContentLoaded", function(event){
+        $('.toast').toast('show');
+});
+    </script>
