@@ -67,8 +67,8 @@
                                 <div class="col-lg-4">
                                     <label class="form-label">Products</label>
                                     <select name="product" class="form-select">
-                                        <option selected><%= productList[0].product_brand_name%> <%= productList[0].product_name%></option>
-                                          <% for(i=0;i< productList.length;i++) { %>
+                                        <option value="<%=productList[0]._id%>" selected><%= productList[0].product_brand_name%> <%= productList[0].product_name%></option>
+                                          <% for(i=1;i< productList.length;i++) { %>
                                             <option value="<%=productList[i]._id%>"><%= productList[i].product_brand_name%> <%= productList[i].product_name%></option required>
                                           <% } %>
                                     </select>

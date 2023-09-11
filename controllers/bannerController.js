@@ -31,4 +31,14 @@ const banner = async (req, res) => {
     res.redirect("/banner");
   };
 
-  module.exports = {banner,add_banner,add_banner_post}
+  const delete_banner = async (req, res) => {
+    const { id } = req.params;
+    try {
+      await bannerModel.findOneAndRemove({_id:id})
+      res.send({message:"banner deleted successfully"})
+    } catch(error) {
+      res.send({message:error.message})
+    }
+  };
+
+  module.exports = {banner,add_banner,add_banner_post,delete_banner}

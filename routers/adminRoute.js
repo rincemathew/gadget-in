@@ -68,6 +68,8 @@ router.get('/banner/add-new',adminController.session_check,bannerController.add_
 
 router.post('/banner/add-new',adminController.session_check,banner_img,bannerController.add_banner_post)
 
+router.post('/banner/delete/:id',adminController.session_check,bannerController.delete_banner)
+
 
 ///order profile
 router.get('/orders',adminController.session_check,cartController.order_admin_controller)

@@ -3,6 +3,7 @@ const  userModel  = require("../models/userModel")
 const transporter = require("../helpers/nodeMailer");
 // const userModel = require("../models/userModel");
 const categoryModel = require("../models/categoryModel");
+const bannerModel = require("../models/bannerModel");
 
 
 //login and register
@@ -164,11 +165,12 @@ const home_page = async(req,res) => {
         smartphone = await productModel.find({category:'64ec75d49a45f8abcc481e87',is_blocked:false}).limit(4)
         wearable = await productModel.find({category:'64ec98a6ab3a9b83ef2d66d2',is_blocked:false}).limit(4)
         earwear = await productModel.find({category:'64ec764fab3a9b83ef2d66c5',is_blocked:false}).limit(4)
+        banner = await bannerModel.find({}).limit(5)
         // console.log(earwear+'earwear')
     } catch(error) {
         res.send(error.message)
     }
-    res.render('user/index',{session:res.locals.sessionValue, message: "", smartphones:smartphone, wearables:wearable,earwears:earwear,categories:productCategories})
+    res.render('user/index',{session:res.locals.sessionValue, message: "", smartphones:smartphone, wearables:wearable,earwears:earwear,categories:productCategories,banners:banner})
 }
 
 

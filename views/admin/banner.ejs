@@ -61,7 +61,7 @@
                             <h6>No Banner</h6>
                         <%}%>
                       <% for(i=0;i<data.length;i++) { %>
-                      <div class="col">
+                      <div id="<%= data[i]._id%>" class="col">
                             <div class="card card-user">
                                 <!-- <div class="card-header"> -->
                                         <img src="/uploads/<%= data[i].banner_image%>" alt="User pic">
@@ -69,6 +69,9 @@
                                 <div class="card-body">
                                     <h5 class="card-title mt-50"><%= data[i].banner_heading%></h5>
                                     <div class="card-text text-muted">
+                                        <a onclick="deleteBanner('<%= data[i]._id%>')" class="btn btn-sm font-sm btn-light rounded">
+                                            <i class="material-icons md-delete_forever"></i> Delete
+                                        </a>
                                         <!-- <p class="m-0"><%= data[i].email_id%></p> -->
                                         <p><template class="__cf_email__" data-cfemail="7f131a0c13161a3f1a071e120f131a511c1012">[email&#160;protected]</template></p>
                                         
@@ -133,26 +136,23 @@
 
 
 <script>
-  const toggleIsBlocked = async (isBlocked,id) => {
-            // const response = await fetch(`/categories/toggle/${id}/`, { method: 'POST' });
-            console.log(`/categories/toggle/${id}/`)
-            const response = await fetch(`/categories/toggle/${id}/`, { method: 'POST' });
+  const deleteBanner = async (id) => {
+            // console.log(`/categories/toggle/${id}/`)
+            const response = await fetch(`/banner/delete/${id}/`, { method: 'POST' });
             const resBody = await response.json();
 
-            if (!resBody.isOk) {
-                console.log('Some problem occurred. Please reload the page');
-                alert('Some problem occurred. Please reload the page');
-                return;
-            }
+            // if (!resBody.isOk) {
+            //     console.log('Some problem occurred. Please reload the page');
+            //     alert('Some problem occurred. Please reload the page');
+            //     return;
+            // }
             // Return if everything is ok
+            if(resBody.message == 'banner deleted successfully') {
+                document.getElementById(id).style.display = 'none';
+            }
             alertMsg(resBody.message)
             return;
         }
-  function changeCategory(cb,id){
-    // console.log(cb.checked,id)
-    toggleIsBlocked(cb.checked,id)
-  }
-
 
   function alertMsg(msg) {
         Swal.fire({
