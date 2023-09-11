@@ -5,6 +5,7 @@ const adminController = require('../controllers/adminController')
 const bannerController = require('../controllers/bannerController')
 const {upload,category_img,banner_img} = require('../helpers/multer')
 const cartController = require('../controllers/cartController')
+const couponController = require('../controllers/couponController')
 
 //LOGIN
 
@@ -69,6 +70,16 @@ router.get('/banner/add-new',adminController.session_check,bannerController.add_
 router.post('/banner/add-new',adminController.session_check,banner_img,bannerController.add_banner_post)
 
 router.post('/banner/delete/:id',adminController.session_check,bannerController.delete_banner)
+
+
+//coupon
+router.get('/coupon',adminController.session_check,couponController.coupon)
+
+router.get('/coupon/add-new',adminController.session_check,couponController.add_coupon)
+
+router.post('/coupon/add-new',adminController.session_check,couponController.add_coupon_post)
+
+router.post('/coupon/delete/:id',adminController.session_check,couponController.delete_coupon)
 
 
 ///order profile

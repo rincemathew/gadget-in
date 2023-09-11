@@ -1,10 +1,9 @@
 const productModel = require("../models/productModel");
-const bannerModel = require("../models/bannerModel");
-const {slugify} = require('..//helpers/validator')
+const couponModel = require("../models/couponModel");
 
 
 
-const banner = async (req, res) => {
+const coupon = async (req, res) => {
     try {
       const bannerData = await bannerModel.find({});
       console.log(bannerData)
@@ -14,17 +13,12 @@ const banner = async (req, res) => {
     }
   };
   
-  const add_banner = async (req, res) => {
-    try {
-      products = await productModel.find({})
-      res.render("admin/add_banner", { productList: products, message: "",data:""});
-    }catch(error) {
-      res.redirect("/banner");
-    }
-    
+  const add_coupon = async (req, res) => {
+    products = await productModel.find({})
+    res.render("admin/add_banner", { productList: products, message: "",data:""});
   };
   
-  const add_banner_post = async (req, res) => {
+  const add_coupon_post = async (req, res) => {
     bannerCheck = await bannerModel.findOne({banner_slug:slugify(req.body.banner_heading)}) 
     if(bannerCheck) {
       products = await productModel.find({})
@@ -36,7 +30,7 @@ const banner = async (req, res) => {
     res.redirect("/banner");
   };
 
-  const delete_banner = async (req, res) => {
+  const delete_coupon = async (req, res) => {
     const { id } = req.params;
     try {
       await bannerModel.findOneAndRemove({_id:id})
@@ -46,4 +40,4 @@ const banner = async (req, res) => {
     }
   };
 
-  module.exports = {banner,add_banner,add_banner_post,delete_banner}
+  module.exports = {coupon,add_coupon,add_coupon_post,delete_coupon}
