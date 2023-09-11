@@ -207,11 +207,35 @@ const user_logout = async (req, res) => {
   res.redirect("/login-register")
 };
 
+//search box
+
+const search_box = async(req, res) => {
+  console.log('ffffffffffffffffffffffffffffffffffff')
+  const {value} = req.params
+  console.log(value)
+  try {
+    // const productList = await productModel.find({$product_slug: {$search: value}}).limit(7)
+    const productList = await productModel.find({ "product_slug": { "$regex": value, "$options": "i" } }).limit(7)
+    console.log(productList)
+    res.send({message:'',productLists:productList})
+  }catch(error) {
+    res.send({message:error.message})
+  }
+}
+
+const search_box_click = async(req, res) => {
+  try {
+    // const productList = await productModel.find({$text: {$search: searchString}}).limit(7)
+  }catch(error) {
+
+  }
+}
+
 //404
 const page404 = async (req, res) => {
   res.render("user/404", {session:res.locals.sessionValue,});
 };
 
 module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,ajaxSessionValidUser,
-  products,categories_view,user_logout,page404
+  products,categories_view,user_logout,search_box,search_box_click,page404
     }
