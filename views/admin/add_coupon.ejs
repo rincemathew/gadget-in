@@ -25,7 +25,7 @@
     <main class="main-wrap">
         <%-include('header')-%>
         <section class="content-main">
-                <form method="post" action="/banner/add-new" enctype="multipart/form-data">
+                <form method="post" action="/coupon/add-new">
                 <!-- <form method="post" action="/products/add-new" enctype="multipart/form-data"> -->
             <div class="row">
                 <div class="col-9">
@@ -61,32 +61,24 @@
                                     <input value="" name="coupon_code" type="text" placeholder="Type here" class="form-control" id="" required>
                                 </div>
                                 <div class="col-lg-4">
-                                    <label class="form-label">Products</label>
-                                    <select name="coupon_type" class="form-select">
+                                    <label class="form-label">Coupon Type</label>
+                                    <select id="mySelect" onchange="changeSelect()" name="coupon_type" class="form-select">
                                         <option value="percentage" selected>Percentage</option>
                                         <option value="number">Number</option required>
                                     </select>
                                 </div>
                                 <div class="mb-4">
                                     <label for="coupon_value" class="form-label">Coupon Value</label>
-                                    <input value="" name="coupon_value" type="number" placeholder="Type here" class="form-control" id="" required>
+                                    <input min="0" max="90" value="" name="coupon_value" type="number" placeholder="Type here" class="form-control" id="min-mix" required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="expire_date" class="form-label">Coupon Expire Date</label>
-                                    <input value="" name="expire_date" type="date" placeholder="Type here" class="form-control" id="" required>
+                                    <input min="2023-01-01" max="2025-12-31" value="" name="expire_date" type="date" placeholder="Type here" class="form-control" id="" required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="minimum_amount" class="form-label">Minimum Amount</label>
-                                    <input value="" name="minimum_amount" type="number" placeholder="Type here" class="form-control" id="" required>
+                                    <input min="0" max="90000" value="" name="minimum_amount" type="number" placeholder="Type here" class="form-control" id="" required>
                                 </div>
-                                <!-- <div class="mb-4">
-                                    <label class="form-label">Is Blocked</label>
-                                    <input name="isBlocked" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                </div> -->
-                                <!-- <label class="form-check mb-4">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    <span class="form-check-label"> Make a template </span>
-                                </label> -->
                             </form>
                         </div>
                     </div> <!-- card end// -->
@@ -132,6 +124,14 @@
 </body>
 
 <script>
-    
+    function changeSelect() {
+        var cat = document.getElementById("mySelect");
+    if(cat.value == "percentage"){
+        document.getElementById("min-mix").max = "90"
+    }else{
+        document.getElementById("min-mix").max = "5000";
+
+    }
+    }
 </script>
 </html>

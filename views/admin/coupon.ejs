@@ -16,6 +16,81 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="images/icons/favicon-admin.ico?v="+ Math.trunc(Math.random()*999)>
     <!-- Template CSS -->
+    <style>
+        .container{
+    width: 100%;
+    height: auto;
+    /* height: 100vh; */
+    background: #f0fff3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.coupon-card{
+    background: linear-gradient(135deg, #7158fe, #9d4de6);
+    color: #fff;
+    text-align: center;
+    padding: 40px 80px;
+    border-radius: 15px;
+    box-shadow: 0 10px 10px 0 rgba(0,0,0,0.15);
+    position: relative;
+
+}
+.logo{
+    width: 80px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+}
+.coupon-card h3{
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 40px;
+
+}
+.coupon-card p{
+    font-size: 15px;
+
+}
+.coupon-row{
+    display: flex;
+    align-items: center;
+    margin: 25px auto;
+    width: fit-content;
+
+}
+#cpnCode{
+    border: 1px dashed #fff;
+    padding: 10px 20px;
+    border-right: 0;
+
+}
+#cpnBtn{
+    border: 1px solid #fff;
+    background: #fff;
+    padding: 10px 20px;
+    color: #7158fe;
+    cursor: pointer;
+}
+.circle1, .circle2{
+    background: #f0fff3;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+.circle1{
+    left: -25px;
+}
+.circle2{
+    right: -25px;
+}
+
+    </style>
     <link href="admin/css/main.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -27,7 +102,7 @@
         
         <section class="content-main">
             <div class="content-header">
-                <h2 class="content-title">Banners</h2>
+                <h2 class="content-title">Coupons</h2>
                 <div>
                     <!-- <a href="#" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a> -->
                 </div>
@@ -58,38 +133,35 @@
                 <div class="card-body">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
                         <%if(data.length === 0) {%>
-                            <h6>No Banner</h6>
+                            <h6>No Coupon</h6>
                         <%}%>
                       <% for(i=0;i<data.length;i++) { %>
                       <div id="<%= data[i]._id%>" class="col">
                             <div class="card card-user">
                                 <!-- <div class="card-header"> -->
-                                        <img src="/uploads/<%= data[i].banner_image%>" alt="User pic">
+                                        <!-- <img src="/uploads/<%= data[i].banner_image%>" alt="User pic"> -->
                                 <!-- </div> -->
-                                <div class="card-body">
-                                    <h5 class="card-title mt-50"><%= data[i].banner_heading%></h5>
-                                    <div class="card-text text-muted">
-                                        <a onclick="deleteBanner('<%= data[i]._id%>')" class="btn btn-sm font-sm btn-light rounded">
-                                            <i class="material-icons md-delete_forever"></i> Delete
-                                        </a>
-                                        <!-- <p class="m-0"><%= data[i].email_id%></p> -->
-                                        <p><template class="__cf_email__" data-cfemail="7f131a0c13161a3f1a071e120f131a511c1012">[email&#160;protected]</template></p>
-                                        
-                                        <!-- <form>
-                                          <div class="d-flex align-items-center justify-content-center form-check form-switch">
-                                            <% if(data[i].is_blocked) { %>
-                                              <input onchange="changeCategory(this,'<%= data[i]._id%>')" id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox"
-                                                id="flexSwitchCheckChecked">
-                                              <%}else {%>
-                                                <input onchange="changeCategory(this,'<%= data[i]._id%>')" id="<%= data[i]._id%>" name="isBlocked" class="form-check-input toggle-is-blocked" type="checkbox"
-                                                  id="flexSwitchCheckChecked" checked>
-                                                <%}%>
-                                                  <label class="form-check-label" for="flexSwitchCheckChecked"></label>
-                                          </div>
-                                        </form> -->
-                                        
+                                <!-- <div class="card-body"> -->
+                                    <!-- <h5 class="card-title mt-50"><%= data[i].coupon_description%></h5> -->
+                                    <div class="container">
+                                        <div class="coupon-card">
+                                            <img src="https://i.postimg.cc/KvTqpZq9/uber.png" class="logo">
+                                            <h3><%= data[i].coupon_description%></h3>
+                                            <di class="coupon-row">
+                                                <span id="cpnCode"><%= data[i].coupon_code%></span>
+                                                <a onclick="deleteBanner('<%= data[i]._id%>')" class="btn btn-sm font-sm btn-light rounded">
+                                                    <i class="material-icons md-delete_forever"></i> Delete
+                                                </a>
+                                            </di>
+                                            <p>Valid Till: <%= data[i].expire_date%></p>
+                                            <div class="circle1"></div>
+                                            <div class="circle2"></div>
+                                        </div>
                                     </div>
-                                </div>
+                                    <!-- <div class="card-text text-muted">
+                                        
+                                    </div> -->
+                                <!-- </div> -->
                             </div>
                         </div> 
                         <% } %>
@@ -138,7 +210,7 @@
 <script>
   const deleteBanner = async (id) => {
             // console.log(`/categories/toggle/${id}/`)
-            const response = await fetch(`/banner/delete/${id}/`, { method: 'POST' });
+            const response = await fetch(`/coupon/delete/${id}/`, { method: 'POST' });
             const resBody = await response.json();
 
             // if (!resBody.isOk) {
@@ -147,7 +219,7 @@
             //     return;
             // }
             // Return if everything is ok
-            if(resBody.message == 'banner deleted successfully') {
+            if(resBody.message == 'Coupon deleted successfully') {
                 document.getElementById(id).style.display = 'none';
             }
             alertMsg(resBody.message)
