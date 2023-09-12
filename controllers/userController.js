@@ -210,7 +210,6 @@ const user_logout = async (req, res) => {
 //search box
 
 const search_box = async(req, res) => {
-  console.log('ffffffffffffffffffffffffffffffffffff')
   const {value} = req.params
   console.log(value)
   try {
@@ -223,13 +222,6 @@ const search_box = async(req, res) => {
   }
 }
 
-const search_box_click = async(req, res) => {
-  try {
-    // const productList = await productModel.find({$text: {$search: searchString}}).limit(7)
-  }catch(error) {
-
-  }
-}
 
 //404
 const page404 = async (req, res) => {
@@ -237,5 +229,5 @@ const page404 = async (req, res) => {
 };
 
 module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,ajaxSessionValidUser,
-  products,categories_view,user_logout,search_box,search_box_click,page404
+  products,categories_view,user_logout,search_box,page404
     }

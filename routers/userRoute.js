@@ -3,6 +3,7 @@ var router = express.Router();
 var userController = require('../controllers/userController')
 var cartController = require('../controllers/cartController')
 const userAccountController = require('../controllers/userAccountController')
+const orderController = require('../controllers/orderController')
 
 
 //// LOGIN AND REGISTER
@@ -55,9 +56,9 @@ router.get('/account/orders/',userController.sessionValidUser,userAccountControl
 router.post('/account/cancelorder/:id',userController.sessionValidUser,userAccountController.cancel_order)
 
 
-router.get('/account/checkout',userController.sessionValidUser,cartController.checkout)
+router.get('/account/checkout',userController.sessionValidUser,orderController.checkout)
 
-router.post('/account/checkout',userController.sessionValidUser,cartController.checkout_post)
+router.post('/account/checkout',userController.sessionValidUser,orderController.checkout_post)
 
 
 
@@ -71,8 +72,6 @@ router.get('/:slug',userController.sessionValidation,userController.categories_v
 
 //search box
 router.post('/search/searchbox/:value',userController.search_box)
-
-router.post('/search/:id',userController.sessionValidation,userController.search_box_click)
 
 
 
