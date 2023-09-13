@@ -145,7 +145,7 @@ const orders = async (req, res) => {
   try {
     orderData = await orderModel
       .findOne({ userid: userID })
-      .populate("products.productid");
+      // .populate("orders");
     console.log(orderData + "ooooooooooooo");
     res.render("user/order", {
       session: res.locals.sessionValue,
@@ -177,20 +177,8 @@ const cancel_order = async (req, res) => {
     // If order has not been updated
     if (updateResponse.modifiedCount === 0) {
         console.log('Updating order unsuccessful -------------------')
-      // res.send({isOk: false, error: "Updating order unsuccessful"})
-      //   return;
+      
     }
-
-    // const orderdata = await orderModel.findOne({ userid: userID }).populate("products.productid");
-    // const count = 0;
-    // for(i=0;i<orderdata.products.length;i++) {
-    //     if(orderdata.products[i].productid._id == id) {
-    //         count = orderdata.products[i].productid.quantity
-    //         const stockMinus = await productModel.findOne({ _id: orderdata.products[i].productid._id },)
-    //         await productModel.updateOne({_id:orderdata.products[i].productid._id},{$set:{stock:stockMinus.stock + count}});
-    //     }
-    // }
-    // await productModel.updateOne({_id:cartdata.products[i].productid._id},{$set:{stock:stockMinus.stock - cartdata.products[i].quantity}});
 
     console.log('ORDER HAS BEEN UPDATED SUCCESSFULLY ------------------------')
     res.send({ popUp: "Product Cancelled" });

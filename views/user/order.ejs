@@ -25,6 +25,11 @@
                         </div>
                     </a>
                     <h6 class="mb-3">Orders</h6>
+                    <a href="/account/wallet">
+                        <div class="d-flex justify-content-between">
+                            <p>Orders</p>
+                        </div>
+                    </a>
                 </div>
         
             </div>
@@ -44,17 +49,15 @@
                 </thead>
                 <tbody class="align-middle">
                     <% if(data) { %>
-                        <% for(i=0;i<data.products.length;i++) { %>
+                        <% for(i=0;i<data.orders.length;i++) { %>
                             <tr>
-                                <td class="align-middle"><img src="/uploads/<%=data.products[i].productid.product_image[0]%>" alt="" style="width: 50px;"><%=data.products[i].productid.product_name%></td>
-                                <td id="status<%=data.products[i].productid._id%>" class="align-middle"><i class="fa fa-truck"></i><%=data.products[i].status%></td>
-                                <td class="align-middle"><%=data.products[i].quantity%></td>
-                                <% if(data.products[i].status == 'out for delivery') { %>
-                                <td id="<%=data.products[i].productid._id%>" class="align-middle"><button onclick="cancelOrder('<%=data.products[i].productid._id.toString()%>')" class="btn btn-sm btn-danger"><i class="fa fa-ban"> Cancel</i></button></td>
-                                <% } %>
+                                <td class="align-middle"><%=data.orders[i].date%></td>
+                                <td id="" class="align-middle"><i class="fa fa-truck"></i><%=data.orders[i].total_amount%></td>
+                                <td class="align-middle"><%=data.orders[i].coupon_amount%></td>
                             </tr>
                         <% } %>
                     <% } %>
+                    
                     
                     
                 </tbody>

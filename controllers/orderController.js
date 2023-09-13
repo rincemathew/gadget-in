@@ -54,20 +54,17 @@ const checkout = async(req,res) => {
       const address = req.body.address
       const payment = req.body.payment == 'cod'? 'Cash on Delevery' : 'Online Payment'
       const orderHas = await orderModel.findOne({ userid: userID});
-      console.log('fhhhhhhhhhhhhhhh')
       const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
       let products = []
-      console.log('dqqqqqqqqqqqqqqqq')
       for(i=0;i<cartdata.products.length;i++) {
         products[i] = {product_id: cartdata.products[i].productid._id, quantity: cartdata.products[i].quantity,status:'out for delivery',delivery_date:""}
        }
-       console.log('fffffffffffffffffffffd')
 
       if(orderHas) {
         await orderModel.findOneAndUpdate(
                     { user_id: userID },
                     {
-                      $push: { orders: { total_amount: "", coupon_type: "",coupon_amount:"",payment_method:payment,reason:"",address:address, products:products } },
+                      $push: { orders: { total_amount: 1000, coupon_type: "",coupon_amount:"",payment_method:payment,reason:"",address:address, products:products } },
                     },
                     { new: true }
                   );
@@ -112,7 +109,7 @@ const checkout = async(req,res) => {
   const order_admin_controller = async(req,res) => {
     
     try {
-      const order = await orderModel.find({}).populate("products.productid").populate("userid").lean().exec();
+      const order = await orderModel.find({}).populate("orders").populate("userid").lean().exec();
       console.log(order)
       res.render("admin/order", { message: "",order:order });
     } catch (error) {
