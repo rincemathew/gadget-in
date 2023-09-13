@@ -1,37 +1,63 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const orderSchema = mongoose.Schema({
-    userid:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"users",
-        required:true,
+const orderSchema = mongoose.Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      required: true,
     },
-    products:[
-    {
-      productid:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"products",
-        required:true,
+    orders:[{
+      date: {
+        type: Date,
+        default: Date.now,
       },
-      quantity:{
-        type:Number,
-        required:true
+      total_amount: {
+        type: Number,
+        required: true,
       },
-      status:{
-        type:String,
-        required:true,
-    },
-    date:{
-        type:Date,
-        default:Date.now
-    },
-    address:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"addresses",
-        required:true,
-    },
-    }
-    ]
-},{versionkey:false})
+      coupon_type: {
+        type: String,
+      },
+      coupon_amount: {
+        type: Number,
+      },
+      payment_method: {
+        type: String,
+        required: true,
+      },
+      reason: {
+        type: String,
+      },
+      products: [
+        {
+          product_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "products",
+            required: true,
+          },
+          quantity: {
+            type: Number,
+            required: true,
+          },
+          status: {
+            type: String,
+            required: true,
+          },
+          delivery_date: {
+            type:String,
+            created:Date,
+          }
+        }
+      ],
+      address: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "addresses",
+        required: true,
+      },
+    }]
+  },
+  { versionkey: false }
+);
 
-module.exports = mongoose.model('orders',orderSchema)
+module.exports = mongoose.model("orders", orderSchema);
