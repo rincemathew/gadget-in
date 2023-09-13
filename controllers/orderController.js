@@ -6,6 +6,14 @@ const addressModel = require("../models/addressModel");
 const orderModel = require("../models/orderModel");
 const mongoose = require("mongoose");
 
+const Razorpay = require('razorpay'); 
+
+
+const razorpayInstance = new Razorpay({
+  key_id: RAZORPAY_ID_KEY = process.env,
+  key_secret: RAZORPAY_SECRET_KEY = process.env
+});
+
 
 const checkout = async(req,res) => {
     try {
@@ -42,6 +50,7 @@ const checkout = async(req,res) => {
 
   const online_payment = async(req,res,payment) =>{
     try{
+      
 
     }catch(error) {
       console.log(error.message)

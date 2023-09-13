@@ -39,7 +39,12 @@ router.get('/account/profile',userController.sessionValidUser,userAccountControl
 
 router.post('/account/profile',userController.sessionValidUser,userAccountController.profilePost)
 
+//wishlist
+
 router.get('/account/wishlist/',userController.sessionValidUser,userAccountController.wishlist)
+
+
+//addresses
 
 router.get('/account/address/',userController.sessionValidUser,userAccountController.address)
 
@@ -51,9 +56,15 @@ router.post('/account/address',userController.sessionValidUser,userAccountContro
 
 router.post('/account/address_delete',userController.sessionValidUser,userAccountController.address_delete)
 
+//orders
+
 router.get('/account/orders/',userController.sessionValidUser,userAccountController.orders)
 
 router.post('/account/cancelorder/:id',userController.sessionValidUser,userAccountController.cancel_order)
+
+//Wallet
+
+router.get('/account/wallet',userController.sessionValidUser,userAccountController.wallet)
 
 
 router.get('/account/checkout',userController.sessionValidUser,orderController.checkout)

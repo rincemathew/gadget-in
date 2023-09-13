@@ -76,7 +76,8 @@
                             <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
                         </div>
                     </div> -->
-                    <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                    <!-- <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button> -->
+                    <button id="pay-button" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
                 </div>
             </div>
         </div>
@@ -84,5 +85,45 @@
 </form>
 </div>
 <!-- Checkout End -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+   var options = {
+       "key": "rzp_test_cLQpjxzEEr4RTn", 
+       "amount": "49900", 
+       "currency": "INR",
+       "name": "Rince Mathew",
+       "description": "Pay & Checkout",
+        // "image": "https://media.geeksforgeeks.org/wp-content/uploads/20210806114908/dummy-200x200.png",
+       "handler": function (response){
+        console.log(response)
+           alert("This step of Payment Succeeded");
+       },
+       "prefill": {
+         "contact":"9876543210", 
+         "name": "Twinkle Sharma",  
+         "email": "smtwinkle@gmail.com"
+       },
+    //   "notes" : {
+    //      "description":"Best Course for SDE placements",
+    //      "language":"Available in 4 major Languages JAVA, C/C++, Python, Javascript",
+    //      "access":"This course have Lifetime Access"
+    //    }, 
+       "theme": {
+           "color": "#ffd333"
+       }
+   };
+   var razorpayObject = new Razorpay(options);
+   console.log(razorpayObject);
+   razorpayObject.on('payment.failed', function (response){
+         console.log(response);
+         alert("This step of Payment Failed");
+   });
+     
+   document.getElementById('pay-button').onclick = function(e){
+       razorpayObject.open();
+       e.preventDefault();
+   }
+</script>
+
 
 <%-include('footer')-%>

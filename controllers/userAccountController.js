@@ -187,6 +187,22 @@ const cancel_order = async (req, res) => {
   }
 };
 
+
+const wallet = async (req, res) => {
+  const userID = req.session.user_id;
+  try {
+    // orderData = await orderModel
+    //   .findOne({ userid: userID })
+    // console.log(orderData + "ooooooooooooo");
+    // res.render("user/order", {
+    //   session: res.locals.sessionValue,
+    //   data: orderData,
+    // });
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
 module.exports = {
   profile,
   profilePost,
@@ -197,5 +213,5 @@ module.exports = {
   address_edit,
   address_delete,
   orders,
-  cancel_order,
+  cancel_order,wallet
 };
