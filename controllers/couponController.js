@@ -34,4 +34,16 @@ const coupon = async (req, res) => {
     }
   };
 
-  module.exports = {coupon,add_coupon,add_coupon_post,delete_coupon}
+
+  //user side 
+  const display_coupon = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const couponData = await couponModel.find({});
+        res.send({ message: "", data: couponData });
+    } catch (error) {
+      res.send(error.message);
+    }
+  };
+
+  module.exports = {coupon,add_coupon,add_coupon_post,delete_coupon,display_coupon}

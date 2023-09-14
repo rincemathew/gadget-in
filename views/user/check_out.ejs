@@ -1,5 +1,90 @@
 <%-include('header')-%>
+<style>
+    .container{
+width: 100%;
+height: auto;
+/* height: 100vh; */
+background: #f0fff3;
+display: flex;
+align-items: center;
+justify-content: center;
 
+}
+.coupon-card{
+background: linear-gradient(135deg, #7158fe, #9d4de6);
+color: #fff;
+text-align: center;
+padding: 40px 80px;
+border-radius: 15px;
+box-shadow: 0 10px 10px 0 rgba(0,0,0,0.15);
+position: relative;
+
+}
+.coupon-cardEx{
+background: linear-gradient(135deg, #61569e, #8b878b);
+color: #fff;
+text-align: center;
+padding: 40px 80px;
+border-radius: 15px;
+box-shadow: 0 10px 10px 0 rgba(0,0,0,0.15);
+position: relative;
+
+}
+.logo{
+width: 80px;
+border-radius: 8px;
+margin-bottom: 20px;
+
+}
+.coupon-card h3{
+font-size: 28px;
+font-weight: 400;
+line-height: 40px;
+
+}
+.coupon-card p{
+font-size: 15px;
+
+}
+.coupon-row{
+display: flex;
+align-items: center;
+margin: auto;
+justify-content: center;
+/* width: fit-content; */
+
+}
+#cpnCode{
+border: 1px dashed #fff;
+padding: 10px 20px;
+border-right: 0;
+
+}
+#cpnBtn{
+border: 1px solid #fff;
+background: #fff;
+padding: 10px 20px;
+color: #7158fe;
+cursor: pointer;
+}
+.circle1, .circle2{
+background: #f0fff3;
+width: 50px;
+height: 50px;
+border-radius: 50%;
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+
+}
+.circle1{
+left: -25px;
+}
+.circle2{
+right: -25px;
+}
+
+</style>
 <!-- Checkout Start -->
 <div class="container-fluid">
     <form method="post" action="/account/checkout">
@@ -21,6 +106,9 @@
                         </div>
                     <% } %>
                 <%}%>    
+            </div>
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Coupons</span></h5>
+            <div id="couponinner" class="bg-light p-30 row">  
             </div>
         </div>
         <div class="col-lg-4">
@@ -44,14 +132,15 @@
                         <h6>₹<%=total%></h6>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Shipping</h6>
-                        <h6 class="font-weight-medium">₹0</h6>
+                        <h6 class="font-weight-medium">Coupon offer</h6>
+                        <h6 id="couponid" class="font-weight-medium">₹0</h6>
                     </div>
                 </div>
                 <div class="pt-2">
                     <div class="d-flex justify-content-between mt-2">
                         <h5>Total</h5>
-                        <h5>₹<%=total%></h5>
+                        <input style="display: none;" id="total" value="<%=total%>">
+                        <h5 id="totalh5">₹<%=total%></h5>
                     </div>
                 </div>
             </div>
@@ -60,14 +149,20 @@
                 <div class="bg-light p-30">
                     <div class="form-group">
                         <div class="custom-control custom-radio">
-                            <input type="radio" value="cod" class="custom-control-input" name="payment" id="cod">
+                            <input type="radio" value="cash on delivery" class="custom-control-input" name="payment" id="cod">
                             <label class="custom-control-label" for="cod">Cash on delivery</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-radio">
-                            <input type="radio" value="op" class="custom-control-input" name="payment" id="onlinepayment" required>
+                            <input type="radio" value="online payment" class="custom-control-input" name="payment" id="onlinepayment" required>
                             <label class="custom-control-label" for="onlinepayment">Online Payment</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" value="wallet" class="custom-control-input" name="payment" id="onlinepayment+wallet" required>
+                            <label class="custom-control-label" for="onlinepayment+wallet">Wallet + Online Payment</label>
                         </div>
                     </div>
                     <!-- <div class="form-group mb-4">
@@ -87,21 +182,29 @@
 <!-- Checkout End -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
+    let couponType=""
+    let couponAmount=0
+    let couponActivated = ""
+    let couponValueCheck = document.getElementById('total').value
+    let totalV
+
+    totalV = document.getElementById('total').value*100
+    console.log(document.getElementById('total').value*100)
    var options = {
        "key": "rzp_test_cLQpjxzEEr4RTn", 
-       "amount": "49900", 
+       "amount": totalV, 
        "currency": "INR",
-       "name": "Rince Mathew",
+       "name": "Online Payment",
        "description": "Pay & Checkout",
-        // "image": "https://media.geeksforgeeks.org/wp-content/uploads/20210806114908/dummy-200x200.png",
        "handler": function (response){
         console.log(response)
-           alert("This step of Payment Succeeded");
+        //    alert("This step of Payment Succeeded");
+        result('success')
        },
        "prefill": {
-         "contact":"9876543210", 
-         "name": "Twinkle Sharma",  
-         "email": "smtwinkle@gmail.com"
+         "contact":"", 
+         "name": "",  
+         "email": ""
        },
     //   "notes" : {
     //      "description":"Best Course for SDE placements",
@@ -116,13 +219,125 @@
    console.log(razorpayObject);
    razorpayObject.on('payment.failed', function (response){
          console.log(response);
-         alert("This step of Payment Failed");
+        //  alert("This step of Payment Failed");
+        alertMsgF("Oops....Payment Failed, Please Try again!!!")
    });
      
    document.getElementById('pay-button').onclick = function(e){
+    if(document.querySelector('input[name="payment"]:checked').value == null) {
+        alertMsgF("Select a payment method!")
+        return;
+    }
+    if(document.querySelector('input[name="address"]:checked').value == null) {
+        alertMsgF("Select an address to continue!")
+        return;
+    }
+    if(document.querySelector('input[name="payment"]:checked').value == "cash on delivery") {
+        result("success")
+        return;
+    }
        razorpayObject.open();
        e.preventDefault();
    }
+
+
+   const result = async(status) => {
+    dataa = {
+        total_amount: document.getElementById('total').value*100,
+        coupon_type:couponType,
+        coupon_amount:couponAmount,
+        payment_method:document.querySelector('input[name="payment"]:checked').value,
+        address:document.querySelector('input[name="address"]:checked').value
+    }
+        const response = await fetch(`/account/checkout`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({data:dataa}) });
+        const resBody = await response.json();
+        if(resBody.popUp) {
+            alertMsg("Your order has been Placed");
+        }
+   }
+   function alertMsg(msg) {
+        Swal.fire({
+            icon: 'success',
+            title: msg,
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
+
+    const display_coupon = async() => {
+        try{
+            const response = await fetch(`/account/coupon`,{ method: 'GET'});
+        const resBody = await response.json();
+        x =''
+        for(i=0;i<resBody.data.length;i++) {
+        x = x + `<div class="col-6 mb-2" style="">
+            <div class="coupon-card">
+               <h3>${resBody.data[i].coupon_description}</h3>
+                <di class="coupon-row">
+                    <span id="cpnCode">${resBody.data[i].coupon_code}</span>
+                    <Button onclick="couponCheck('${resBody.data[i].expire_date}','${resBody.data[i]._id}',${resBody.data[i].minimum_amount},'${resBody.data[i].coupon_type}',${resBody.data[i].coupon_value})" id="cpnBtn${resBody.data[i]._id}">Activate</Button>
+                </di>
+                <p>Valid Till:${resBody.data[i].expire_date}</p>
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+            </div>
+        </div>`
+    }
+        document.getElementById('couponinner').innerHTML = x
+
+        } catch(error) {
+            console.log(error.message)
+            // <span id="cpnBtn">Copy Code</span>
+        }
+        
+   };
+
+   function couponCheck(expire,id,minValue,cType,cAmount) {
+    console.log(couponValueCheck,minValue < couponValueCheck)
+    if(minValue > couponValueCheck) {
+        alertMsgF(`You need to purchase minimum Rs.${minValue} to activate `)
+        return
+    }
+    console.log(cType,cAmount)
+    if(new Date(expire) < new Date) {
+        alertMsgF(`This coupon is expired`)
+        return
+    }
+
+    if(couponActivated !== "") {
+        document.getElementById(couponActivated).innerText = 'Activate'
+        document.getElementById(couponActivated).style.backgroundColor = 'white'
+    }
+    document.getElementById(`cpnBtn${id}`).innerText = 'Activated'
+    document.getElementById(`cpnBtn${id}`).style.backgroundColor = 'green'
+    couponType = cType
+    couponAmount = cAmount
+    couponActivated = `cpnBtn${id}`
+    if(couponType == 'percentage') {
+        document.getElementById('couponid').innerHTML =  `${couponAmount}%`
+        document.getElementById('total').value =  couponValueCheck * (100 - couponAmount) /100
+        totalV = couponValueCheck * (100 - couponAmount) /100
+        document.getElementById('totalh5').innerHTML =  `₹${couponValueCheck * (100 - couponAmount) /100}`
+    } else {
+        document.getElementById('couponid').innerHTML = `₹${couponAmount}`
+        document.getElementById('total').value =  couponValueCheck - couponAmount
+        totalV = couponValueCheck - couponAmount
+        document.getElementById('totalh5').innerHTML =  `₹${couponValueCheck - couponAmount}`
+    }
+    
+    
+   }
+
+   display_coupon();
+
+   function alertMsgF(msg) {
+        Swal.fire({
+            icon: 'error',
+            title: msg,
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
 </script>
 
 

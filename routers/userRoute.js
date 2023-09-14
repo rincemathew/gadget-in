@@ -4,6 +4,7 @@ var userController = require('../controllers/userController')
 var cartController = require('../controllers/cartController')
 const userAccountController = require('../controllers/userAccountController')
 const orderController = require('../controllers/orderController')
+const couponController = require('../controllers/couponController')
 
 
 //// LOGIN AND REGISTER
@@ -42,6 +43,12 @@ router.post('/account/profile',userController.sessionValidUser,userAccountContro
 //wishlist
 
 router.get('/account/wishlist/',userController.sessionValidUser,userAccountController.wishlist)
+
+
+//coupon
+
+router.get('/account/coupon',userController.sessionValidUser,couponController.display_coupon)
+
 
 
 //addresses

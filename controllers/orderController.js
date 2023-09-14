@@ -41,11 +41,19 @@ const checkout = async(req,res) => {
   
   
   const checkout_post = async(req,res) => {
-    if(req.body.payment === 'cod'){
-      cod(req,res)
-    } else {
-      online_payment(req,res);
+    try{
+      const {id} = req.params
+      const data = req.body.data
+      console.log(data)
+
+    }catch(error) {
+      res.send({message:error.message})
     }
+    // if(req.body.payment === 'cod'){
+    //   cod(req,res)
+    // } else {
+    //   online_payment(req,res);
+    // }
   }
 
   const online_payment = async(req,res,payment) =>{
