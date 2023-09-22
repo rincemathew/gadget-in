@@ -259,21 +259,29 @@ right: -25px;
 
 
    const result = async() => {
-    dataa = {
-        total_amount: document.getElementById('total').value*100,
-        coupon_type:couponType,
-        coupon_amount:couponAmount,
-        payment_method:document.querySelector('input[name="payment"]:checked').value,
-        wallet_amount:0,
-        offer:0,
-        address:document.querySelector('input[name="address"]:checked').value
-    }
-        const response = await fetch(`/account/checkout`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({data:dataa}) });
+    const totalAmount = document.getElementById('total').value * 100;
+    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+    const address = document.querySelector('input[name="address"]:checked').value;
+
+    // Create the data object with the values
+    const data = {
+        total_amount: totalAmount,
+        coupon_type: couponType,
+        coupon_amount: couponAmount,
+        payment_method: paymentMethod,
+        wallet_amount: 0,
+        offer: 0,
+        address: address
+    };
+    // console.log(dataa)
+    console.log('222222222')
+        const response = await fetch(`/account/checkout`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify(data) });
         const resBody = await response.json();
+        console.log(resBody.status)
         if(resBody.popUp) {
             alertMsg("Your order has been Placed");
         }
-        window.location.replace = "/account/orders";
+        window.location.replace("/account/orders");
    }
    function alertMsg(msg) {
         Swal.fire({

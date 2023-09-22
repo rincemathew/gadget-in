@@ -66,15 +66,20 @@ const checkout = async(req,res) => {
   const checkout_post = async(req,res) => {
     try {
       const userID = req.session.user_id
+      console.log(req.body)
       const {total_amount, coupon_type, coupon_amount, payment_method, wallet_amount, offer, address} = req.body
+      console.log(total_amount,coupon_amount)
       const orderHas = await orderModel.findOne({ userid: userID});
+      console.log('aaaaaa')
       const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
       let products = []
+      console.log('bbbbbb')
       for(i=0;i<cartdata.products.length;i++) {
         products[i] = {product_id: cartdata.products[i].productid._id, quantity: cartdata.products[i].quantity,status:'out for delivery',delivery_date:""}
        }
-
+       console.log('cccccc')
       if(orderHas) {
+        console.log('fsdvdfvdf')
         await orderModel.findOneAndUpdate(
                     { user_id: userID },
                     {
@@ -85,31 +90,11 @@ const checkout = async(req,res) => {
       } else {
         await orderModel.insertMany({
           user_id: userID,
-                    orders: [{ total_amount: 100, coupon_type: "",coupon_amount:"",payment_method:payment,reason:"",address:address, products:products }],
+                    orders: [{ total_amount: total_amount, coupon_type: coupon_type,coupon_amount:coupon_amount,payment_method:payment_method,wallet_amount:wallet_amount,offer:offer,reason:"",address:address, products:products }],
                   });
       }
+      console.log('dddddd')
       
-      // for(i=0;i<cartdata.products.length;i++) {
-      //   const orderHas = await orderModel.findOne({ userid: userID});
-      //   if(orderHas) {
-      //       await orderModel.findOneAndUpdate(
-      //           { userid: userID },
-      //           {
-      //             $push: { products: { productid: cartdata.products[i].productid._id, quantity: cartdata.products[i].quantity,status:'out for delivery',address:address } },
-      //           },
-      //           { new: true }
-      //         );
-      //   } else {
-      //       await orderModel.insertMany({
-      //           userid: userID,
-      //           products: [{ productid: cartdata.products[i].productid._id, quantity: cartdata.products[i].quantity,status:'out for delivery',address:address }],
-      //         });
-      //   }
-      //   const stockMinus = await productModel.findOne({ _id: cartdata.products[i].productid._id },);
-      //   await productModel.updateOne({_id:cartdata.products[i].productid._id},{$set:{stock:stockMinus.stock - cartdata.products[i].quantity}});
-      //   await cartModel.updateOne({ userid: userID }, { $pull: { products: { productid: cartdata.products[i].productid._id } } });
-      // }
-      // res.redirect("/account/orders"); 
       res.send({message:"sucess",popUp:'sucess'}) 
   } catch(error) {
       res.send(error.message)
