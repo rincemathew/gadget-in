@@ -161,7 +161,7 @@ right: -25px;
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-radio">
-                            <input type="radio" value="wallet" class="custom-control-input" name="payment" id="onlinepayment+wallet" required>
+                            <input type="radio" value="wallet + online payment" class="custom-control-input" name="payment" id="onlinepayment+wallet" required>
                             <label class="custom-control-label" for="onlinepayment+wallet">Wallet + Online Payment</label>
                         </div>
                     </div>
@@ -188,19 +188,20 @@ right: -25px;
     let couponValueCheck = document.getElementById('total').value
     let totalV
 
-    totalV = document.getElementById('total').value*100
+    // totalV = document.getElementById('total').value*100
     console.log(document.getElementById('total').value*100)
-   var options = {
+    let options = {
        "key": "rzp_test_cLQpjxzEEr4RTn", 
-       "amount": totalV, 
+       "amount": document.getElementById('total').value*100, 
        "currency": "INR",
        "name": "Online Payment",
        "description": "Pay & Checkout",
        "handler": function (response){
         console.log(response)
         //    alert("This step of Payment Succeeded");
-        result('success')
+        result()
        },
+       "modal": { escape: false, ondismiss: function(){  } },
        "prefill": {
          "contact":"", 
          "name": "",  
@@ -224,6 +225,7 @@ right: -25px;
    });
      
    document.getElementById('pay-button').onclick = function(e){
+    razorpayObject = new Razorpay(options);
     if(document.querySelector('input[name="payment"]:checked').value == null) {
         alertMsgF("Select a payment method!")
         return;
@@ -233,20 +235,37 @@ right: -25px;
         return;
     }
     if(document.querySelector('input[name="payment"]:checked').value == "cash on delivery") {
-        result("success")
+        result()
         return;
     }
-       razorpayObject.open();
-       e.preventDefault();
+    if(document.querySelector('input[name="payment"]:checked').value == "online payment") {
+        razorpayObject.open();
+        e.preventDefault();
+        return;
+    }
+    if(document.querySelector('input[name="payment"]:checked').value == "wallet + online payment") {
+        checkWallet();
+        razorpayObject.open();
+        e.preventDefault();
+        return;
+    }
    }
 
 
-   const result = async(status) => {
+   const checkWallet = async() => {
+        const response = await fetch(`/account/checkout`,{ method: 'GET'});
+        const resBody = await response.json();
+   }
+
+
+   const result = async() => {
     dataa = {
         total_amount: document.getElementById('total').value*100,
         coupon_type:couponType,
         coupon_amount:couponAmount,
         payment_method:document.querySelector('input[name="payment"]:checked').value,
+        wallet_amount:0,
+        offer:0,
         address:document.querySelector('input[name="address"]:checked').value
     }
         const response = await fetch(`/account/checkout`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({data:dataa}) });
@@ -254,6 +273,7 @@ right: -25px;
         if(resBody.popUp) {
             alertMsg("Your order has been Placed");
         }
+        window.location.replace = "/account/orders";
    }
    function alertMsg(msg) {
         Swal.fire({
@@ -316,12 +336,14 @@ right: -25px;
     if(couponType == 'percentage') {
         document.getElementById('couponid').innerHTML =  `${couponAmount}%`
         document.getElementById('total').value =  couponValueCheck * (100 - couponAmount) /100
-        totalV = couponValueCheck * (100 - couponAmount) /100
+        options.amount = (couponValueCheck * (100 - couponAmount) /100) * 100
+        // totalV = (couponValueCheck * (100 - couponAmount) /100) * 100
         document.getElementById('totalh5').innerHTML =  `₹${couponValueCheck * (100 - couponAmount) /100}`
     } else {
         document.getElementById('couponid').innerHTML = `₹${couponAmount}`
         document.getElementById('total').value =  couponValueCheck - couponAmount
-        totalV = couponValueCheck - couponAmount
+        options.amount = (couponValueCheck - couponAmount) * 100
+        // totalV = (couponValueCheck - couponAmount) * 100
         document.getElementById('totalh5').innerHTML =  `₹${couponValueCheck - couponAmount}`
     }
     

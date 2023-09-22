@@ -40,11 +40,9 @@ const checkout = async(req,res) => {
   }
   
   
-  const checkout_post = async(req,res) => {
+  const ssss = async(req,res) => {
     try{
-      const {id} = req.params
-      const data = req.body.data
-      console.log(data)
+      
 
     }catch(error) {
       res.send({message:error.message})
@@ -56,7 +54,7 @@ const checkout = async(req,res) => {
     // }
   }
 
-  const online_payment = async(req,res,payment) =>{
+  const online_payment = async(req,res) =>{
     try{
       
 
@@ -65,11 +63,10 @@ const checkout = async(req,res) => {
     }
   }
 
-  const cod = async(req,res) => {
+  const checkout_post = async(req,res) => {
     try {
       const userID = req.session.user_id
-      const address = req.body.address
-      const payment = req.body.payment == 'cod'? 'Cash on Delevery' : 'Online Payment'
+      const {total_amount, coupon_type, coupon_amount, payment_method, wallet_amount, offer, address} = req.body
       const orderHas = await orderModel.findOne({ userid: userID});
       const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
       let products = []
@@ -81,7 +78,7 @@ const checkout = async(req,res) => {
         await orderModel.findOneAndUpdate(
                     { user_id: userID },
                     {
-                      $push: { orders: { total_amount: 1000, coupon_type: "",coupon_amount:"",payment_method:payment,reason:"",address:address, products:products } },
+                      $push: { orders: { total_amount: total_amount, coupon_type: coupon_type,coupon_amount:coupon_amount,payment_method:payment_method,wallet_amount:wallet_amount,offer:offer,reason:"",address:address, products:products } },
                     },
                     { new: true }
                   );
@@ -112,7 +109,8 @@ const checkout = async(req,res) => {
       //   await productModel.updateOne({_id:cartdata.products[i].productid._id},{$set:{stock:stockMinus.stock - cartdata.products[i].quantity}});
       //   await cartModel.updateOne({ userid: userID }, { $pull: { products: { productid: cartdata.products[i].productid._id } } });
       // }
-      res.redirect("/account/orders");  
+      // res.redirect("/account/orders"); 
+      res.send({message:"sucess",popUp:'sucess'}) 
   } catch(error) {
       res.send(error.message)
   }

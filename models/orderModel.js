@@ -26,6 +26,14 @@ const orderSchema = mongoose.Schema(
         type: String,
         required: true,
       },
+      wallet_amount: {
+        type: Number,
+        default:0
+      },
+      offer: {
+        type: Number,
+        default:0
+      },
       reason: {
         type: String,
       },
