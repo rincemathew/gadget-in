@@ -53,7 +53,8 @@
                             <tr>
                                 <td class="align-middle"><%=data.orders[i].date%></td>
                                 <td id="" class="align-middle"><i class="fa fa-truck"></i><%=data.orders[i].total_amount%></td>
-                                <td class="align-middle"><%=data.orders[i].coupon_amount%></td>
+                                <td class="align-middle"><%=data.orders[i].address%></td>
+                                <td class="align-middle"><%=data.orders[i].products[0].quantity%></td>
                             </tr>
                         <% } %>
                     <% } %>

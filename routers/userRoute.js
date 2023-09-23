@@ -65,9 +65,9 @@ router.post('/account/address_delete',userController.sessionValidUser,userAccoun
 
 //orders
 
-router.get('/account/orders/',userController.sessionValidUser,userAccountController.orders)
+router.get('/account/orders/',userController.sessionValidUser,orderController.orders)
 
-router.post('/account/cancelorder/:id',userController.sessionValidUser,userAccountController.cancel_order)
+router.post('/account/cancelorder/:id',userController.sessionValidUser,orderController.cancel_order)
 
 //Wallet
 

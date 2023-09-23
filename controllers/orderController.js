@@ -5,7 +5,6 @@ const cartModel = require("../models/cartModel");
 const addressModel = require("../models/addressModel");
 const orderModel = require("../models/orderModel");
 const mongoose = require("mongoose");
-
 const Razorpay = require('razorpay'); 
 
 
@@ -100,6 +99,53 @@ const checkout = async(req,res) => {
       res.send(error.message)
   }
   }
+
+
+  const orders = async (req, res) => {
+    const userID = req.session.user_id;
+    try {
+      orderData = await orderModel.findOne({ userid: userID }).populate("orders.products").populate('orders.address').lean().exec();
+      console.log(orderData.orders);
+      res.render("user/order", {
+        session: res.locals.sessionValue,
+        data: orderData,
+      });
+    } catch (error) {
+      res.send(error.message);
+    }
+  };
+  
+  const cancel_order = async (req, res) => {
+    const userID = req.session.user_id;
+    const { id } = req.params;
+    try {
+      // await orderModel.findOne({userid:userID},{ $set: { productid: { _id: id } } }
+      const updateResponse = await orderModel.updateOne(
+        { userid: new mongoose.Types.ObjectId(userID) },
+        {
+          $set: {
+            "products.$[product].status": "cancelled",
+          },
+        },
+        {
+          arrayFilters: [
+            { "product.productid": new mongoose.Types.ObjectId(id) },
+          ],
+        }
+      );
+      // If order has not been updated
+      if (updateResponse.modifiedCount === 0) {
+          console.log('Updating order unsuccessful -------------------')
+        
+      }
+  
+      console.log('ORDER HAS BEEN UPDATED SUCCESSFULLY ------------------------')
+      res.send({ popUp: "Product Cancelled" });
+    } catch (error) {
+      res.send(error.message);
+    }
+  };
+  
   
   
   
@@ -142,5 +188,5 @@ const checkout = async(req,res) => {
 
 
   module.exports = {
-    checkout,checkout_post,order_admin_controller,order_delivery_confirm
+    checkout,checkout_post,orders,cancel_order,order_admin_controller,order_delivery_confirm
 }

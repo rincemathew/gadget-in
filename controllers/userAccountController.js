@@ -140,53 +140,6 @@ const address_delete = async (req, res) => {
   }
 };
 
-const orders = async (req, res) => {
-  const userID = req.session.user_id;
-  try {
-    orderData = await orderModel
-      .findOne({ userid: userID })
-      // .populate("orders");
-    console.log(orderData + "ooooooooooooo");
-    res.render("user/order", {
-      session: res.locals.sessionValue,
-      data: orderData,
-    });
-  } catch (error) {
-    res.send(error.message);
-  }
-};
-
-const cancel_order = async (req, res) => {
-  const userID = req.session.user_id;
-  const { id } = req.params;
-  try {
-    // await orderModel.findOne({userid:userID},{ $set: { productid: { _id: id } } }
-    const updateResponse = await orderModel.updateOne(
-      { userid: new mongoose.Types.ObjectId(userID) },
-      {
-        $set: {
-          "products.$[product].status": "cancelled",
-        },
-      },
-      {
-        arrayFilters: [
-          { "product.productid": new mongoose.Types.ObjectId(id) },
-        ],
-      }
-    );
-    // If order has not been updated
-    if (updateResponse.modifiedCount === 0) {
-        console.log('Updating order unsuccessful -------------------')
-      
-    }
-
-    console.log('ORDER HAS BEEN UPDATED SUCCESSFULLY ------------------------')
-    res.send({ popUp: "Product Cancelled" });
-  } catch (error) {
-    res.send(error.message);
-  }
-};
-
 
 const wallet = async (req, res) => {
   const userID = req.session.user_id;
@@ -211,7 +164,5 @@ module.exports = {
   address_get,
   address_add,
   address_edit,
-  address_delete,
-  orders,
-  cancel_order,wallet
+  address_delete,wallet
 };
