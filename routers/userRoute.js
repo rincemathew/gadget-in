@@ -87,6 +87,8 @@ router.get('/products',userController.sessionValidation,userController.products)
 
 router.get('/:slug',userController.sessionValidation,userController.categories_view)
 
+router.post('/productslist',userController.sessionValidation,userController.categoriesDisplayItems)
+
 
 //search box
 router.post('/search/searchbox/:value',userController.search_box)

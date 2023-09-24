@@ -194,12 +194,22 @@ const categories_view = async(req,res) => {
   let dataV
   try {
     cateID = await categoryModel.findOne({category_slug:req.params.slug})
-      dataV = await productModel.find({category:cateID._id,is_blocked:false})
-      console.log(cateID + "gfg")
+      // dataV = await productModel.find({category:cateID._id,is_blocked:false})
   } catch(error) {
       res.send(error.message)
   }
-  res.render('user/category_view',{session:res.locals.sessionValue,data:dataV,name:''})
+  res.render('user/category_view',{session:res.locals.sessionValue,cateId:cateID,name:''})
+}
+
+const categoriesDisplayItems = async(req,res) => {
+  let dataV
+  try {
+    // cateID = await categoryModel.findOne({category_slug:req.params.slug})
+      dataV = await productModel.find({category:cateID._id,is_blocked:false})
+  } catch(error) {
+      res.send(error.message)
+  }
+  res.send({data:dataV})
 }
 
 const user_logout = async (req, res) => {
@@ -229,5 +239,5 @@ const page404 = async (req, res) => {
 };
 
 module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,ajaxSessionValidUser,
-  products,categories_view,user_logout,search_box,page404
+  products,categories_view,categoriesDisplayItems,user_logout,search_box,page404
     }
