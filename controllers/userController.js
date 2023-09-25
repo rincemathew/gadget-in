@@ -204,12 +204,15 @@ const categories_view = async(req,res) => {
 
 const categoriesDisplayItems = async(req,res) => {
   let dataV
-  const {cateID} = req.body
-  console.log(cateID)
+  let {cateID,fPrice,fBrand,sName,sPrice} = req.body
+  fPrice = fPrice.split('-')
+  fPriceOne = Number(fPrice[0])
+  fPriceTwo = Number(fPrice[1])
+  console.log(fPriceOne,fPriceTwo,fBrand,sName,sPrice)
   try {
     // cateID = await categoryModel.findOne({category_slug:req.params.slug})
-      dataV = await productModel.find({category:cateID,is_blocked:false})
-      console.log(dataV)
+      dataV = await productModel.find({category:cateID,is_blocked:false,price: { $gte: Number(fPrice[0]), $lte: Number(fPrice[1]) },})
+      // console.log(dataV)
   } catch(error) {
       res.send(error.message)
   }
