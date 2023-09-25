@@ -83,11 +83,13 @@ router.post('/account/checkout',userController.sessionValidUser,orderController.
 ////VIEWS
 router.get('/',userController.sessionValidation,userController.home_page)
 
+router.get('/category/:slug',userController.sessionValidation,userController.categories_view)
+
 router.get('/products',userController.sessionValidation,userController.products)
 
-router.get('/:slug',userController.sessionValidation,userController.categories_view)
-
 router.post('/productslist',userController.sessionValidation,userController.categoriesDisplayItems)
+
+
 
 
 //search box

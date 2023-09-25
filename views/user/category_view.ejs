@@ -5,6 +5,7 @@
 		<!-- Shop Sidebar Start -->
 		<div class="col-lg-3 col-md-4">
 			<!-- Price Start -->
+			<input type="hidden" id="custId" name="custId" value="<%=cateId%>">
 			<h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
 			<div class="bg-light p-4 mb-30">
 				<form>
@@ -86,7 +87,7 @@
 		<!-- Shop Product Start -->
 		<div class="col-lg-9 col-md-8">
 			<div class="row pb-3">
-				<div class="col-12 pb-1">
+				<div id="productList" class="col-12 pb-1">
 					<div class="d-flex align-items-center justify-content-between mb-4">
 						<div>
 							<!-- <button class="btn btn-sm btn-light"><i class="fa fa-th-large"></i></button>
@@ -113,26 +114,9 @@
 						</div>
 					</div>
 				</div>
+				<!-- <div class="col-12 p-0" id="productList">
 
-				<% for(i=0;i< data.length;i++) { %>
-					<div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-						<div class="product-item bg-light mb-4">
-							<div class="product-img position-relative overflow-hidden">
-								<img class="img-fluid w-100" src="/uploads/<%=data[i].product_image[0]%>" alt="">
-								<div class="product-action">
-									<a onclick="addToCart('<%=data[i]._id%>')" class="btn btn-outline-dark btn-square"><i class="fa fa-shopping-cart"></i></a>
-									<a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-								</div>
-							</div>
-							<div class="text-center py-4">
-								<a class="h6 text-decoration-none text-truncate" href="/products/?id=<%= data[i]._id%>"><%=data[i].product_brand_name%> <%=data[i].product_name%></a>
-								<div class="d-flex align-items-center justify-content-center mt-2">
-									<h5>₹<%=data[i].price%></h5><h6 class="text-muted ml-2"><del></del></h6>
-								</div>
-							</div>
-						</div>
-					</div>
-				<% } %>
+				</div> -->
 				
 				<!-- <div class="col-12">
 					<nav>
@@ -155,6 +139,40 @@
 <script src="/user/js/external.js"></script>
 
 <script>
+
+	const loadData = async()=>{
+		cateId = document.getElementById('custId').value
+		const loadRespose = await fetch(`/productslist`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({cateID:cateId})});
+        const loadResposeBody = await loadRespose.json();
+		let x = ""
+		if(loadResposeBody.data) {
+			console.log(loadResposeBody.data)
+			for(i=0;i<loadResposeBody.data.length;i++) {
+				x = x + `<div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+						<div class="product-item bg-light mb-4">
+							<div class="product-img position-relative overflow-hidden">
+								<img class="img-fluid w-100" src="/uploads/${loadResposeBody.data[i].product_image[0]}" alt="">
+								<div class="product-action">
+									<a onclick="addToCart('${loadResposeBody.data[i]._id}')" class="btn btn-outline-dark btn-square"><i class="fa fa-shopping-cart"></i></a>
+									<a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+								</div>
+							</div>
+							<div class="text-center py-4">
+								<a class="h6 text-decoration-none text-truncate" href="/products/?id=${loadResposeBody.data[i]._id}"><${loadResposeBody.data[i].product_brand_name} ${loadResposeBody.data[i].product_name}</a>
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>₹${loadResposeBody.data[i].price}</h5><h6 class="text-muted ml-2"><del></del></h6>
+								</div>
+							</div>
+						</div>
+					</div>`
+			}
+		} else {
+			x = x + `No item Found`
+		}
+		document.getElementById('productList').insertAdjacentHTML("afterend", x);
+	}
+
+	loadData()
 	
 </script>
 

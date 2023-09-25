@@ -194,18 +194,22 @@ const categories_view = async(req,res) => {
   let dataV
   try {
     cateID = await categoryModel.findOne({category_slug:req.params.slug})
+    console.log(cateID,req.params.slug+'ddddddddddd')
       // dataV = await productModel.find({category:cateID._id,is_blocked:false})
   } catch(error) {
       res.send(error.message)
   }
-  res.render('user/category_view',{session:res.locals.sessionValue,cateId:cateID,name:''})
+  res.render('user/category_view',{session:res.locals.sessionValue,cateId:cateID._id,name:''})
 }
 
 const categoriesDisplayItems = async(req,res) => {
   let dataV
+  const {cateID} = req.body
+  console.log(cateID)
   try {
     // cateID = await categoryModel.findOne({category_slug:req.params.slug})
-      dataV = await productModel.find({category:cateID._id,is_blocked:false})
+      dataV = await productModel.find({category:cateID,is_blocked:false})
+      console.log(dataV)
   } catch(error) {
       res.send(error.message)
   }
