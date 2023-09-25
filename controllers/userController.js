@@ -204,15 +204,20 @@ const categories_view = async(req,res) => {
 
 const categoriesDisplayItems = async(req,res) => {
   let dataV
-  let {cateID,fPrice,fBrand,sName,sPrice} = req.body
+  let {cateID,fPrice,fBrand,sName,sPrice,filterItem} = req.body
   fPrice = fPrice.split('-')
-  fPriceOne = Number(fPrice[0])
-  fPriceTwo = Number(fPrice[1])
-  console.log(fPriceOne,fPriceTwo,fBrand,sName,sPrice)
+  if(fBrand=='all') {
+    fBrand = { $exists: true }
+  }
+  console.log(fBrand,sName,sPrice)
   try {
     // cateID = await categoryModel.findOne({category_slug:req.params.slug})
-      dataV = await productModel.find({category:cateID,is_blocked:false,price: { $gte: Number(fPrice[0]), $lte: Number(fPrice[1]) },})
-      // console.log(dataV)
+    if(filterItem) {
+      dataV = await productModel.find({category:cateID,is_blocked:false,price: { $gte: Number(fPrice[0]), $lte: Number(fPrice[1]) },product_brand_name: fBrand,}).sort({ product_brand_name: sName });
+    } else {
+      dataV = await productModel.find({category:cateID,is_blocked:false,price: { $gte: Number(fPrice[0]), $lte: Number(fPrice[1]) },product_brand_name: fBrand,}).sort({ price: sPrice });
+    }
+      console.log(dataV)
   } catch(error) {
       res.send(error.message)
   }

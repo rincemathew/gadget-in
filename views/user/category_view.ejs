@@ -91,7 +91,7 @@
 		<!-- Shop Product Start -->
 		<div class="col-lg-9 col-md-8">
 			<div class="row pb-3">
-				<div id="productList" class="col-12 pb-1">
+				<div class="col-12 pb-1">
 					<div class="d-flex align-items-center justify-content-between mb-4">
 						<div>
 							<!-- <button class="btn btn-sm btn-light"><i class="fa fa-th-large"></i></button>
@@ -118,9 +118,9 @@
 						</div>
 					</div>
 				</div>
-				<!-- <div class="col-12 p-0" id="productList">
+				<div class="d-flex col-12 p-0" id="productList">
 
-				</div> -->
+				</div>
 				
 				<!-- <div class="col-12">
 					<nav>
@@ -147,14 +147,17 @@
 	let sortByName = 1
 	let filterPrice = '0-900000'
 	let filterBrand = 'all'
+	let filterItemName = true
 
 	function sortName(value) {
 		sortByName = value
+		filterItemName = true
 		setParams()
 	}
 
 	function sortPrice(value) {
 		sortByPrice = value
+		filterItemName = false
 		setParams()
 	}
 
@@ -185,18 +188,18 @@
     }
 
 	function setParams() {
-		loadData(filterPrice,filterBrand,sortByName,sortByPrice)
+		loadData(filterPrice,filterBrand,sortByName,sortByPrice,filterItemName)
 	}
 
-	const loadData = async(filterPriceP,filterBrandP,sortByNameP,sortByPriceP)=>{
+	const loadData = async(filterPriceP,filterBrandP,sortByNameP,sortByPriceP,filterI)=>{
 		console.log(filterPriceP,filterBrandP,sortByNameP,sortByPriceP)
 		cateId = document.getElementById('custId').value
-		const loadRespose = await fetch(`/productslist`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({cateID:cateId,fPrice:filterPriceP,fBrand:filterBrandP,sName:sortByNameP,sPrice:sortByPriceP})});
+		const loadRespose = await fetch(`/productslist`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({cateID:cateId,fPrice:filterPriceP,fBrand:filterBrandP,sName:sortByNameP,sPrice:sortByPriceP,filterItem:filterI})});
         const loadResposeBody = await loadRespose.json();
 		let x = ""
 		if(loadResposeBody.data.length!==0) {
 			for(i=0;i<loadResposeBody.data.length;i++) {
-				x = x + `<div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+				x = x + `<div class="col-lg-4 col-md-6 col-sm-6 pb-1 delete">
 						<div class="product-item bg-light mb-4">
 							<div class="product-img position-relative overflow-hidden">
 								<img class="img-fluid w-100" src="/uploads/${loadResposeBody.data[i].product_image[0]}" alt="">
@@ -217,10 +220,11 @@
 		} else {
 			x = x + `<h5>No item Found<h5>`
 		}
-		document.getElementById('productList').insertAdjacentHTML("afterend", x);
+		// document.getElementById('productList').insertAdjacentHTML("afterend", x);
+		document.getElementById('productList').innerHTML = x;
 	}
 
-	loadData(filterPrice,filterBrand,sortByName,sortByPrice)
+	loadData(filterPrice,filterBrand,sortByName,sortByPrice,filterItemName)
 	
 </script>
 
