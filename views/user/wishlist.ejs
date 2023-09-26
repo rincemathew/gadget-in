@@ -48,29 +48,16 @@
                     </tr>
                 </thead>
                 <tbody class="align-middle">
-
-                    <tr>
-                        <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"> Product Name</td>
-                        <td class="align-middle">$150</td>
+                    <% for(i=0;i<data.products.length;i++) { %>
+                    <tr id="<%=data.products[i].productid._id%>">
+                        <td class="align-middle"><img src="/uploads/<%=data.products[i].productid.product_image[0]%>" alt="" style="width: 50px;"><%=data.products[i].productid.product_brand_name%> <%=data.products[i].productid.product_name%></td>
+                        <td class="align-middle">₹<%=data.products[i].productid.price%></td>
                         <td class="align-middle">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus" >
-                                    <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            <button onclick="wishlistToCart('<%=data.products[i].productid._id%>')" type="button" class="btn btn-outline-warning">Add to Cart</button>
                         </td>
-                        <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
+                        <td class="align-middle"><button onclick="deleteWishlist('<%=data.products[i].productid._id%>')" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
                     </tr>
-                   
-                  
+                <% } %>
                 </tbody>
             </table>
         </div>
@@ -82,3 +69,13 @@
 </div>
 
 <%-include('footer')-%>
+
+<script>
+    const wishlistToCart = async(id)=>{
+        console.log(id)
+    }
+
+    const deleteWishlist = async(id)=> {
+        console.log(id)
+    }
+</script>

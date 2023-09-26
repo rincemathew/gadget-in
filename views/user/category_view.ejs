@@ -205,7 +205,7 @@
 								<img class="img-fluid w-100" src="/uploads/${loadResposeBody.data[i].product_image[0]}" alt="">
 								<div class="product-action">
 									<a onclick="addToCart('${loadResposeBody.data[i]._id}')" class="btn btn-outline-dark btn-square"><i class="fa fa-shopping-cart"></i></a>
-									<a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+									<a onclick="addToWishList('${loadResposeBody.data[i]._id}')" class="btn btn-outline-dark btn-square"><i class="far fa-heart"></i></a>
 								</div>
 							</div>
 							<div class="text-center py-4">

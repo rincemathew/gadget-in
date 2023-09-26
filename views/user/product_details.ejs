@@ -111,6 +111,7 @@
 					<button onclick="addToCart('<%=data._id%>')" <% if(data.stock < 1) {%>disabled<% }%> class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
 						Cart</button>
 				</div>
+				<a onclick="addToWishList('<%=data._id%>')" class="btn btn-outline-dark btn-square"><i class="far fa-heart"></i></a>
 				<div class="d-flex pt-2">
 					<strong class="text-dark mr-2">Share on:</strong>
 					<div class="d-inline-flex">

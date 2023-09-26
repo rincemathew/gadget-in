@@ -44,7 +44,9 @@ const profilePost = async (req, res) => {
 const wishlist = async (req, res, next) => {
   const userID = req.session.user_id
   try {
+    
     const wishlistItems = await wishlistModel.findOne({userid:userID}).populate("products.productid")
+    console.log(wishlistItems)
     res.render("user/wishlist",{message:"",popUp:"",data:wishlistItems,session:res.locals.sessionValue})
   } catch (error) {
     next()
@@ -56,6 +58,19 @@ const wishlistAdd = async (req, res) => {
   const userID = req.session.user_id
 
   try {
+
+    const wishlistData = await wishlistModel.findOne({ userid: userID })
+
+    if(wishlistData) {
+      const wishlistExist = cart.products.findIndex((product) => {
+        return product.productid.equals(id);
+      });
+
+      if (wishlidt !== -1) {
+          res.send({ message: "", popUp: "Product already in the cart" });
+      }
+    }
+
     await wishlistModel.findOneAndUpdate(
       { userid: userID },
       { $push: { products: { productid: id} } },
@@ -68,6 +83,16 @@ const wishlistAdd = async (req, res) => {
 };
 
 const wishlistDelete = async (req, res) => {
+  const { id } = req.params;
+  const userID = req.session.user_id
+  try {
+    
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
+const wishlistToCart = async (req, res) => {
   const { id } = req.params;
   const userID = req.session.user_id
   try {
@@ -185,7 +210,7 @@ const wallet = async (req, res) => {
 module.exports = {
   profile,
   profilePost,
-  wishlist,wishlistAdd,wishlistDelete,
+  wishlist,wishlistAdd,wishlistDelete,wishlistToCart,
   address,
   address_get,
   address_add,
