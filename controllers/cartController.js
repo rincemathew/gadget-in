@@ -51,11 +51,7 @@ const add_to_cart = async(req, res) => {
 
 
 const cart_view = async(req,res) => {
-    console.log('hhhhhhhhhhhhhhhhhhhhhh')
     try {
-        // const userID = req.session.user_id
-        // const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
-        // console.log(cartdata)
         res.render("user/cart",{session:res.locals.sessionValue});
 
     } catch(error) {

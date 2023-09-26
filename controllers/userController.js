@@ -108,7 +108,7 @@ const register = async (req, res) => {
     } else{
       console.log('nosession')
       res.locals.sessionValue = false
-      res.render("user/login_register", { session:false,message: "Login to see your accoumt",popUp:false });
+      res.render("user/login_register", { session:false,message: "Login to see your account",popUp:false });
     }    
   };
 

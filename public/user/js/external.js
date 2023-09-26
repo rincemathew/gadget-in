@@ -40,8 +40,8 @@ const addToCart = async(id) => {
 
 
 const addToWishList = async(id) => {
-
-    const response = await fetch(`/account/add-to-cart/${id}`, { method: 'POST' });
+    console.log(id)
+    const response = await fetch(`/account/wishlist-add/${id}`, { method: 'POST' });
     const resBody = await response.json();
 
 

@@ -117,7 +117,7 @@
         <div class="row px-xl-5 pb-3">
             <% for(i=0;i<categories.length;i++) { %>
                 <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <a class="text-decoration-none" href="<%=categories[i].category_slug%>">
+                    <a class="text-decoration-none" href="/category/<%=categories[i].category_slug%>">
                         <div class="cat-item d-flex align-items-center mb-4">
                             <div class="overflow-hidden" style="width: 100px; height: 100px;">
                                 <img class="img-fluid" src="/uploads/<%=categories[i].category_image%>" alt="">
@@ -147,7 +147,7 @@
                         <img class="img-fluid w-100" src="/uploads/<%=smartphones[i].product_image[0]%>" alt="">
                         <div class="product-action">
                             <a onclick="addToCart('<%=smartphones[i]._id%>')" class="btn btn-outline-dark btn-square"><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                            <a onclick="addToWishList('<%=smartphones[i]._id%>')" class="btn btn-outline-dark btn-square"><i class="far fa-heart"></i></a>
                             <!-- <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a> -->
                             <!-- <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a> -->
                         </div>
@@ -213,7 +213,7 @@
                         <img class="img-fluid w-100" src="/uploads/<%=wearables[i].product_image[0]%>" alt="">
                         <div class="product-action">
                             <a onclick="addToCart('<%=wearables[i]._id%>')" class="btn btn-outline-dark btn-square"><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                            <a onclick="addToWishList('<%=wearables[i]._id%>')" class="btn btn-outline-dark btn-square"><i class="far fa-heart"></i></a>
                             <!-- <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a> -->
                             <!-- <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a> -->
                         </div>
@@ -251,7 +251,7 @@
                         <img class="img-fluid w-100" src="/uploads/<%=earwears[i].product_image[0]%>" alt="">
                         <div class="product-action">
                             <a onclick="addToCart('<%=earwears[i]._id%>')" class="btn btn-outline-dark btn-square"><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                            <a onclick="addToWishList('<%=earwears[i]._id%>')" class="btn btn-outline-dark btn-square"><i class="far fa-heart"></i></a>
                             <!-- <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a> -->
                             <!-- <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a> -->
                         </div>

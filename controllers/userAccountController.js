@@ -4,6 +4,7 @@ const transporter = require("../helpers/nodeMailer");
 const categoryModel = require("../models/categoryModel");
 const addressModel = require("../models/addressModel");
 const orderModel = require("../models/orderModel");
+const wishlistModel = require("../models/wishlistModel")
 const mongoose = require("mongoose");
 
 const profile = async (req, res) => {
@@ -40,13 +41,37 @@ const profilePost = async (req, res) => {
   }
 };
 
-const wishlist = async (req, res) => {
+const wishlist = async (req, res, next) => {
+  const userID = req.session.user_id
   try {
-    data = "";
-    res.render("user/wishlist", {
-      session: res.locals.sessionValue,
-      data: data,
-    });
+    const wishlistItems = await wishlistModel.findOne({userid:userID}).populate("products.productid")
+    res.render("user/wishlist",{message:"",popUp:"",data:wishlistItems,session:res.locals.sessionValue})
+  } catch (error) {
+    next()
+  }
+};
+
+const wishlistAdd = async (req, res) => {
+  const { id } = req.params;
+  const userID = req.session.user_id
+
+  try {
+    await wishlistModel.findOneAndUpdate(
+      { userid: userID },
+      { $push: { products: { productid: id} } },
+      { upsert: true, new: true }
+    )
+    res.send({message:"",popUp:"Product added to wishlist"})
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
+const wishlistDelete = async (req, res) => {
+  const { id } = req.params;
+  const userID = req.session.user_id
+  try {
+    
   } catch (error) {
     res.send(error.message);
   }
@@ -151,6 +176,7 @@ const wallet = async (req, res) => {
     //   session: res.locals.sessionValue,
     //   data: orderData,
     // });
+    res.render("user/wallet",{session:res.locals.sessionValue,message:"",popUp:""})
   } catch (error) {
     res.send(error.message);
   }
@@ -159,7 +185,7 @@ const wallet = async (req, res) => {
 module.exports = {
   profile,
   profilePost,
-  wishlist,
+  wishlist,wishlistAdd,wishlistDelete,
   address,
   address_get,
   address_add,

@@ -42,7 +42,11 @@ router.post('/account/profile',userController.sessionValidUser,userAccountContro
 
 //wishlist
 
-router.get('/account/wishlist/',userController.sessionValidUser,userAccountController.wishlist)
+router.get('/account/wishlist/',userController.sessionValidUser,userAccountController.wishlist,userController.page404)
+
+router.post('/account/wishlist-add/:id',userController.ajaxSessionValidUser,userAccountController.wishlistAdd)
+
+router.post('/account/wishlist-delete/:id',userController.sessionValidUser,userAccountController.wishlistDelete)
 
 
 //coupon
