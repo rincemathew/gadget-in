@@ -37,30 +37,6 @@ const checkout = async(req,res) => {
         res.send(error.message)
     }
   }
-  
-  
-  const ssss = async(req,res) => {
-    try{
-      
-
-    }catch(error) {
-      res.send({message:error.message})
-    }
-    // if(req.body.payment === 'cod'){
-    //   cod(req,res)
-    // } else {
-    //   online_payment(req,res);
-    // }
-  }
-
-  const online_payment = async(req,res) =>{
-    try{
-      
-
-    }catch(error) {
-      console.log(error.message)
-    }
-  }
 
   const checkout_post = async(req,res) => {
     try {
@@ -68,9 +44,9 @@ const checkout = async(req,res) => {
       console.log(req.body)
       const {total_amount, coupon_type, coupon_amount, payment_method, wallet_amount, offer, address} = req.body
       console.log(total_amount,coupon_amount)
-      const orderHas = await orderModel.findOne({ userid: userID});
+      const orderHas = await orderModel.findOne({ user_id: userID});
       console.log('aaaaaa')
-      const cartdata = await cartModel.findOne({ userid: userID }).populate("products.productid");
+      const cartdata = await cartModel.findOne({ user_id: userID }).populate("products.productid");
       let products = []
       console.log('bbbbbb')
       for(i=0;i<cartdata.products.length;i++) {
@@ -103,9 +79,10 @@ const checkout = async(req,res) => {
 
   const orders = async (req, res) => {
     const userID = req.session.user_id;
+    console.log(userID+"userid")
     try {
-      orderData = await orderModel.findOne({ userid: userID }).populate("orders.products").populate('orders.address').lean().exec();
-      console.log(orderData.orders);
+      orderData = await orderModel.findOne({ user_id: userID }).populate("orders.products").populate('orders.address').lean().exec();
+      // console.log(orderData.orders);
       res.render("user/order", {
         session: res.locals.sessionValue,
         data: orderData,
@@ -147,7 +124,7 @@ const checkout = async(req,res) => {
   };
   
   
-  
+
   
   
   
@@ -155,9 +132,9 @@ const checkout = async(req,res) => {
   const order_admin_controller = async(req,res) => {
     
     try {
-      const order = await orderModel.find({}).populate("orders").populate("userid").lean().exec();
+      const order = await orderModel.find({}).populate("orders").populate("user_id").lean().exec();
       console.log(order)
-      res.render("admin/order", { message: "",order:order });
+      res.render("admin/order", { message: "",data:order });
     } catch (error) {
       res.status(200).send({ popUp: error.message,message:"" });
     }

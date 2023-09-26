@@ -65,26 +65,22 @@
                                     <!-- <th>#ID</th> -->
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Total Amount</th>
                                     <th scope="col">Date</th>
-                                    <th scope="col" class="text-end"> Action </th>
+                                    <th scope="col" class="text-end"> Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% order.forEach(ord => { %>
-                                    <% ord.products.forEach(product =>  { %>
+                                <% data.forEach((order,index) => { %>
+                                    <% order.orders.forEach(info =>  { %>
                                         <tr>
                                             <!-- <td>0901</td> -->
-                                            <td><b><%=product.productid.product_brand_name%></b></td>
-                                            <td><div class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3"><%= ord.userid.email_id %></div></td>
-                                            <td><%=product.quantity%></td>
-                                            <td id="<%=product.productid._id%>"><span class="badge rounded-pill alert-warning"><%=product.status%></span></td>
-                                            <td><%=product.date%></td>
+                                            <td><b><%=data[index].user_id.first_name%></b></td>
+                                            <td><div class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3"><%=data[index].user_id.email_id%></div></td>
+                                            <td>₹<%= info.total_amount %></td>
+                                            <td><%= info.date %></td>
                                             <td class="text-end">
-                                                <% if(product.status == 'out for delivery') { %>
-                                                    <a id="<%= ord.userid._id %>" onclick="delivered('<%= ord.userid._id %>','<%=product.productid._id%>')" class="btn btn-md rounded font-sm">delivered</a>
-                                                <% } %>
+                                                    <a id="" onclick="delivered('')" class="btn btn-md rounded font-sm">View</a>
                                                 
                                                 <!-- <div class="dropdown">
                                                     <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
