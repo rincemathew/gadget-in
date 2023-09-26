@@ -4,6 +4,7 @@ const transporter = require("../helpers/nodeMailer");
 const categoryModel = require("../models/categoryModel");
 const addressModel = require("../models/addressModel");
 const orderModel = require("../models/orderModel");
+const cartModel = require("../models/cartModel")
 const wishlistModel = require("../models/wishlistModel")
 const mongoose = require("mongoose");
 
@@ -62,12 +63,12 @@ const wishlistAdd = async (req, res) => {
     const wishlistData = await wishlistModel.findOne({ userid: userID })
 
     if(wishlistData) {
-      const wishlistExist = cart.products.findIndex((product) => {
+      const wishlistExist = wishlistData.products.findIndex((product) => {
         return product.productid.equals(id);
       });
 
-      if (wishlidt !== -1) {
-          res.send({ message: "", popUp: "Product already in the cart" });
+      if (wishlistExist !== -1) {
+          return res.send({ message: "", popUp: "Product already in the Wishlist" });
       }
     }
 
@@ -86,6 +87,18 @@ const wishlistDelete = async (req, res) => {
   const { id } = req.params;
   const userID = req.session.user_id
   try {
+
+    const updatedWishlist = await wishlistModel.findOneAndUpdate(
+      { userid: userID },
+      { $pull: { products: { productid: id } } },
+      { new: true }
+    );
+
+    if (!updatedWishlist) {
+      res.send({popUp:'Wishlist not found for the user'});
+    } else {
+      res.send({popUp:'Product removed from the wishlist'});
+    }
     
   } catch (error) {
     res.send(error.message);
@@ -93,12 +106,49 @@ const wishlistDelete = async (req, res) => {
 };
 
 const wishlistToCart = async (req, res) => {
-  const { id } = req.params;
+  const { id,value } = req.params;
   const userID = req.session.user_id
   try {
-    
+    const productCount = await productModel.findOne({ _id: id });
+      if (productCount.stock < value) {
+        res.send({ message: "", popUp: "Sorry... Product out of Stock" });
+      } else {
+        const cart = await cartModel.findOne({ userid: userID });
+        if (cart) {
+          const productExist = cart.products.findIndex((product) => {
+              return product.productid.equals(id);
+            });
+
+            if (productExist !== -1) {
+                res.send({ message: "", popUp: "Product already in the cart" });
+            } else {
+                await cartModel.findOneAndUpdate(
+                    { userid: userID },
+                    {
+                      $push: { products: { productid: id, quantity: value } },
+                    },
+                    { new: true }
+                  );
+                  await wishlistModel.findOneAndUpdate(
+                    { userid: userID },
+                    { $pull: { products: { productid: id } } },
+                    { new: true }
+                  );
+
+                  res.send({ message: "", popUp: "Product added to Cart" });
+            }
+          
+        } else {
+          await cartModel.insertMany({
+            userid: userID,
+            products: [{ productid: id, quantity: value }],
+          });
+          res.send({ message: "", popUp: "Product added to Cart" });
+        }
+        
+      }
   } catch (error) {
-    res.send(error.message);
+    res.send({popUp:error.message});
   }
 };
 

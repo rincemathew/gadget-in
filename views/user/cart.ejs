@@ -71,7 +71,7 @@
             for(i=0;i<resBody.cart.products.length;i++) {
                 total = total + (resBody.cart.products[i].productid.price * resBody.cart.products[i].quantity)
                 x = x + `<tr id="${resBody.cart.products[i].productid._id}+'hide'">
-                        <td class="align-middle"><img src="" alt="" style="width: 50px;">${resBody.cart.products[i].productid.product_brand_name}${resBody.cart.products[i].productid.product_name}</td>
+                        <td class="align-middle"><img src="/uploads/${resBody.cart.products[i].productid.product_image[0]}" alt="" style="width: 50px;">${resBody.cart.products[i].productid.product_brand_name}${resBody.cart.products[i].productid.product_name}</td>
                         <td class="align-middle">₹${resBody.cart.products[i].productid.price}</td>
                         <td class="align-middle">
                             <div class="input-group quantity mx-auto" style="width: 100px;">

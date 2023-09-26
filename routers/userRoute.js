@@ -48,7 +48,7 @@ router.post('/account/wishlist-add/:id',userController.ajaxSessionValidUser,user
 
 router.post('/account/wishlist-delete/:id',userController.sessionValidUser,userAccountController.wishlistDelete)
 
-router.post('/account/wishlist-delete/:id',userController.sessionValidUser,userAccountController.wishlistToCart)
+router.post('/account/wishlist-addtocart/:id/:value',userController.sessionValidUser,userAccountController.wishlistToCart)
 
 //coupon
 

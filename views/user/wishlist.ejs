@@ -43,11 +43,12 @@
                     <tr>
                         <th>Products</th>
                         <th>Price</th>
-                        <th>Quantity</th>
+                        <th>Add to cart</th>
                         <th>Remove</th>
                     </tr>
                 </thead>
                 <tbody class="align-middle">
+                    <% if(data) { %>
                     <% for(i=0;i<data.products.length;i++) { %>
                     <tr id="<%=data.products[i].productid._id%>">
                         <td class="align-middle"><img src="/uploads/<%=data.products[i].productid.product_image[0]%>" alt="" style="width: 50px;"><%=data.products[i].productid.product_brand_name%> <%=data.products[i].productid.product_name%></td>
@@ -58,6 +59,11 @@
                         <td class="align-middle"><button onclick="deleteWishlist('<%=data.products[i].productid._id%>')" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
                     </tr>
                 <% } %>
+                <% } else {%>
+                    <tr id="">
+                        <td class="align-middle">No Products added</td>
+                    </tr>
+                    <% } %>
                 </tbody>
             </table>
         </div>
@@ -72,10 +78,30 @@
 
 <script>
     const wishlistToCart = async(id)=>{
-        console.log(id)
+        value = 1
+        const response = await fetch(`/account/wishlist-addtocart/${id}/${value}`,{ method: 'post'});
+        const resBody = await response.json();
+        alertMsg(resBody.popUp)
+        if(resBody.popUp == 'Product added to Cart') {
+            document.getElementById(id).style.display = "none";
+        }
     }
 
     const deleteWishlist = async(id)=> {
-        console.log(id)
+        const response = await fetch(`/account/wishlist-delete/${id}`,{ method: 'post'});
+        const resBody = await response.json();
+        alertMsg(resBody.popUp)
+        if(resBody.popUp == 'Product removed from the wishlist') {
+            document.getElementById(id).style.display = "none";
+        }
+    }
+
+    function alertMsg(msg) {
+        Swal.fire({
+            icon: 'success',
+            title: msg,
+            showConfirmButton: false,
+            timer: 1500
+        })
     }
 </script>
