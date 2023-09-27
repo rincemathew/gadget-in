@@ -73,6 +73,7 @@
                             <tbody>
                                 <% data.forEach((order,index) => { %>
                                     <% order.orders.forEach(info =>  { %>
+                                        <!-- <form action="" method="POST"> -->
                                         <tr>
                                             <!-- <td>0901</td> -->
                                             <td><b><%=data[index].user_id.first_name%></b></td>
@@ -80,7 +81,7 @@
                                             <td>₹<%= info.total_amount %></td>
                                             <td><%= info.date %></td>
                                             <td class="text-end">
-                                                    <a id="" onclick="delivered('')" class="btn btn-md rounded font-sm">View</a>
+                                                    <a id="" href="order/name" class="btn btn-md rounded font-sm">View</a>
                                                 
                                                 <!-- <div class="dropdown">
                                                     <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
@@ -92,6 +93,7 @@
                                                 </div>  -->
                                             </td>
                                         </tr>
+                                    <!-- </form> -->
                                     <% }) %>
                                 <% }) %>
                             </tbody>

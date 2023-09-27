@@ -121,20 +121,26 @@ const checkout = async(req,res) => {
     } catch (error) {
       res.send(error.message);
     }
-  };
-  
-  
-
-  
+  }; 
   
   
   //admin Side
   const order_admin_controller = async(req,res) => {
     
     try {
-      const order = await orderModel.find({}).populate("orders").populate("user_id").lean().exec();
+      const order = await orderModel.find({}).populate("orders").populate("user_id").sort({_id:-1}).lean().exec();
       console.log(order)
       res.render("admin/order", { message: "",data:order });
+    } catch (error) {
+      res.status(200).send({ popUp: error.message,message:"" });
+    }
+  }
+
+  const orderView = async(req,res) => {
+    try {
+      const order = await orderModel.find({}).populate("orders").populate("user_id").lean().exec();
+      console.log(order)
+      res.render("admin/order_view", { message: "",data:order });
     } catch (error) {
       res.status(200).send({ popUp: error.message,message:"" });
     }
@@ -165,5 +171,5 @@ const checkout = async(req,res) => {
 
 
   module.exports = {
-    checkout,checkout_post,orders,cancel_order,order_admin_controller,order_delivery_confirm
+    checkout,checkout_post,orders,cancel_order,order_admin_controller,orderView,order_delivery_confirm
 }

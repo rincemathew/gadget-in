@@ -86,6 +86,8 @@ router.post('/coupon/delete/:id',adminController.session_check,couponController.
 ///order profile
 router.get('/orders',adminController.session_check,orderController.order_admin_controller)
 
+router.get('/order/:id',adminController.session_check,orderController.orderView)
+
 router.post('/orders/confirm',adminController.session_check,orderController.order_delivery_confirm)
 
 
