@@ -109,9 +109,10 @@
                                     <thead>
                                         <tr>
                                             <th width="40%">Product</th>
-                                            <th width="20%">Unit Price</th>
-                                            <th width="20%">Quantity</th>
-                                            <th width="20%" class="text-end">Total</th>
+                                            <th width="15%">Unit Price</th>
+                                            <th width="10%">Quantity</th>
+                                            <th width="25%">Status</th>
+                                            <th width="10%" class="text-end">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -128,6 +129,7 @@
                                             </td>
                                             <td> ₹<%= order.orders[0].products[i].product_id.price %> </td>
                                             <td> <%= order.orders[0].products[i].quantity %> </td>
+                                            <td> <%= order.orders[0].products[i].status %> </td>
                                             <td class="text-end"> ₹<%- order.orders[0].products[i].product_id.price * order.orders[0].products[i].quantity %> </td>
                                         </tr>
                                         <%}%>

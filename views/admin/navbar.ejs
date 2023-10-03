@@ -11,7 +11,7 @@
         </div>
         <nav>
             <ul class="menu-aside">
-                <li class="menu-item active">
+                <li class="menu-item">
                     <a class="menu-link" href="/dashboard"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
@@ -82,3 +82,16 @@
             <br>
         </nav>
     </aside>
+
+    <script>
+        var currentPath = window.location.pathname;
+        var menuLinks = document.querySelectorAll('.menu-link');
+        for (var i = 0; i < menuLinks.length; i++) {
+            var href = menuLinks[i].getAttribute('href');
+            if (href === currentPath) {
+                var menuItem = menuLinks[i].closest('.menu-item');
+                menuItem.classList.add('active');
+            }
+        }
+        
+    </script>
