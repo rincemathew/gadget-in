@@ -129,7 +129,6 @@ const checkout = async(req,res) => {
     
     try {
       const order = await orderModel.find({}).populate("orders").populate("user_id").sort({_id:-1}).lean().exec();
-      console.log(order)
       res.render("admin/order", { message: "",data:order });
     } catch (error) {
       res.status(200).send({ popUp: error.message,message:"" });
@@ -137,10 +136,16 @@ const checkout = async(req,res) => {
   }
 
   const orderView = async(req,res) => {
+    const {id} = req.params
+    console.log(id)
     try {
-      const order = await orderModel.find({}).populate("orders").populate("user_id").lean().exec();
-      console.log(order)
-      res.render("admin/order_view", { message: "",data:order });
+      // const order = await orderModel.find({}).populate("orders").populate("user_id").lean().exec();
+      const orders = await orderModel.findOne({ "orders._id": id },{"orders.$": 1,user_id: 1,}).populate("orders.products.product_id")
+        .populate("user_id").lean().exec();
+      const address = await addressModel.findOne({userid:orders.user_id._id})
+      // console.log(orders.orders[0].date +"dddddddd")
+      // console.log(orders.user_id._id +"dddddddd")
+      res.render("admin/order_view", { message: "",order:orders,addresss:address });
     } catch (error) {
       res.status(200).send({ popUp: error.message,message:"" });
     }
