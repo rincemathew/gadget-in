@@ -78,7 +78,7 @@
                                             <!-- <td>0901</td> -->
                                             <td><b><%=data[index].user_id.first_name%></b></td>
                                             <td><div class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3"><%=data[index].user_id.email_id%></div></td>
-                                            <td>₹<%= info.total_amount %></td>
+                                            <td>₹<%= info.total_amount/100 %></td>
                                             <td><%= info.date %></td>
                                             <td class="text-end">
                                                     <a id="" href="order/<%=info._id %>" class="btn btn-md rounded font-sm">View</a>

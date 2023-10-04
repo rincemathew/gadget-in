@@ -41,26 +41,66 @@
             <table class="table table-light table-borderless table-hover text-center mb-0">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Products</th>
-                        <th>Status</th>
-                        <th>Quantity</th>
-                        <th>Status</th>
+                        <th>Time & Date</th>
+                        <th>Order Value</th>
+                        <th>Coupon Type & Value</th>
+                        <th>More Info</th>
                     </tr>
                 </thead>
                 <tbody class="align-middle">
                     <% if(data) { %>
                         <% for(i=0;i<data.orders.length;i++) { %>
                             <tr>
-                                <td class="align-middle"><%=data.orders[i].date%></td>
-                                <td id="" class="align-middle"><i class="fa fa-truck"></i><%=data.orders[i].total_amount%></td>
-                                <td class="align-middle"><%=data.orders[i].address%></td>
-                                <td class="align-middle"><%=data.orders[i].products[0].quantity%></td>
+                                <td class="align-middle"><i class="fa fa-clock-o"></i><%=data.orders[i].date%></td>
+                                <td id="" class="align-middle">₹ <%= data.orders[i].total_amount/100 %></td>
+                                <td id="" class="align-middle"><%= data.orders[i].coupon_type %> <%= data.orders[i].coupon_amount %></td>
+                                <td class="align-middle"><i class="fa fa-arrow-down" data-toggle="collapse" href="#collapse<%= i %>" role="button" aria-expanded="false" aria-controls="collapse<%= i %>" aria-hidden="true"></i><%=data.orders[i].products[0].quantity%></td>
+                                <tr>
+                                    <td colspan="4" class="p-0">
+                                <div class="collapse multi-collapse" id="collapse<%= i %>">
+                                    <div class="card card-body">
+                                      
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="30%">Product</th>
+                                                        <th width="15%">Unit Price</th>
+                                                        <th width="10%">Quantity</th>
+                                                        <th width="25%">Status</th>
+                                                        <th width="10%" class="text-end">Total</th>
+                                                        <th width="10%">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%for(j=0;j<data.orders[i].products.length;j++) { %>
+                                                    <tr>
+                                                        <td>
+                                                            <a class="itemside">
+                                                                <div class="left">
+                                                                    <!-- <img src="/admin/imgs/items/3.jpg" width="40" height="40" class="img-xs" alt="Item"> -->
+                                                                </div>
+                                                                <div class="info"><%= data.orders[i].products[j].product_id.product_brand_name %>  <%= data.orders[i].products[j].product_id.product_name %></div>
+                                                            </a>
+                                                        </td>
+                                                        <td> ₹<%= data.orders[i].products[j].product_id.price %> </td>
+                                                        <td><%= data.orders[i].products[j].quantity %> </td>
+                                                        <td> <%= data.orders[i].products[j].status %> </td>
+                                                        <td class="text-end"> ₹<%- data.orders[i].products[j].product_id.price * data.orders[i].products[j].quantity %> </td>
+                                                        <td><button type="button" class="btn btn-primary">button</button></td>
+                                                    </tr>
+                                                    <%}%>
+                                       </tbody>
+                                                </table>
+                                                </div>
+                                                
+                                    </div>
+                                  </div>
+                                  </td>
+                                  </tr>
                             </tr>
                         <% } %>
-                    <% } %>
-                    
-                    
-                    
+                    <% } %>  
                 </tbody>
             </table>
         </div>

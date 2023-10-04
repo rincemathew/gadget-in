@@ -81,7 +81,7 @@ const checkout = async(req,res) => {
     const userID = req.session.user_id;
     console.log(userID+"userid")
     try {
-      orderData = await orderModel.findOne({ user_id: userID }).populate("orders.products").populate('orders.address').lean().exec();
+      orderData = await orderModel.findOne({ user_id: userID }).populate("orders.products").populate("orders.products.product_id").populate('orders.address').lean().exec();
       // console.log(orderData.orders);
       res.render("user/order", {
         session: res.locals.sessionValue,

@@ -43,7 +43,7 @@
                             <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
                                 <option>Change status</option>
                                 <!-- <option>Awaiting payment</option> -->
-                                <option>Out for delivery</option>
+                                <!-- <option>Out for delivery</option> -->
                                 <option>Shipped</option>
                                 <option>Delivered</option>
                             </select>
@@ -77,7 +77,7 @@
                                 <div class="text">
                                     <h6 class="mb-1">Order info</h6>
                                     <p class="mb-1">
-                                        Total Value: <%=order.orders[0].total_amount %> <br> Coupon Type: <%=order.orders[0].coupon_type%>  <br> Coupon Amount: <%=order.orders[0].coupon_amount%>
+                                        Total Value: <%=order.orders[0].total_amount/100 %> <br> Coupon Type: <%=order.orders[0].coupon_type%>  <br> Coupon Amount: <%=order.orders[0].coupon_amount%>
                                     </p>
                                     <!-- <a href="#">Download info</a> -->
                                 </div>
