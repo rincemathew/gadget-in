@@ -151,23 +151,11 @@ const checkout = async(req,res) => {
     }
   }
   
-  const order_delivery_confirm = async(req,res) => {
-    ids = req.body
-    console.log(ids)
+  const orderStatusChange = async(req,res) => {
+    const {status,id} = req.body
     try {
-      await orderModel.updateOne(
-        { userid: new mongoose.Types.ObjectId(ids.user) },
-        {
-          $set: {
-            "products.$[product].status": "delivered",
-          },
-        },
-        {
-          arrayFilters: [
-            { "product.productid": new mongoose.Types.ObjectId(ids.product) },
-          ],
-        }
-      );
+      let orderChange = await orderModel.findOne({ "orders._id": id }).populate("orders.products")
+      console.log(orderChange)
       res.send({message:"",popUp:"order delivery confirmed"})
     } catch (error) {
       res.status(200).send({ popUp: error.message,message:"" });
@@ -176,5 +164,5 @@ const checkout = async(req,res) => {
 
 
   module.exports = {
-    checkout,checkout_post,orders,cancel_order,order_admin_controller,orderView,order_delivery_confirm
+    checkout,checkout_post,orders,cancel_order,order_admin_controller,orderView,orderStatusChange
 }

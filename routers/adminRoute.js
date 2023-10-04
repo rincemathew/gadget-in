@@ -88,7 +88,7 @@ router.get('/orders',adminController.session_check,orderController.order_admin_c
 
 router.get('/order/:id',adminController.session_check,orderController.orderView)
 
-router.post('/orders/confirm',adminController.session_check,orderController.order_delivery_confirm)
+router.post('/orders/change-status',adminController.session_check,orderController.orderStatusChange)
 
 
 
