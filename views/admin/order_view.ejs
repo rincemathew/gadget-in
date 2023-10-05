@@ -123,7 +123,7 @@
                                             <td>
                                                 <a class="itemside" href="#">
                                                     <div class="left">
-                                                        <img src="/admin/imgs/items/3.jpg" width="40" height="40" class="img-xs" alt="Item">
+                                                        <img src="/uploads/<%= order.orders[0].products[i].product_id.product_image[0]%>" width="40" height="40" class="img-xs" alt="Item">
                                                     </div>
                                                     <div class="info"><%= order.orders[0].products[i].product_id.product_brand_name %>  <%= order.orders[0].products[i].product_id.product_name %> </div>
                                                 </a>
@@ -203,7 +203,7 @@
 </body>
 
 <script>
-    const changeStatus = async(status,id)=>{
+    const changeStatus = async(status,id,)=>{
         console.log(status,id)
         if(status === "") {
             alertMsg("Please Select one Option")
@@ -211,9 +211,11 @@
         }
         const response = await fetch('/orders/change-status',{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({status:status,id:id}) });
         const resBody = await response.json();
-        // window.location.replace("/account/orders");
         alertMsg(resBody.popUp);
         console.log(resBody.popUp)
+        setTimeout(()=>{
+            window.location.replace(`/order/${id}`);
+        },2000)
 
         function alertMsg(msg) {
         Swal.fire({

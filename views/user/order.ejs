@@ -54,7 +54,7 @@
                                 <td class="align-middle"><i class="fa fa-clock-o"></i><%=data.orders[i].date%></td>
                                 <td id="" class="align-middle">₹ <%= data.orders[i].total_amount/100 %></td>
                                 <td id="" class="align-middle"><%= data.orders[i].coupon_type %> <%= data.orders[i].coupon_amount %></td>
-                                <td class="align-middle"><i class="fa fa-arrow-down" data-toggle="collapse" href="#collapse<%= i %>" role="button" aria-expanded="false" aria-controls="collapse<%= i %>" aria-hidden="true"></i><%=data.orders[i].products[0].quantity%></td>
+                                <td class="align-middle"><i class="fa fa-arrow-down" data-toggle="collapse" href="#collapse<%= i %>" role="button" aria-expanded="false" aria-controls="collapse<%= i %>" aria-hidden="true"></i><%=data.orders[i].products.length%></td>
                                 <tr>
                                     <td colspan="4" class="p-0">
                                 <div class="collapse multi-collapse" id="collapse<%= i %>">
@@ -87,7 +87,13 @@
                                                         <td><%= data.orders[i].products[j].quantity %> </td>
                                                         <td> <%= data.orders[i].products[j].status %> </td>
                                                         <td class="text-end"> ₹<%- data.orders[i].products[j].product_id.price * data.orders[i].products[j].quantity %> </td>
-                                                        <td><button type="button" class="btn btn-primary">button</button></td>
+                                                        <% if( data.orders[i].products[j].status === "shipped" || data.orders[i].products[j].status === "out for delivery") { %>
+                                                            <td><button type="button" class="btn btn-danger">Cancel</button></td>
+                                                        <% } else if( data.orders[i].products[j].status === "delivered" && new Date() - new Date(data.orders[i].products[j].delivery_date) > 7) { %>
+                                                            <td><button type="button" class="btn btn-warning">Return</button></td>
+                                                        <% } else { %>
+                                                            <!-- <td><button type="button" class="btn btn-primary"><%= new Date() - new Date(data.orders[i].products[j].delivery_date) > 7 %></button></td> -->
+                                                        <% } %>
                                                     </tr>
                                                     <%}%>
                                        </tbody>
