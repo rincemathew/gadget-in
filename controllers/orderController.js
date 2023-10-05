@@ -154,8 +154,39 @@ const checkout = async(req,res) => {
   const orderStatusChange = async(req,res) => {
     const {status,id} = req.body
     try {
-      let orderChange = await orderModel.findOne({ "orders._id": id }).populate("orders.products")
+      let orderChange = await orderModel.findOne({ "orders._id": id },{ "orders.$": 1 }).populate("orders.products")
       console.log(orderChange)
+      if(orderChange) {
+        for (let i = 0; i < orderChange.orders[0].products.length; i++) {
+          const product = orderChange.orders[0].products[i];
+          if (product.status !== "cancelled" && product.status !== "returned") {
+            if(status === "delivered") {
+              await orderModel.findOneAndUpdate(
+                { "orders._id": id },
+                {
+                  $set: {
+                  [`orders.0.products.${i}.status`]: status,
+                  [`orders.0.products.${i}.delivery_date`]: new Date()
+                  }
+                },
+                { new: true }
+              );
+            } else {
+              await orderModel.findOneAndUpdate(
+                { "orders._id": id },
+                {
+                  $set: {
+                  [`orders.0.products.${i}.status`]: status,
+                  }
+                },
+                { new: true }
+              );
+            }
+          }
+        }
+      } else {
+        res.send({message:"",popUp:"Order Not Found"})
+      }
       res.send({message:"",popUp:"order delivery confirmed"})
     } catch (error) {
       res.status(200).send({ popUp: error.message,message:"" });

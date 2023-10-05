@@ -213,6 +213,7 @@
         const resBody = await response.json();
         // window.location.replace("/account/orders");
         alertMsg(resBody.popUp);
+        console.log(resBody.popUp)
 
         function alertMsg(msg) {
         Swal.fire({
