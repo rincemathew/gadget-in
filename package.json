@@ -14,6 +14,7 @@
   "author": "Rince Mathew",
   "license": "ISC",
   "dependencies": {
+    "cropperjs": "^1.6.1",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",

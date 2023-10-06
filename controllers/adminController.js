@@ -112,21 +112,16 @@ const add_product_post = async (req, res) => {
   // console.log(data)
   await productModel.insertMany([data]);
   res.redirect("/products");
-  // res.render('admin/products',{message: "product created",})
 };
 
-// const products_visibility = async (req, res) => {
-//   res.render("admin/products", { message: "hai" });
-// };
+
 
 const edit_product = async (req, res) => {
   try {
     const { id } = req.params;
     const data = await productModel.findOne({ _id: id },);
     let cateList = await categoryModel.find({});
-    // console.log(data)
-    res.render("admin/add_products", { data:data, message: "",categoriesList :cateList });
-    // res.send('Hai');
+    res.render("admin/edit_products", { data:data, message: "",categoriesList :cateList });
   } catch (err) {
     console.trace(err);
     res.send({ isOk: false, message: "Some error occured" });
@@ -139,7 +134,6 @@ const edit_product_post = async (req, res) => {
     productImages.push(file.filename);
   });
     try{
-        // console.log(req.body.product_name + "haooo",req.params.id)
         await productModel.updateOne({_id:req.params.id},{$set:{product_brand_name:req.body.brand_name,product_name:req.body.product_name,
           product_slug:req.body.product_slug,description:req.body.description,category:req.body.category,stock:req.body.stock,price:req.body.price,
             is_blocked: req.body.isBlocked ? true : false}});
