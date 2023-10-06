@@ -127,10 +127,25 @@
                         <div class="card-body">
                             <div class="input-upload">
                                 <img src="/admin/imgs/theme/upload.svg" alt="">
-                                <input name="image" class="form-control" type="file" multiple>
+                                <input onchange="loadfile(event)" name="image" class="form-control" type="file" multiple>
                             </div>
                         </div>
                     </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Images</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="output"></div>
+                        </div>
+                        <div class="card-body">
+                            <div id="list-view">
+                            <% for(i=0;i<data.product_image.length;i++) { %>
+                                <img src="/uploads/<%= data.product_image[i]%>" width="100%"/>
+                            <% } %>
+                        </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -170,6 +185,18 @@
         moNa = value.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '')
         productSlug.setAttribute('value',brNa + "-" + moNa)
     }
+
+    const img = (src) => `<img src=${src} width="100%"/>`;
+    var loadfile = function (event) {
+        var output = document.getElementById('output');
+        output.innerHTML = '';
+
+        [...event.target.files].forEach(
+          (file) => {
+            (output.innerHTML += img(URL.createObjectURL(file)))
+          }
+        );
+      };
 </script>
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
