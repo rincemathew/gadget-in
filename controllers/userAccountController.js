@@ -7,6 +7,7 @@ const orderModel = require("../models/orderModel");
 const cartModel = require("../models/cartModel")
 const wishlistModel = require("../models/wishlistModel")
 const mongoose = require("mongoose");
+const walletModel = require("../models/walletModel");
 
 const profile = async (req, res) => {
   const userID = req.session.user_id;
@@ -244,14 +245,13 @@ const address_delete = async (req, res) => {
 const wallet = async (req, res) => {
   const userID = req.session.user_id;
   try {
-    // orderData = await orderModel
-    //   .findOne({ userid: userID })
-    // console.log(orderData + "ooooooooooooo");
-    // res.render("user/order", {
-    //   session: res.locals.sessionValue,
-    //   data: orderData,
-    // });
-    res.render("user/wallet",{session:res.locals.sessionValue,message:"",popUp:""})
+    const data = await walletModel.findOne({user_id:userID}).sort({ "order_details.date": -1 }).exec();
+    // const data = walletModel.aggregate([
+    //   { $match: { user_id: userID } },
+    //   { $project: { order_details: { $slice: ["$order_details", -1] } } }
+    // ]);
+    console.log(data)
+    res.render("user/wallet",{session:res.locals.sessionValue,data:data,message:"",popUp:""})
   } catch (error) {
     res.send(error.message);
   }

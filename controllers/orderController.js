@@ -97,7 +97,7 @@ const checkout = async(req,res) => {
   const cancel_order = async (req, res) => {
     const userID = req.session.user_id;
     const { id } = req.params;
-    let {productId,orderId,status,i,j,total,quantity} = req.body
+    let {productId,orderId,status,i,j,total,quantity,productName} = req.body
     let walletBalance
     try {
 
@@ -111,16 +111,14 @@ const checkout = async(req,res) => {
         { new: true }
       );
       walletCheck = await walletModel.findOne({user_id:userID})
-      if(walletCheck.balance) {
-        console.log('true')
+      if(walletCheck) {
         walletBalance = walletCheck.balance + total
       } else {
-        console.log('false')
         walletBalance = total
       }
       await walletModel.findOneAndUpdate(
         { user_id: userID },
-        { $push: { order_details: { id_product: productId,status: status,amount:walletBalance} },
+        { $push: { order_details: { id_product: productName,status: status,amount:walletBalance} },
         $set: {
           balance: walletBalance 
         }
