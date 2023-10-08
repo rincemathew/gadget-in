@@ -88,9 +88,9 @@
                                                         <td> <%= data.orders[i].products[j].status %> </td>
                                                         <td class="text-end"> ₹<%- data.orders[i].products[j].product_id.price * data.orders[i].products[j].quantity %> </td>
                                                         <% if( data.orders[i].products[j].status === "shipped" || data.orders[i].products[j].status === "out for delivery") { %>
-                                                            <td><button type="button" class="btn btn-danger">Cancel</button></td>
+                                                            <td><button id="<%=data.orders[i].products[j].product_id._id%>" onclick="cancelOrder('<%=data.orders[i].products[j].product_id._id%>','<%=data.orders[i]._id%>','cancelled','<%=j%>')" type="button" class="btn btn-danger">Cancel</button></td>
                                                         <% } else if( data.orders[i].products[j].status === "delivered" && new Date() - new Date(data.orders[i].products[j].delivery_date) > 7) { %>
-                                                            <td><button type="button" class="btn btn-warning">Return</button></td>
+                                                            <td><button id="<%=data.orders[i].products[j].product_id._id%>" onclick="cancelOrder('<%=data.orders[i].products[j].product_id._id%>','<%=data.orders[i]._id%>','returned','<%=j%>')" type="button" class="btn btn-warning">Return</button></td>
                                                         <% } else { %>
                                                             <!-- <td><button type="button" class="btn btn-primary"><%= new Date() - new Date(data.orders[i].products[j].delivery_date) > 7 %></button></td> -->
                                                         <% } %>
@@ -114,12 +114,13 @@
 </div>
 
 <script>
-    const cancelOrder = async(id)=> {
-        const response = await fetch(`/account/cancelorder/${id}`,{ method: 'post'});
+    const cancelOrder = async(productId,orderId,status,j)=> {
+        console.log(productId,orderId,status,j)
+        const response = await fetch(`/account/cancelorder/${orderId}`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({productId:productId,orderId:orderId,status:status,j:j}) });
         const resBody = await response.json();
         alertMsg(resBody.popUp)
-        document.getElementById(id).style.display = "none";
-        document.getElementById("status"+id).innerHTML = "cancelled";
+        document.getElementById(productId).style.display = "none";
+        // document.getElementById("status").innerHTML = "cancelled";
     }
 
     function alertMsg(msg) {

@@ -95,29 +95,19 @@ const checkout = async(req,res) => {
   const cancel_order = async (req, res) => {
     const userID = req.session.user_id;
     const { id } = req.params;
+    const {productId,orderId,status,j} = req.body
     try {
-      // await orderModel.findOne({userid:userID},{ $set: { productid: { _id: id } } }
-      const updateResponse = await orderModel.updateOne(
-        { userid: new mongoose.Types.ObjectId(userID) },
+
+      await orderModel.findOneAndUpdate(
+        { "orders._id": orderId },
         {
           $set: {
-            "products.$[product].status": "cancelled",
-          },
+          [`orders.0.products.${j}.status`]: status,
+          }
         },
-        {
-          arrayFilters: [
-            { "product.productid": new mongoose.Types.ObjectId(id) },
-          ],
-        }
+        { new: true }
       );
-      // If order has not been updated
-      if (updateResponse.modifiedCount === 0) {
-          console.log('Updating order unsuccessful -------------------')
-        
-      }
-  
-      console.log('ORDER HAS BEEN UPDATED SUCCESSFULLY ------------------------')
-      res.send({ popUp: "Product Cancelled" });
+      res.send({message:"",popUp:`Your order ${status} sucessfully`});
     } catch (error) {
       res.send(error.message);
     }
