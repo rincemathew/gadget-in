@@ -6,6 +6,8 @@ const addressModel = require("../models/addressModel");
 const orderModel = require("../models/orderModel");
 const mongoose = require("mongoose");
 const Razorpay = require('razorpay'); 
+const { wallet } = require("./userAccountController");
+const walletModel = require("../models/walletModel");
 
 
 const razorpayInstance = new Razorpay({
@@ -95,18 +97,38 @@ const checkout = async(req,res) => {
   const cancel_order = async (req, res) => {
     const userID = req.session.user_id;
     const { id } = req.params;
-    const {productId,orderId,status,j} = req.body
+    let {productId,orderId,status,i,j,total,quantity} = req.body
+    let walletBalance
     try {
 
       await orderModel.findOneAndUpdate(
         { "orders._id": orderId },
         {
           $set: {
-          [`orders.0.products.${j}.status`]: status,
+          [`orders.${i}.products.${j}.status`]: status,
           }
         },
         { new: true }
       );
+      walletCheck = await walletModel.findOne({user_id:userID})
+      if(walletCheck.balance) {
+        console.log('true')
+        walletBalance = walletCheck.balance + total
+      } else {
+        console.log('false')
+        walletBalance = total
+      }
+      await walletModel.findOneAndUpdate(
+        { user_id: userID },
+        { $push: { order_details: { id_product: productId,status: status,amount:walletBalance} },
+        $set: {
+          balance: walletBalance 
+        }
+       },
+        { upsert: true, new: true }
+      )
+      const stockCount = await productModel.findOne({ _id: productId })
+      await productModel.updateOne({_id:productId},{$set:{stock:stockCount.stock - quantity}});
       res.send({message:"",popUp:`Your order ${status} sucessfully`});
     } catch (error) {
       res.send(error.message);

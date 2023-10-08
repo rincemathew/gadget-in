@@ -13,11 +13,10 @@ const walletSchema = mongoose.Schema({
     
     order_details:[
         {
-            order_id:{
-                type:mongoose.Schema.Types.ObjectId,
-                ref:"orders",
+            id_product:{
+                type:String,
             },
-            message:{
+            status:{
                 type:String,
             },
             amount:{
@@ -26,10 +25,6 @@ const walletSchema = mongoose.Schema({
             date:{
                 type:Date,
                 default:Date.now,   
-            },
-            return:{
-            type:Boolean,
-            default:false,
             },
         },
     ],
