@@ -23,6 +23,8 @@ const register = async (req, res) => {
       if(checker) {
         res.render("user/login_register",{session:false, message: 'User With this email exist',popUp:false });
       }
+      // const hashed = bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+      // });
         this.dataR = {first_name:req.body.name,
             email_id:req.body.email,
             password:req.body.password
@@ -38,11 +40,9 @@ const register = async (req, res) => {
         transporter.sendMail(mailOptions, (error, _info) => {
           if (error) {
             console.error('Error sending email: ', error);
-            // res.status(500).send({ message: 'Failed to send OTP' });
             res.render("user/login_register",{session:false, message: 'Failed to send OTP',popUp:false });
           } else {
             console.log('OTP sent: ', this.otpCode);
-            // res.status(200).send({ message: 'OTP sent successfully' });
             res.render("user/login_register",{ session:false,message: 'OTP sent successfully',popUp:true });
           }
         });
@@ -55,25 +55,14 @@ const register = async (req, res) => {
   const verify_otp = async (req, res) => {
     try {
       const { otp } = req.body;
-      console.log(otp);
-        console.log(this.otpCode);
-      // Verify the OTP code
-      // In this example, we are using a hardcoded value for demonstration purposes only.
-      // In a real application, you should compare the OTP to the one generated in the previous step.
-      
       if (otp == this.otpCode && otp!=0) {
-        // print("otp");
-        // print("otp"+otp);
-        // print(this.otpCode+"this otp");
         console.log(otp);
         console.log(this.otpCode);
         await userModel.insertMany([this.dataR]); 
         res.render("user/login_register",{session:false, message: 'User Created successfully',popUp:false });
-        // res.status(200).send({ message: 'Login successful' });
         
       } else {
         res.render("user/login_register",{ session:false,message: 'Invalid OTP',popUp:true });
-        // res.status(401).send({ message: 'Invalid OTP' });
       }
       } catch (error) {
         res.send(error.message);
