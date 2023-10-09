@@ -57,6 +57,9 @@ app.use(vhost(`admin.localhost`, adminRouter));
 app.use(vhost('gadget4in.cloud', userRouter));
 app.use(vhost(`admin.gadget4in.cloud`, adminRouter));
 
+app.use(vhost('www.gadget4in.cloud', userRouter));
+app.use(vhost(`www.admin.gadget4in.cloud`, adminRouter));
+
 app.use(vhost(process.env.DOMAIN_NAME, userRouter));
 app.use(vhost(`admin.${process.env.DOMAIN_NAME}`, adminRouter));
 
