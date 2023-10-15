@@ -43,14 +43,16 @@ const checkout = async(req,res) => {
   const checkout_post = async(req,res) => {
     try {
       const userID = req.session.user_id
+      console.log('ffffffffff')
       console.log(req.body)
       const {total_amount, coupon_type, coupon_amount, payment_method, wallet_amount, offer, address} = req.body
-      console.log(total_amount,coupon_amount)
+      console.log('aaaaaaaaa')
+      console.log(total_amount, coupon_type, coupon_amount, payment_method, wallet_amount, offer, address)
+      console.log('eeeeeeeeeee')
+      // return
       const orderHas = await orderModel.findOne({ user_id: userID});
-      console.log('aaaaaa')
       const cartdata = await cartModel.findOne({ user_id: userID }).populate("products.productid");
       let products = []
-      console.log('bbbbbb')
       for(i=0;i<cartdata.products.length;i++) {
         products[i] = {product_id: cartdata.products[i].productid._id, quantity: cartdata.products[i].quantity,status:'out for delivery',delivery_date:""}
        }

@@ -257,6 +257,21 @@ const wallet = async (req, res) => {
   }
 };
 
+const walletCheck = async (req, res) => {
+  const userID = req.session.user_id;
+  walletAmo = 0
+  try {
+    const data = await walletModel.findOne({user_id:userID})
+    console.log(data)
+    if(data) {
+      walletAmo = data.balance
+    }
+    res.send({message:"",popUp:"",walletAmount:walletAmo})
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
 module.exports = {
   profile,
   profilePost,
@@ -265,5 +280,5 @@ module.exports = {
   address_get,
   address_add,
   address_edit,
-  address_delete,wallet
+  address_delete,wallet,walletCheck
 };

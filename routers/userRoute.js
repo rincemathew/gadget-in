@@ -83,6 +83,8 @@ router.get('/account/checkout',userController.sessionValidUser,orderController.c
 
 router.post('/account/checkout',userController.sessionValidUser,orderController.checkout_post)
 
+router.get('/account/walletcheck',userController.sessionValidUser,userAccountController.walletCheck)
+
 
 
 ////VIEWS
