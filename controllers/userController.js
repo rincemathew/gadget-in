@@ -5,6 +5,9 @@ const transporter = require("../helpers/nodeMailer");
 const categoryModel = require("../models/categoryModel");
 const bannerModel = require("../models/bannerModel");
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 
 //login and register
 
@@ -20,15 +23,17 @@ const register = async (req, res) => {
     try {
 
       checker = await userModel.findOne({email_id:req.body.email})
-      if(checker) {
-        res.render("user/login_register",{session:false, message: 'User With this email exist',popUp:false });
+      if(req.body.password !== req.body.forgetpassword) {
+        res.render("user/login_register",{session:false, message: 'Password MissMatch',popUp:false });
       }
+      // if(checker) {
+      //   res.render("user/login_register",{session:false, message: 'User With this email exist',popUp:false });
+      // }
       // const hashed = bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
       // });
-        this.dataR = {first_name:req.body.name,
-            email_id:req.body.email,
-            password:req.body.password
-        }
+        this.Tfirstname = req.body.name,
+        this.Temailid = req.body.email
+        this.Tpassword = req.body.password
         this.otpCode = Math.floor(100000 + Math.random() * 900000);
         const mailOptions = {
           from: "rincemathew.m@gmail.com",
@@ -58,7 +63,9 @@ const register = async (req, res) => {
       if (otp == this.otpCode && otp!=0) {
         console.log(otp);
         console.log(this.otpCode);
-        await userModel.insertMany([this.dataR]); 
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hash = await bcrypt.hash(this.Tpassword, salt);
+        await userModel.insertMany({first_name:this.Tfirstname,email_id:this.Temailid,password:hash}); 
         res.render("user/login_register",{session:false, message: 'User Created successfully',popUp:false });
         
       } else {
@@ -126,11 +133,13 @@ const register = async (req, res) => {
           email_id: req.body.email,
         });    
         if (userData) {
-          // console.log(userData,req.body.password)
-          if (userData.password === req.body.password && userData.is_blocked === true) {
+          // console.log(req.body.password,userData.password)
+          const pass = await bcrypt.compare(req.body.password, userData.password);
+          // console.log(password)
+          if (pass && userData.is_blocked === true) {
             req.session.user_id=userData._id
             res.redirect("/");
-          } else if (userData.password === req.body.password && userData.is_blocked === false){
+          } else if (pass && userData.is_blocked === false){
             res.render("user/login_register", { session:false,message: "user is blocked",popUp:false });
           } else {
             res.render("user/login_register", { session:false,message: "invalid password ",popUp:false });

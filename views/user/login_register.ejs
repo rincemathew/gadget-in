@@ -41,45 +41,53 @@
 		<div class="container">
         
       <div style="padding: 20px; display: flex;justify-content: center;">
-          <div style="padding: 20px; width: 50%;">
+          <div class="align-self-center" style="padding: 20px; width: 50%;">
               <h5>Sign In</h5>
               <form method="post" action="/login">
 
                   <div class="form-outline mb-4">
-                      <input name="email" type="email" id="form2Example27" class="form-control form-control-lg" required/>
+                      <input name="email" type="email" id="form2Example27" class="form-control" required/>
                       <label class="form-label" for="form2Example27">Email Id</label>
                     </div>
 
                   <div class="form-outline mb-4">
-                    <input name="password" type="password" id="form2Example27" class="form-control form-control-lg" minlength="5" required/>
+                    <input name="password" type="password" id="form2Example27" class="form-control" minlength="5" required/>
                     <label class="form-label" for="form2Example27">Password</label>
                   </div>
+                  <div class="">
+                    <a href="#!">Forgot password?</a>
+                  </div>
 
-                  <div class="pt-1 mb-4">
+                  <div class="pt-4 mb-4">
                     <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
                   </div>
                 </form>
 
           </div>
           <!-- <div style="border-left:1px solid #000;height:500px"></div> -->
-          <hr style="border-left: 6px solid green;height: 250px;">
+          <hr class="align-self-center" style="border-left: 6px solid green;height: 350px;">
           <div style="padding: 20px;width: 50%;">
               <h5>Register</h5>
               <form method="post" action="/register">
     
                   <div class="form-outline mb-4">
-                    <input name="name" type="name" id="form2Example17" class="form-control form-control-lg" required/>
+                    <input name="name" type="name" id="form2Example17" class="form-control" required/>
                     <label class="form-label" for="form2Example17">Name</label>
                   </div>
 
                   <div class="form-outline mb-4">
-                      <input name="email" type="email" id="form2Example27" class="form-control form-control-lg" required/>
+                      <input name="email" type="email" id="form2Example27" class="form-control" required/>
                       <label class="form-label" for="form2Example27">Email Id</label>
                     </div>
 
                   <div class="form-outline mb-4">
-                    <input name="password" type="password" id="form2Example27" class="form-control form-control-lg" minlength="5" required/>
+                    <input name="password" type="password" id="form2Example27" class="form-control" minlength="5" required/>
                     <label class="form-label" for="form2Example27">Password</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input name="forgetpassword" type="password" id="forgetpassword" class="form-control" minlength="5" required/>
+                    <label class="form-label" for="forgetpassword">Forget Password</label>
                   </div>
 
                   <div class="pt-1 mb-4">
