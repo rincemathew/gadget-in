@@ -17,6 +17,8 @@ router.post('/login',userController.login)
 
 router.post('/login-register',userController.verify_otp)
 
+router.post('/re-sent-otp',userController.resentOTP)
+
 router.get('/logout',userController.user_logout)
 
 

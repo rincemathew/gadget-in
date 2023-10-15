@@ -76,6 +76,30 @@ const register = async (req, res) => {
       }
   };
 
+  const resentOTP = async (req, res) => {
+    try {
+      this.otpCode = Math.floor(100000 + Math.random() * 900000);
+        const mailOptions = {
+          from: "rincemathew.m@gmail.com",
+          to: this.Temailid,
+          subject: "LogIn OTP",
+          text: `Your OTP code is ${this.otpCode}.`,
+        };
+        transporter.sendMail(mailOptions, (error, _info) => {
+          if (error) {
+            console.error('Error sending email: ', error);
+            res.render("user/login_register",{session:false, message: 'Failed to send OTP',popUp:false });
+          } else {
+            console.log('OTP sent: ', this.otpCode);
+            res.render("user/login_register",{ session:false,message: 'OTP resent successfully',popUp:true });
+          }
+        });
+      
+      } catch (error) {
+        res.send(error.message);
+      }
+  };
+
   const sessionValidation = async (req, res, next) => {
     if(req.session.user_id) {
       res.locals.sessionValue = true
@@ -248,6 +272,6 @@ const page404 = async (req, res) => {
   res.render("user/404", {session:res.locals.sessionValue,});
 };
 
-module.exports = {login_register,register,login,home_page,verify_otp,sessionValidation,sessionValidUser,ajaxSessionValidUser,
+module.exports = {login_register,register,login,home_page,verify_otp,resentOTP,sessionValidation,sessionValidUser,ajaxSessionValidUser,
   products,categories_view,categoriesDisplayItems,user_logout,search_box,page404
     }
