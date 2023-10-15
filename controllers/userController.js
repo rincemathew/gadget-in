@@ -26,11 +26,9 @@ const register = async (req, res) => {
       if(req.body.password !== req.body.forgetpassword) {
         res.render("user/login_register",{session:false, message: 'Password MissMatch',popUp:false });
       }
-      // if(checker) {
-      //   res.render("user/login_register",{session:false, message: 'User With this email exist',popUp:false });
-      // }
-      // const hashed = bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-      // });
+      if(checker) {
+        res.render("user/login_register",{session:false, message: 'User With this email exist',popUp:false });
+      }
         this.Tfirstname = req.body.name,
         this.Temailid = req.body.email
         this.Tpassword = req.body.password
@@ -99,6 +97,71 @@ const register = async (req, res) => {
         res.send(error.message);
       }
   };
+
+  const forgetPassword = async (req, res) => {
+    if(req.session.user_id) {
+      res.redirect("/");
+    } else {
+      res.render("user/forget_password", { session:false,message: "",popUp:false });
+    }
+    };
+
+
+    const forgetPasswordPost = async (req, res) => {
+      try {
+  
+        checker = await userModel.findOne({email_id:req.body.email})
+        if(req.body.password !== req.body.forgetpassword) {
+          res.render("user/forget_password",{session:false, message: 'Password MissMatch',popUp:false });
+        }
+        if(!checker) {
+          res.render("user/forget_password",{session:false, message: 'User With this email does not exist',popUp:false });
+        }
+          this.Temailid = req.body.email
+          this.Tpassword = req.body.password
+          this.otpCode = Math.floor(100000 + Math.random() * 900000);
+          const mailOptions = {
+            from: "rincemathew.m@gmail.com",
+            to: req.body.email,
+            subject: "LogIn OTP",
+            text: `Your OTP code is ${this.otpCode}.`,
+          };
+        
+          transporter.sendMail(mailOptions, (error, _info) => {
+            if (error) {
+              console.error('Error sending email: ', error);
+              res.render("user/forget_password",{session:false, message: 'Failed to send OTP',popUp:false });
+            } else {
+              console.log('OTP sent: ', this.otpCode);
+              res.render("user/forget_password",{ session:false,message: 'OTP sent successfully',popUp:true });
+            }
+          });
+          // await userModel.insertMany([dataR]);  
+        } catch (error) {
+          res.send(error.message);
+        }
+    };
+
+    const verifyForgetOtp = async (req, res) => {
+      try {
+        const { otp } = req.body;
+        if (otp == this.otpCode && otp!=0) {
+          console.log(otp);
+          console.log(this.otpCode);
+          const salt = await bcrypt.genSalt(saltRounds);
+          const hash = await bcrypt.hash(this.Tpassword, salt);
+          checker = await userModel.findOne({email_id:this.Temailid})
+          console.log(checker)
+          await userModel.updateOne({email_id:this.Temailid}, {$set:{first_name:checker.first_name,password:hash}});
+          res.render("user/login_register",{session:false, message: 'Password Changed successfully',popUp:false });
+          
+        } else {
+          res.render("user/login_register",{ session:false,message: 'Invalid OTP',popUp:true });
+        }
+        } catch (error) {
+          res.send(error.message);
+        }
+    };
 
   const sessionValidation = async (req, res, next) => {
     if(req.session.user_id) {
@@ -272,6 +335,6 @@ const page404 = async (req, res) => {
   res.render("user/404", {session:res.locals.sessionValue,});
 };
 
-module.exports = {login_register,register,login,home_page,verify_otp,resentOTP,sessionValidation,sessionValidUser,ajaxSessionValidUser,
+module.exports = {login_register,register,login,home_page,verify_otp,resentOTP,forgetPassword,forgetPasswordPost,verifyForgetOtp,sessionValidation,sessionValidUser,ajaxSessionValidUser,
   products,categories_view,categoriesDisplayItems,user_logout,search_box,page404
     }

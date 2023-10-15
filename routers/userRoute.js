@@ -19,6 +19,12 @@ router.post('/login-register',userController.verify_otp)
 
 router.post('/re-sent-otp',userController.resentOTP)
 
+router.get('/forget-password',userController.forgetPassword)
+
+router.post('/forget-password',userController.forgetPasswordPost)
+
+router.post('/verify-forget-otp',userController.verifyForgetOtp)
+
 router.get('/logout',userController.user_logout)
 
 
