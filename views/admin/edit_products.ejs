@@ -141,7 +141,10 @@
                         <div class="card-body">
                             <div id="list-view">
                             <% for(i=0;i<data.product_image.length;i++) { %>
+                                <div id="<%= data.product_image[i]%>" style="position: relative;">
+                                    <button type="button" onclick="deleteImage('<%= data.product_image[i]%>','<%=data._id%>')" style="position: absolute;top: 2px;right: 2px;z-index: 100;">&times;</button>
                                 <img src="/uploads/<%= data.product_image[i]%>" width="100%"/>
+                                </div>
                             <% } %>
                         </div>
                         </div>
@@ -197,6 +200,14 @@
           }
         );
       };
+
+      const deleteImage = async(name,id) => {
+        console.log(name,id)
+        const response = await fetch(`/products/delete-image`,{ method: 'POST',headers: {'Content-Type':'application/json'} ,body:JSON.stringify({name:name,productId:id}) });
+        console.log(response.message)
+        const resBody = await response.json();
+        document.getElementById(name).style.display = 'none'
+      }
 </script>
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->

@@ -30,6 +30,8 @@ router.get('/products/add-new',adminController.session_check,adminController.add
 
 router.post('/products/add-new',adminController.session_check,upload,adminController.add_product_post)
 
+router.post('/products/delete-image',adminController.session_check, adminController.productImageDelete)
+
 router.get('/products/edit/:id',adminController.session_check, adminController.edit_product)
 
 router.post('/products/edit/:id',adminController.session_check,upload, adminController.edit_product_post)

@@ -115,14 +115,6 @@ const add_product_post = async (req, res) => {
   
     data.product_image.push(processedFileName);
   }
-
-  // productImages = [];
-  // // console.log(req.files)
-  // req.files.forEach((file) => {
-  //   productImages.push(file.filename);
-  // });
-
-  // console.log(data)
   await productModel.insertMany([data]);
   res.redirect("/products");
 };
@@ -142,14 +134,31 @@ const edit_product = async (req, res) => {
 };
 
 const edit_product_post = async (req, res) => {
-  productImages = []
-  req.files.forEach((file) => {
-    productImages.push(file.filename);
-  });
+  
     try{
-        await productModel.updateOne({_id:req.params.id},{$set:{product_brand_name:req.body.brand_name,product_name:req.body.product_name,
-          product_slug:req.body.product_slug,description:req.body.description,category:req.body.category,stock:req.body.stock,price:req.body.price,
-            is_blocked: req.body.isBlocked ? true : false}});
+      const productList = await productModel.findOne({ _id: req.params.id },);
+
+      const data = {
+        product_brand_name:req.body.brand_name,
+        product_name: req.body.product_name,
+        product_slug:slugify(req.body.brand_name+ " " +req.body.product_name),
+        description: req.body.description,
+        category: req.body.category,
+        stock: req.body.stock,
+        price: req.body.price,
+        product_image: [...productList.product_image],
+        is_blocked: req.body.isBlocked ? true : false,
+      };
+      for (const image of req.files) {
+        const imageBuffer = await sharp(image.path)
+          .resize({ width: 350, height: 350, fit: 'cover' })
+          .toBuffer();
+        const processedFileName = Date.now() + '-';
+        await sharp(imageBuffer).toFile(`public/uploads/${processedFileName}`);
+        data.product_image.push(processedFileName); }
+
+
+        await productModel.updateOne({_id:req.params.id},{$set:data});
           res.redirect("/products");
     }catch(err) {
         console.log(err)
@@ -173,6 +182,34 @@ const setProductIsBlocked = async (req, res, isBlocked) => {
   } catch (err) {
     console.trace(err);
     res.send({ isOk: false, message: "Some error occured" });
+  }
+};
+
+const productImageDelete = async (req, res) => {
+  try{
+    const {name,productId} = req.body
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    if (!name) {
+      return res.status(400).json({ message: "Image name is required" });
+    }
+    const imageIndex = product.product_image.indexOf(name);
+
+    if (imageIndex === -1) {
+      return res.status(404).json({ message: "Image not found in the product" });
+    }
+    product.product_image.splice(imageIndex, 1);
+    
+    await product.save();
+
+
+    res.send({message:"",popUp:""})
+  }catch(err) {
+    res.send({message:err.message})
   }
 };
 
@@ -271,6 +308,7 @@ module.exports = {
   add_product_post,
   edit_product,
   edit_product_post,
+  productImageDelete,
   unblock_product,
   block_product,
   categories,
