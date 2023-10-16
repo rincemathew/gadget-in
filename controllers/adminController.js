@@ -5,6 +5,8 @@ const categoryModel = require("../models/categoryModel");
 const userModel = require("../models/userModel");
 const {slugify} = require('..//helpers/validator')
 
+const sharp = require('sharp');
+
 ////LOGIN
 
 const admin_login = async (req, res) => {
@@ -91,12 +93,6 @@ const add_product_post = async (req, res) => {
   if(productCheck) {
     return res.render("admin/add_products", { message: "Product with this name exist",data:"" });
   } 
-  productImages = [];
-  // console.log(req.files)
-  req.files.forEach((file) => {
-    productImages.push(file.filename);
-  });
-
   const data = {
     product_brand_name:req.body.brand_name,
     product_name: req.body.product_name,
@@ -105,9 +101,26 @@ const add_product_post = async (req, res) => {
     category: req.body.category,
     stock: req.body.stock,
     price: req.body.price,
-    product_image: productImages,
+    product_image: [],
     is_blocked: req.body.isBlocked ? true : false,
   };
+
+  for (const image of req.files) {
+    const imageBuffer = await sharp(image.path)
+      .resize({ width: 350, height: 350, fit: 'cover' })
+      .toBuffer();
+  
+    const processedFileName = Date.now() + '-';
+    await sharp(imageBuffer).toFile(`public/uploads/${processedFileName}`);
+  
+    data.product_image.push(processedFileName);
+  }
+
+  // productImages = [];
+  // // console.log(req.files)
+  // req.files.forEach((file) => {
+  //   productImages.push(file.filename);
+  // });
 
   // console.log(data)
   await productModel.insertMany([data]);
