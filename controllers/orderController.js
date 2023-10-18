@@ -6,7 +6,7 @@ const addressModel = require("../models/addressModel");
 const orderModel = require("../models/orderModel");
 const mongoose = require("mongoose");
 const Razorpay = require('razorpay'); 
-const { wallet } = require("./userAccountController");
+const { wallet, } = require("./userAccountController");
 const walletModel = require("../models/walletModel");
 
 
@@ -43,18 +43,34 @@ const checkout = async(req,res) => {
   const checkout_post = async(req,res) => {
     try {
       const userID = req.session.user_id
-      console.log('ffffffffff')
-      console.log(req.body)
+      // console.log(req.body)
       const {total_amount, coupon_type, coupon_amount, payment_method, wallet_amount, offer, address} = req.body
-      console.log('aaaaaaaaa')
-      console.log(total_amount, coupon_type, coupon_amount, payment_method, wallet_amount, offer, address)
+      // console.log(total_amount, coupon_type, coupon_amount, payment_method, wallet_amount, offer, address)
       console.log('eeeeeeeeeee')
       // return
+      if(wallet_amount > 0) {
+        console.log('ddddfdfsd')
+        walletChecked = await walletModel.findOne({user_id:userID })
+        await walletModel.findOneAndUpdate({ user_id:userID },
+          {$set:{balance:walletChecked.balance-wallet_amount}},
+          { new: true }
+          )
+      }
+      console.log('eeeeeeeeeee')
+      // await cartModel.findOneAndUpdate({ userid: userID },
+      //   { products: [] },
+      //   { new: true },)
+
+      
+
       const orderHas = await orderModel.findOne({ user_id: userID});
       const cartdata = await cartModel.findOne({ user_id: userID }).populate("products.productid");
       let products = []
       for(i=0;i<cartdata.products.length;i++) {
         products[i] = {product_id: cartdata.products[i].productid._id, quantity: cartdata.products[i].quantity,status:'out for delivery',delivery_date:""}
+        prodctDecrese = await productModel.findOne({_id:cartdata.products[i].productid._id})
+        console.log(prodctDecrese)
+        await productModel.findOneAndUpdate({_id:cartdata.products[i].productid._id},{$set:{stock:prodctDecrese.stock-cartdata.products[i].quantity}})
        }
        console.log('cccccc')
       if(orderHas) {
@@ -74,7 +90,7 @@ const checkout = async(req,res) => {
       }
       console.log('dddddd')
       
-      res.send({message:"sucess",popUp:'sucess'}) 
+      res.status(200).send({message:"sucess",popUp:'sucess'}) 
   } catch(error) {
       res.send(error.message)
   }

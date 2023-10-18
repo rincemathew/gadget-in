@@ -190,6 +190,8 @@ right: -25px;
 <script>
     let couponType=""
     let couponAmount=0
+    let walletAmount = 0
+    let walletDisplay = 0
     let couponActivated = ""
     let couponValueCheck = document.getElementById('total').value
     let totalV
@@ -198,7 +200,7 @@ right: -25px;
     console.log(document.getElementById('total').value*100)
     let options = {
        "key": "rzp_test_cLQpjxzEEr4RTn", 
-       "amount": document.getElementById('total').value*100, 
+       "amount": (document.getElementById('total').value*100) - (walletAmount*100), 
        "currency": "INR",
        "name": "Online Payment",
        "description": "Pay & Checkout",
@@ -222,7 +224,7 @@ right: -25px;
            "color": "#ffd333"
        }
    };
-   var razorpayObject = new Razorpay(options);
+   let razorpayObject = new Razorpay(options);
    console.log(razorpayObject);
    razorpayObject.on('payment.failed', function (response){
          console.log(response);
@@ -230,8 +232,7 @@ right: -25px;
         alertMsgF("Oops....Payment Failed, Please Try again!!!")
    });
      
-   document.getElementById('pay-button').onclick = function(e){
-    razorpayObject = new Razorpay(options);
+   document.getElementById('pay-button').onclick = async function(e){
     if(document.querySelector('input[name="payment"]:checked').value == null) {
         alertMsgF("Select a payment method!")
         return;
@@ -241,19 +242,32 @@ right: -25px;
         return;
     }
     else if(document.querySelector('input[name="payment"]:checked').value == "cash on delivery") {
-        result()
+        if(true) {
+            result()
+        }else{
+            razorpayObject.open();
+           e.preventDefault();
+        }
         return;
     }
     else if(document.querySelector('input[name="payment"]:checked').value == "online payment") {
+        razorpayObject = new Razorpay(options);
         razorpayObject.open();
         e.preventDefault();
         return;
     }
     else if(document.querySelector('input[name="payment"]:checked').value == "wallet + online payment") {
-        // checkWallet();
-        // razorpayObject.open();
-        // e.preventDefault();
-        result()
+        if(walletDisplay >= document.getElementById('total').value) {
+            result()
+        }else {
+            walletAmount = walletDisplay
+            options.amount = (document.getElementById('total').value * 100) - (walletAmount * 100);
+            console.log(walletAmount+"fffffff")
+            razorpayObject = new Razorpay(options);
+            console.log(razorpayObject)
+            razorpayObject.open();
+           e.preventDefault();
+        }
         return;
     }
    }
@@ -262,6 +276,9 @@ right: -25px;
    const checkWallet = async() => {
         const response = await fetch(`/account/walletcheck`,{ method: 'GET'});
         const resBodyCheck = await response.json();
+        if(resBodyCheck.walletAmount !== NaN) {
+            walletDisplay = resBodyCheck.walletAmount
+        }
         document.getElementById('walletcheck').innerHTML = resBodyCheck.walletAmount
    }
 
@@ -280,7 +297,7 @@ right: -25px;
         coupon_type: couponType,
         coupon_amount: couponAmount,
         payment_method: paymentMethod,
-        wallet_amount: 0,
+        wallet_amount: walletAmount,
         offer: 0,
         address: address
     };
@@ -290,7 +307,7 @@ right: -25px;
         console.log('3333333333')
         const resBody = await response.json();
         console.log('444444444')
-        console.log(resBody.status)
+        // console.log(resBody.status)
         if(resBody.popUp) {
             alertMsg("Your order has been Placed");
         }
