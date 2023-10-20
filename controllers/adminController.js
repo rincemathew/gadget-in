@@ -89,9 +89,10 @@ const add_product = async (req, res) => {
 };
 
 const add_product_post = async (req, res) => {
-  productCheck = await productModel.findOne({product_name:req.body.product_name}) 
+  productCheck = await productModel.findOne({product_slug:slugify(req.body.brand_name+ " " +req.body.product_name)}) 
   if(productCheck) {
-    return res.render("admin/add_products", { message: "Product with this name exist",data:"" });
+    let cateList = await categoryModel.find({});
+    return res.render("admin/add_products", { message: "Product with this name exist",data:"",categoriesList :cateList });
   } 
   const data = {
     product_brand_name:req.body.brand_name,
@@ -239,7 +240,7 @@ const add_categories = async (req, res) => {
 };
 
 const add_categories_post = async (req, res) => {
-  categryCheck = await categoryModel.findOne({category_name:req.body.categories_name}) 
+  categryCheck = await categoryModel.findOne({category_slug:slugify(req.body.categories_name)}) 
   if(categryCheck) {
     return res.render("admin/add_categories", { message: "Category with this name exist",data:"" });
   } 
