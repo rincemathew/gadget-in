@@ -146,18 +146,41 @@ const register = async (req, res) => {
       try {
         const { otp } = req.body;
         if (otp == this.otpCode && otp!=0) {
-          console.log(otp);
-          console.log(this.otpCode);
           const salt = await bcrypt.genSalt(saltRounds);
           const hash = await bcrypt.hash(this.Tpassword, salt);
           checker = await userModel.findOne({email_id:this.Temailid})
+          console.log(this.Temailid,this.Tpassword)
           console.log(checker)
-          await userModel.updateOne({email_id:this.Temailid}, {$set:{first_name:checker.first_name,password:hash}});
+          await userModel.updateOne({email_id:this.Temailid}, {$set:{password:hash}});
           res.render("user/login_register",{session:false, message: 'Password Changed successfully',popUp:false });
           
         } else {
           res.render("user/login_register",{ session:false,message: 'Invalid OTP',popUp:true });
         }
+        } catch (error) {
+          res.send(error.message);
+        }
+    };
+
+    const resentForgetOTP = async (req, res) => {
+      try {
+        this.otpCode = Math.floor(100000 + Math.random() * 900000);
+          const mailOptions = {
+            from: "rincemathew.m@gmail.com",
+            to: this.Temailid,
+            subject: "LogIn OTP",
+            text: `Your OTP code is ${this.otpCode}.`,
+          };
+          transporter.sendMail(mailOptions, (error, _info) => {
+            if (error) {
+              console.error('Error sending email: ', error);
+              res.render("user/forget_password",{session:false, message: 'Failed to send OTP',popUp:false });
+            } else {
+              console.log('OTP sent: ', this.otpCode);
+              res.render("user/forget_password",{ session:false,message: 'OTP resent successfully',popUp:true });
+            }
+          });
+        
         } catch (error) {
           res.send(error.message);
         }
@@ -335,6 +358,6 @@ const page404 = async (req, res) => {
   res.render("user/404", {session:res.locals.sessionValue,});
 };
 
-module.exports = {login_register,register,login,home_page,verify_otp,resentOTP,forgetPassword,forgetPasswordPost,verifyForgetOtp,sessionValidation,sessionValidUser,ajaxSessionValidUser,
+module.exports = {login_register,register,login,home_page,verify_otp,resentOTP,forgetPassword,forgetPasswordPost,verifyForgetOtp,resentForgetOTP,sessionValidation,sessionValidUser,ajaxSessionValidUser,
   products,categories_view,categoriesDisplayItems,user_logout,search_box,page404
     }

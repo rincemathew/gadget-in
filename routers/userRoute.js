@@ -25,6 +25,8 @@ router.post('/forget-password',userController.forgetPasswordPost)
 
 router.post('/verify-forget-otp',userController.verifyForgetOtp)
 
+router.post('/forget-resent',userController.resentForgetOTP)
+
 router.get('/logout',userController.user_logout)
 
 

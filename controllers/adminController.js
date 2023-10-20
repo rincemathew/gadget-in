@@ -58,8 +58,9 @@ const dashboard = async (req, res) => {
   userslists = await userModel.find({})
   productslists = await productModel.find({})
   categorieslists = await categoryModel.find({})
-  orderlists = orderModel.find({}).populate("orders")
-  res.render("admin/dashboard", { message: "",order:orderlists.orders?orderlists.orders.length:0,user:userslists?userslists.length:0,product:productslists?productslists.length:0,category:categorieslists?categorieslists.length:0,  });
+  orderlists = await orderModel.find({}).populate("orders").populate("user_id").sort({_id:-1}).lean().exec();
+  console.log(orderlists)
+  res.render("admin/dashboard", { message: "",order:orderlists?orderlists.length:0,user:userslists?userslists.length:0,product:productslists?productslists.length:0,category:categorieslists?categorieslists.length:0,  });
 };
 
 //PRODUCTS
