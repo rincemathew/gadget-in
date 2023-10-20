@@ -3,6 +3,7 @@ const adminModel = require("../models/adminModel");
 const productModel = require("../models/productModel");
 const categoryModel = require("../models/categoryModel");
 const userModel = require("../models/userModel");
+const orderModel = require("../models/orderModel");
 const {slugify} = require('..//helpers/validator')
 
 const sharp = require('sharp');
@@ -54,7 +55,11 @@ const session_check = async(req,res, next) => {
 
 ////DASHBOARD
 const dashboard = async (req, res) => {
-  res.render("admin/dashboard", { message: "" });
+  userslists = await userModel.find({})
+  productslists = await productModel.find({})
+  categorieslists = await categoryModel.find({})
+  orderlists = orderModel.find({}).populate("orders")
+  res.render("admin/dashboard", { message: "",order:orderlists.orders?orderlists.orders.length:0,user:userslists?userslists.length:0,product:productslists?productslists.length:0,category:categorieslists?categorieslists.length:0,  });
 };
 
 //PRODUCTS
